@@ -35,6 +35,14 @@ ww/schemas.py          pydantic contracts (sources, provenance, series, paramete
 ww/cache.py            fetch-once provenance-stamped cache; nothing downstream hits the network
 ww/params.py           literature loader + unit conversion + audit helpers
 ww/sources/            source registry: usbr (reservoirs), bls (CPI), caiso (LMP), manual decls
+ww/model/              PHASE 2 cost engine
+  finance.py             cost of capital, debt and equity legs kept apart
+  lcow.py                levelised cost, split fixed/variable like the Israeli tariffs
+  scale.py               scale-adjusted international capex comparison (§2.1)
+  permitting.py          approval delay + rejection risk priced as capital (§2.2)
+  plants.py              reference plants assembled from literature.yaml
+  montecarlo.py          parameter ranges -> outcome distributions
+ww/cli_model.py        Phase 2 CLI commands (kept out of __main__ so caveats are testable)
 ww/__main__.py         CLI
 data/parameters/       COMMITTED evidence: literature.yaml
 data/raw/              gitignored cache
@@ -50,6 +58,11 @@ python -m ww show <source_id>     # summarise a normalised series
 python -m ww params --audit       # uncited / low-confidence / point-estimate review
 python -m ww params <id>          # one parameter with its citation and lineage
 python -m ww status               # what is cached and how stale
+
+python -m ww lcow [plant]         # levelised cost by leg: carlsbad, sorek, doheny, ...
+python -m ww gap                  # scale-adjusted Carlsbad/Sorek capex comparison
+python -m ww permitting           # approval delay and rejection risk, priced in $/AF
+python -m ww montecarlo -n 10000  # LCOW as a distribution
 ```
 
 ## Current state — Phase 1 complete
@@ -93,24 +106,63 @@ Powell at 20% (excluding its 1963 filling period).
 - **Do not cite Fondomonte/Butler Valley as a Colorado River example.** That is Arizona
   *groundwater*, and those leases were cancelled in 2023. Use Fondomonte's **Palo Verde
   Valley** operation, which is Colorado River water.
-- **`econ.capex_scaling_exponent` drives the 5x headline.** Always report it with the
+- **`econ.capex_scaling_exponent` drives the gap headline.** Always report it with the
   0.75-0.9 sensitivity. A test enforces that the result survives both extremes.
 - **`salton.externality` is the most contested load-bearing number.** It assumes all QSA
   transfer drives playa exposure and all restoration spend is dust-driven. Neither is
   strictly true. Sensitivity-test before it carries a conclusion.
-- **`desal.carlsbad.price_current` ($3,500/AF) is low-confidence** and is the headline
-  comparison figure. Confirm against SDCWA primary documents before publication.
+- **Do not use `desal.carlsbad.price_current` ($3,500/AF) as the Carlsbad comparator.**
+  Phase 2 checked it against primary sources and it did not hold: SDCWA's own figure is
+  **$2,302-2,559/AF** (`desal.carlsbad.price_sdcwa`), independently corroborated by the
+  WPA reading and by the model. The $3,500 press figure stays in the file, flagged, only
+  until the residual is explained. **Any ratio with $3,500 on one side is overstated** —
+  including several in PHASE0_FINDINGS.md and REQUIREMENTS.md.
+- **The gap is ~4x, not 5x.** Carlsbad's $203M pipeline has no counterpart in Sorek's
+  capex; strip conveyance before comparing or the headline inflates to 5.3x.
+- **Permitting does not explain the gap.** It accounts for ~1.38x of ~4.23x. Reform is
+  worth ~$428/AF, which is the defensible claim; "permitting explains 5x" is not.
 - **BLS blocks `download.bls.gov` without a contact email in the User-Agent.** We use the
   key-free API instead precisely so no personal data goes to a third party. The flat-file
   route exists but is opt-in via `WW_CONTACT_EMAIL`.
 - **CAISO puts the price in the `MW` column.** Not a typo — an OASIS naming artefact.
 
+## Phase 2 — cost engine built
+
+**148 tests pass. 118 parameters, 34 citations.** The engine reproduces two published
+figures it was not fitted to: Carlsbad at **$2,456/AF against SDCWA's reported ~$2,430**
+(1.1% error), and Sorek's **fixed tariff leg at $0.244/m3 against the published $0.25**.
+
+Four results that cut AGAINST the thesis, all pinned by tests so they cannot be
+quietly improved away:
+
+1. **The 5x is ~4.2x.** Carlsbad's $203M pipeline has no counterpart inside Sorek's
+   capex. Including it gives 5.3x; excluding it, 4.23x at the central exponent
+   (3.99-4.77x across 0.75-0.9). The headline was partly a conveyance artefact.
+2. **Permitting explains a minority of the gap.** Priced as capital at risk, California's
+   regime adds 1.45x to capex against a reformed 1.05x — so ~1.38x of a 4.23x gap.
+   **Roughly 3x survives full permitting reform.** Reform is worth ~$428/AF (15%), which
+   is real, but the paper cannot claim permitting explains the gap.
+3. **Two more rival explanations died.** Sorek is 80% geared, Carlsbad 80.9% — capital
+   structure is not the difference, just as take-or-pay was not. And Carlsbad used an
+   *open* intake with a *co-located* outfall, the cheap options, so the mandated
+   subsurface-intake hypothesis cannot explain ITS gap.
+4. **The utilisation wedge is only ~1.09x**, so under-delivery alone does not get from
+   the ~$2,430/AF contract price to the ~$3,500/AF press figure. That reconciliation is
+   still open.
+
+**The US-construction-premium hypothesis is not a clean rival.** The literature
+attributes the American premium mainly to administrative overhead, procurement practice
+and non-standard design — the same mechanisms Act III blames. So the residual is
+reported as ONE combined institutional quantity; the split between "permitting" and
+"general US administrative premium" is **not identified** by our data. `scale.decompose`
+enforces this.
+
 ## Next
 
-**Phase 2 — desal cost engine**: parameterised techno-economic model, the scale-adjusted
-international comparison, and the permitting-risk module that prices approval delay and
-rejection probability as a financial instrument. Monte Carlo over the ranges in
-`literature.yaml`, producing a distribution rather than a point estimate.
+**Phase 3 — supply stack, and the framing gate opens.**
+
+Still outstanding inside Phase 2: the Salton Sea attribution model (§5.1 of HANDOFF),
+ship-mounted desal as a bounded extension, and the SWRO flexibility question.
 
 Open decisions still unanswered: comparator basins (Spain/Israel/Murray-Darling) in or out,
 and how much national affordability material survives into the paper.

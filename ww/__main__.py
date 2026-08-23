@@ -5,6 +5,13 @@
     python -m ww show <id>               summarise a normalised series
     python -m ww params [--audit]        inspect curated literature parameters
     python -m ww status                  what is cached, and how stale
+
+Phase 2 — the desalination cost engine:
+
+    python -m ww lcow [plant]            levelised cost, by cost leg
+    python -m ww gap                     scale-adjusted Carlsbad/Sorek capex comparison
+    python -m ww permitting              approval delay and rejection risk, priced
+    python -m ww montecarlo              LCOW as a distribution
 """
 
 from __future__ import annotations
@@ -12,7 +19,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from ww import __version__, cache, params, sources
+from ww import __version__, cache, cli_model, params, sources
 
 
 def _fmt(n: float) -> str:
@@ -183,6 +190,8 @@ def main(argv: list[str] | None = None) -> int:
 
     p_status = sub.add_parser("status", help="cache contents and age")
     p_status.set_defaults(func=cmd_status)
+
+    cli_model.register(sub)
 
     args = parser.parse_args(argv)
     return args.func(args)

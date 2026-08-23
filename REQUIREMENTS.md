@@ -25,7 +25,8 @@ toward the small user rather than aimed at the large one.
 cost order. Empirically they are not. Anchors after Phase 0.5: fallowing/transfer ~$280/AF
 direct but **~$477/AF (380–575) once the socialised Salton Sea dust externality is
 internalised**;
-Sorek-cost desalination ~$505–715/AF; Carlsbad desalination ~$3,500/AF. Those ranges **overlap**
+Sorek-cost desalination ~$505–715/AF; Carlsbad desalination ~$3,500/AF *(revised by
+Phase 2 to **$2,302–2,559/AF** — see HANDOFF §4a)*. Those ranges **overlap**
 — reallocation's apparent 12x advantage over desal survives only against *unreformed* desal.
 **The ranking that comes out of the model — not our prior — determines the paper's framing**
 (see §3).
@@ -165,7 +166,9 @@ D2/D3 never had a comparable clock; the Ocean Plan amendment process is ongoing.
 - Service-cost vs. subsidy split in the ag/urban price gap.
 - Fondomonte Palo Verde acreage and current status (**not** Butler Valley — that is groundwater
   and those leases are dead).
-- Carlsbad's current $3,500/AF figure against SDCWA primary documents.
+- ~~Carlsbad's current $3,500/AF figure against SDCWA primary documents.~~ **DONE in
+  Phase 2 — it failed.** SDCWA's own figure is $2,302–2,559/AF. Use
+  `desal.carlsbad.price_sdcwa`. See HANDOFF §4a.
 - Capex scaling exponent sensitivity (0.75–0.9) on the 5x result.
 
 ---
@@ -207,11 +210,15 @@ falsified the original pricing claim, corrected the alfalfa example, and produce
 Reproducible fetch + normalise + cache layer. Everything downstream reads from a clean,
 versioned local store. No analysis logic here.
 
-### Phase 2 — Desal cost engine
-Parameterised techno-economic model: capex, SEC, O&M, membrane replacement, brine, financing.
-Scale-adjusted international comparison. **Permitting-risk module (§2.2).** Monte Carlo over
-uncertain parameters — a distribution of LCOW, not a point estimate. Ship-mounted variant as a
-bounded extension.
+### Phase 2 — Desal cost engine ✅ core complete
+Built in `ww/model/`: LCOW with explicit financing, the scale-adjusted international
+comparison with exponent sensitivity, the permitting-risk module (§2.2), and Monte Carlo.
+Validates to ~1% against SDCWA's Carlsbad price and ~2% against Sorek's published fixed
+tariff leg. **Results in [HANDOFF.md](HANDOFF.md) §4a — they cut the 5x headline to ~4.2x
+and showed permitting explains only ~1.38x of it.**
+
+Still open inside Phase 2: Salton Sea attribution model, the $3,500/AF reconciliation,
+public-vs-private financing, SWRO flexibility, ship-mounted variant.
 
 ### Phase 3 — Supply stack  ← **framing gate (§3)**
 Every marginal water option on one $/AF curve with honest uncertainty bands. The ranking that

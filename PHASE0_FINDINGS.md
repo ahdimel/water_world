@@ -8,6 +8,23 @@ confirmation before it appears in the paper.
 **Bottom line: the desal thesis is in serious trouble on cost, the pricing thesis needs
 re-aiming, and a better investable thesis emerged from the wreckage.**
 
+> ### ⚠ SUPERSEDED IN PLACES — read this before quoting any number below
+>
+> This document is the **Phase 0 record**, kept as written. Later phases corrected some
+> of it. Do not lift figures from here without checking:
+>
+> - **Carlsbad at ~$3,500/AF is wrong.** Phase 2 checked it against primary sources:
+>   SDCWA's own figure is **$2,302–2,559/AF**. Every ratio in this document with $3,500
+>   on one side is overstated, including the "12x cheaper to pay farmers" comparison
+>   (~8.7x against direct fallowing cost, ~5.1x against its social cost).
+> - **The ~5x Israel/California capex gap is ~4.2x.** Carlsbad's $203M pipeline has no
+>   counterpart in Sorek's capex; removing it drops the scale-adjusted gap from 5.3x.
+> - **The fallowing social-cost band is 380–575, not 420–535** (corrected in Phase 1).
+>
+> The current state of every number is `data/parameters/literature.yaml`, and the
+> reasoning is in [HANDOFF.md](HANDOFF.md) §4a. **That file, not this one, is
+> authoritative.**
+
 Unit note: 1 acre-foot (AF) = 1,233 m³.
 
 ---

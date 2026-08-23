@@ -64,6 +64,19 @@ cheap for *exactly the same reason* Act I's agricultural water is cheap — the 
 with the public rather than the buyer. The mispricing thesis applies to the remedy as
 well as to the disease.
 
+**Phase 2 trimmed it, twice.** The engine (§4a) revised **the 5x gap down to ~4.2x** —
+the rest was a conveyance artefact — and showed that **priced permitting risk explains
+only about 1.38x of it**, leaving ~3x unattributed. Both v1 sentences above therefore
+need care: "5x" should read ~4x, and "the residual is institutional" is still the best
+available reading but is *not* the same claim as "the residual is permitting". Act III
+survives, with a smaller headline and a more honest attribution.
+Phase 2 also **retired the ~$3,500/AF Carlsbad figure** used in v0 above: SDCWA's own
+number is $2,302–2,559/AF. Every ratio quoted against $3,500 shrinks accordingly — v0's
+"12x cheaper to pay farmers" ($3,500 against $280 direct fallowing) becomes **~8.7x**,
+and against fallowing's *social* cost of $477/AF it is **~5.1x**, not 7.3x. Nothing in
+Act II's conclusion changes, but the numbers in it do. Re-check any ratio in the older
+documents that has $3,500 on one side.
+
 ---
 
 ## 3. What the owner has decided
@@ -97,9 +110,10 @@ project now has both a stated prior *and* a preferred villain (permitting).
 
 ---
 
-## 4. State: Phases 0, 0.5 and 1 complete
+## 4. State: Phases 0, 0.5, 1 and 2 complete
 
-Phase 1 built the data layer. 76 tests pass, all offline. 14 live key-free sources.
+Phase 1 built the data layer: 14 live key-free sources, all offline-testable. Phase 2
+built the cost engine on top of it — see §4a, which is where the interesting results are.
 
 **Verified from primary data:**
 
@@ -118,6 +132,90 @@ when adding derived numbers.**
 
 ---
 
+## 4a. Phase 2 — the cost engine, and what it did to the thesis
+
+The engine is built (`ww/model/`), 148 tests pass, and it **validates against two
+published figures it was never fitted to**: Carlsbad lands at $2,456/AF against SDCWA's
+reported ~$2,430 (1.1% error), and Sorek's fixed tariff leg at $0.244/m3 against a
+published $0.25. Those two numbers come from opposite ends of the world through the same
+code, which is the main reason to trust anything below.
+
+**Phase 2 was harder on the thesis than Phase 0.5 was.** Four results, all pinned by
+tests so a later edit cannot quietly improve them:
+
+1. **The 5x is really about 4.2x.** Carlsbad's financing included a separate $203M bond
+   for a 10-mile pipeline. Sorek's $489M capex contains no equivalent — Israel books
+   grid connection separately, at $0.04-0.30/m3 depending on the plant. Comparing
+   Carlsbad-with-pipeline against Sorek-without gives 5.3x; like-for-like gives **4.23x**
+   at the central exponent, 3.99-4.77x across the 0.75-0.9 sensitivity. The headline was
+   partly a conveyance artefact. **Use ~4x, and say why it moved.**
+
+2. **The preferred villain explains under half the gap.** Priced properly — development
+   capital at risk, compounded over the approval period, divided by the success
+   probability — California's regime adds 1.45x to capex against a reformed 1.05x. That
+   is ~1.38x of a 4.23x gap. **About 3x survives complete permitting reform.** Reform is
+   still worth ~$428/AF (15% of the water price), which is a real legislative prize and
+   enough to carry D2/D3. But the sentence "permitting explains the 5x gap" is now
+   *false by our own model* and must not appear in the paper.
+   Caveat in the other direction, and it is a real one: this is a **lower bound**. It
+   prices only projects actually attempted. It cannot see the projects never proposed
+   because the risk was obvious in advance, and that deterrence effect is plausibly
+   larger than the priced one.
+
+3. **Two more rival explanations died, which is good for Act III.** Sorek is 80% geared,
+   Carlsbad 80.9% — capital structure is not the difference, exactly as take-or-pay was
+   not. And Carlsbad drew through an *open* intake and discharged through the
+   *co-located* Encina outfall: on the WateReuse figures those are the two cheapest
+   options available (a power-plant outfall is $0.2-0.6M/MGD against $2.0-5.5M for a new
+   diffuser outfall). So the mandated-subsurface-intake hypothesis cannot explain
+   Carlsbad's gap. Doheny is the case where that mandate actually binds — and Doheny
+   still prices *below* Carlsbad at a tenth the scale.
+
+4. **The $3,500/AF headline did not survive contact with primary sources.** SDCWA's own
+   figure, via the UC Davis review, is **$2,302-2,559/AF**, which independently
+   corroborates the Surfrider reading of the Water Purchase Agreement ($2,290/AF). The
+   modelled utilisation wedge — fixed costs spread over the 48,000 AF take-or-pay
+   minimum instead of 56,050 nameplate — is only about **1.09x**, which gets to ~$2,680,
+   not $3,500. So under-delivery is part of the story but not all of it. **That
+   reconciliation is unfinished and the $3,500 figure should not be used as the headline
+   comparator until it is.**
+
+### The methodological trap Phase 2 walked into, and how it was handled
+
+The obvious move was to treat "the US just builds everything more expensively" as a
+rival hypothesis, subtract it, and claim the remainder for permitting. **That would have
+been double-counting.** The literature on American construction costs (Urban Institute,
+Construction Physics) attributes the premium primarily to administrative overhead,
+procurement practice and non-standard design — and notes that US *low-oversight*
+construction is internationally competitive. Those are the same mechanisms Act III
+blames. The premium is not a rival to the institutional story; it is largely a restatement
+of it.
+
+So the engine reports **one combined institutional residual** and states explicitly that
+the split between "permitting duration and risk" and "general US administrative
+construction premium" is **not identified** by our data. `scale.decompose` is written to
+make the honest version the easy one. Do not undo this to get a sharper headline.
+
+### Useful things the sourcing pass turned up
+
+- **A documented start date for Carlsbad**: Poseidon's CEO, at financial close — "We
+  began developing this project in 1998." The UC Davis review agrees. So 1998 to full
+  permitting and financial close in Dec 2012 is 14.5 years; to operation, 17.5.
+- **The natural experiment at the centre of Act III**: Huntington Beach also began in
+  1998, same developer, same state, same 50 MGD nameplate — and was unanimously denied
+  in 2022 after ~$100M of development spend. Whatever explains the difference between
+  the two, it is not technology, scale, or vintage.
+- **IDE Technologies built Sorek AND designed and operates Carlsbad.** The same firm,
+  both plants. That badly weakens any "engineering capability" explanation for the gap.
+- **Israeli construction is a solved 2-3 year exercise** (Ashkelon 2003-05, Palmachim
+  2005-07, Hadera 2007-09, Sorek 2.5 years). The schedule difference between the
+  countries is almost entirely *pre-construction*.
+- **The Israeli WDA publishes tariffs split fixed/variable** (Sorek $0.25 + $0.27).
+  That split is what lets the capex gap be separated from the energy-price gap — and it
+  matters, because California industrial power runs ~2x Israel's.
+
+---
+
 ## 5. What is contested — handle with care
 
 Ranked by how much damage being wrong would do:
@@ -129,15 +227,22 @@ Ranked by how much damage being wrong would do:
    restoration ≠ dust mitigation. **If the attributable share is much smaller,
    reallocation dominates again and Act III loses its urgency.** Build a real attribution
    model in Phase 2; do not let the current figure carry a conclusion unsensitised.
-2. **The 5x gap is a residual, not a measurement.** We showed a gap survives scale
-   adjustment; we have *not* shown what fills it. Attributing it to permitting is a
-   hypothesis. If US construction premium and mandated subsurface intakes explain most of
-   it, the legislative recommendation weakens badly. §2.2 of REQUIREMENTS exists to test
-   this, not to assume it.
+2. **The gap is a residual, not a measurement — and Phase 2 tested it.** Partly
+   resolved, partly worse. Resolved: it is ~4.2x not 5x once conveyance comes out;
+   mandated intakes cannot explain Carlsbad (it used the cheap open intake and a
+   co-located outfall); capital structure cannot explain it (80.9% vs 80% gearing).
+   Worse: **priced permitting risk only accounts for ~1.38x of the 4.23x**, so ~3x is
+   still unexplained by anything we have named. The residual remains a residual. Do not
+   let the paper imply otherwise, and see §4a on why the US-construction-premium
+   hypothesis is not an independent rival that can be subtracted.
 3. **`econ.capex_scaling_exponent` (0.8) drives the 5x headline.** Always report with the
    0.75–0.9 sensitivity. A test enforces the result survives both extremes.
-4. **`desal.carlsbad.price_current` ($3,500/AF) is low-confidence** and is the headline
-   comparison figure. Confirm against SDCWA primary documents before publication.
+4. ~~**`desal.carlsbad.price_current` ($3,500/AF) is low-confidence**~~ — **checked in
+   Phase 2, and it did not hold up.** SDCWA's own figure is $2,302-2,559/AF, which
+   independently corroborates the Surfrider reading of the WPA ($2,290/AF) and the
+   model's own $2,456/AF. The $3,500 press figure is ~1.44x that, and the modelled
+   utilisation wedge only accounts for ~1.09x. **Use `desal.carlsbad.price_sdcwa` as the
+   comparator**; keep $3,500 in the file, flagged, until the remainder is explained.
 5. **SWRO flexibility is an open question, not a settled one.** The literature splits, and
    the split is explained by system boundary: a water tank beats a battery ~6:1 per unit
    of energy shifted, but idling strands RO capex. The binding term is capacity-factor
@@ -146,30 +251,40 @@ Ranked by how much damage being wrong would do:
 
 ---
 
-## 6. Phase 2 — the next block of work
+## 6. What is left, and what comes next
 
-**Desal cost engine.** Parameterised techno-economic model reading from
-`data/parameters/literature.yaml`:
+**The Phase 2 cost engine is done** — LCOW with explicit financing, the scale-adjusted
+comparison with exponent sensitivity, the permitting-risk module, and Monte Carlo over
+the ranges. See §4a for what it produced. Four Phase 2 items remain open:
 
-- LCOW with capex, SEC, O&M, membrane replacement, brine disposal, and financing —
-  financing is often the largest single line for a capex-heavy asset, so do not fold it
-  into a hand-waved discount rate.
-- **Scale-adjusted international comparison** with the exponent sensitivity built in.
-- **Permitting-risk module — the novel contribution.** Price approval delay and rejection
-  probability as a financial instrument. Huntington Beach ran 24 years and was rejected
-  unanimously; the capital returned zero. Model as expected-NPV / real-option over
-  approval duration and success probability, calibrated against the observed California
-  project population. The output should be a sentence a legislator can act on: *"cutting
-  approval time from 15 to 4 years and rejection risk from 40% to 5% lowers water cost by
-  $X/AF."*
-- **Monte Carlo over the ranges in literature.yaml** — a distribution, not a point
-  estimate. `params.band()` exists for exactly this and degrades safely for range-less
-  parameters.
-- Salton Sea attribution model (see §5.1).
-- Ship-mounted desal as a bounded extension. It exists at emergency scale (Saudi barges
-  since 2008, NIOT Chennai 2007), so the question is why it never scaled. **Cite operating
-  plants only** — this space attracts vaporware; one heavily-promoted concept was debunked
-  in 2026 with doubts the vessel exists.
+- **Salton Sea attribution model (§5.1).** Still the most load-bearing contested number
+  in the project, and still un-sensitised. This is the highest-value remaining work in
+  Phase 2 because it decides whether Act II's ranking is close or not.
+- **The $3,500/AF reconciliation.** The utilisation wedge explains ~1.09x, not the ~1.44x
+  needed. Find what else is in that figure — SDCWA supply-portfolio allocation, the
+  pipeline debt service, or a different denominator — before the paper quotes either
+  number as *the* Carlsbad price.
+- **Public vs private financing.** The engine runs every Californian plant on Carlsbad's
+  private structure (80.9% geared, private equity return). Doheny is a public district
+  project with no equity return, which is most of why the model puts it at ~$2,990/AF
+  against an expected $2,058. That is a real cost channel and Act III should price it —
+  a public procurement route may be worth more than permitting reform.
+- **SWRO flexibility** (see §5.5) and **ship-mounted desal** as a bounded extension.
+  Ships exist at emergency scale (Saudi barges since 2008, NIOT Chennai 2007), so the
+  question is why it never scaled. **Cite operating plants only** — this space attracts
+  vaporware; one heavily-promoted concept was debunked in 2026 with doubts the vessel
+  exists.
+
+Two calibration limitations are pinned by tests rather than fixed, deliberately:
+
+- **The Israeli variable leg overshoots.** Using Israel's general industrial tariff, the
+  model puts Sorek's variable cost well above the published $0.27/m3. Israeli desal
+  probably does not pay the general industrial rate, and the WDA tariffs are of an
+  earlier vintage. **Do not tune the energy price to close this** — the same SEC and O&M
+  assumptions are what make the Carlsbad validation independent, and fitting one would
+  destroy the other.
+- **Vintage mixing.** Sorek's capex is 2013, Carlsbad's 2015, energy prices 2025,
+  WateReuse O&M 2011. A deflator pass is needed before publication.
 
 If CAISO hourly prices are needed, `ww/sources/caiso.py` is implemented and tested but
 registers no windows by default — a year is ~12 chunked queries against a throttled

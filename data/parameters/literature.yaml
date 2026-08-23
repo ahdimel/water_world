@@ -140,6 +140,86 @@ citations:
     url: "https://www.usgs.gov/special-topics/water-science-school/science/water-qa-what-acre-foot"
     accessed: 2026-08-22
 
+  # ---------------------------------------------------------------- Phase 2 additions
+  ida_moch_swro:
+    id: ida_moch_swro
+    title: "A 21st Century Study of Global Seawater Reverse Osmosis Operating and Capital Costs"
+    publisher: "International Desalination Association (Irving Moch, Jr.)"
+    url: "https://ida.memberclicks.net/assets/docs/1104.1.pdf"
+    accessed: 2026-08-22
+  watereuse_costs:
+    id: watereuse_costs
+    title: "Seawater Desalination Costs — White Paper (September 2011, revised January 2012)"
+    publisher: "WateReuse Association Desalination Committee"
+    url: "https://watereuse.org/wp-content/uploads/2015/10/WateReuse_Desal_Cost_White_Paper.pdf"
+    accessed: 2026-08-22
+  sdcwa_financing_close:
+    id: sdcwa_financing_close
+    title: "$734 Million Carlsbad Desalination Project Financing Closes (news release, 24 Dec 2012)"
+    publisher: "San Diego County Water Authority"
+    url: "https://www.sdcwa.org/734-million-carlsbad-desalination-project-financing-closes/"
+    accessed: 2026-08-22
+  ucd_environs_desal:
+    id: ucd_environs_desal
+    title: "When Desal in California Gets the Green Light: A Comparison of Four Projects"
+    publisher: "UC Davis Environmental Law and Policy Journal, Vol. 48:2"
+    url: "https://environs.law.ucdavis.edu/sites/g/files/dgvnsk15356/files/2025-05/Huang%20-%20Macroed.pdf"
+    accessed: 2026-08-22
+  tenne_master_plan:
+    id: tenne_master_plan
+    title: "The Master Plan for Desalination in Israel (Abraham Tenne, Chairman, Water Desalination Administration)"
+    publisher: "State of Israel, Water Authority / Water Desalination Administration"
+    url: "https://wrrc.arizona.edu/sites/default/files/2022-12/tenne.pdf"
+    accessed: 2026-08-22
+  ijglobal_sorek:
+    id: ijglobal_sorek
+    title: "Sorek Desalination: IDE's hat trick (project finance case study)"
+    publisher: "IJGlobal"
+    url: "https://ijglobal.com/articles/120777/sorek-desalination-ides-hat-trick"
+    accessed: 2026-08-22
+  eia_electricity_price:
+    id: eia_electricity_price
+    title: "Electric Power Monthly / Sales, Revenue and Price — industrial retail price by state"
+    publisher: "US Energy Information Administration"
+    url: "https://www.eia.gov/electricity/sales_revenue_price/pdf/table_5c.pdf"
+    accessed: 2026-08-22
+  globalpetrolprices_israel:
+    id: globalpetrolprices_israel
+    title: "Israel electricity prices (business tariff), December 2025"
+    publisher: "GlobalPetrolPrices.com"
+    url: "https://www.globalpetrolprices.com/Israel/electricity_prices/"
+    accessed: 2026-08-22
+  lyncean_ca_desal:
+    id: lyncean_ca_desal
+    title: "Status of Desalination Plants in California"
+    publisher: "The Lyncean Group of San Diego"
+    url: "https://lynceans.org/all-posts/status-of-desalination-plants-in-california-2/"
+    accessed: 2026-08-22
+  construction_physics_costs:
+    id: construction_physics_costs
+    title: "Construction Costs Around the World: How Does the US Compare?"
+    publisher: "Construction Physics (Brian Potter)"
+    url: "https://www.construction-physics.com/p/construction-costs-around-the-world"
+    accessed: 2026-08-22
+  urban_institute_infra:
+    id: urban_institute_infra
+    title: "High costs may explain crumbling support for US infrastructure"
+    publisher: "Urban Institute"
+    url: "https://www.urban.org/urban-wire/high-costs-may-explain-crumbling-support-us-infrastructure"
+    accessed: 2026-08-22
+  centersquare_hb:
+    id: centersquare_hb
+    title: "After $100 million Huntington Beach denial, what's the future of desalination in California?"
+    publisher: "The Center Square"
+    url: "https://www.thecentersquare.com/national/article_9162704a-07b5-11ed-8a9d-5bdca8db2738.html"
+    accessed: 2026-08-22
+  carlsbaddesal_site:
+    id: carlsbaddesal_site
+    title: "How We Do It — Claude 'Bud' Lewis Carlsbad Desalination Plant"
+    publisher: "Poseidon Water / Carlsbad Desalination Plant"
+    url: "https://www.carlsbaddesal.com/how-we-do-it.html"
+    accessed: 2026-08-22
+
 parameters:
 
   # ------------------------------------------------------------------ constants
@@ -580,3 +660,841 @@ parameters:
     notes: >
       Project introduced ~1998, unanimously rejected May 2022. The canonical data point
       for permitting-as-financial-instrument: two decades of spend, zero return.
+
+  # ====================================================================================
+  # PHASE 2 ADDITIONS — desalination cost engine
+  # ====================================================================================
+
+  # ------------------------------------------------------------- SWRO plant physicals
+  swro.plant_life:
+    id: swro.plant_life
+    value: 25.0
+    units: years
+    low: 20.0
+    high: 30.0
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: >
+      "A typical design lifespan for a water production facility is 20 to 30 years,
+      based on the size of the facility; financial terms and arrangements; and
+      procurement method." Note this is DESIGN life, which need not equal the
+      amortisation period used in a given contract — Carlsbad's WPA runs 30 years and
+      Sorek's BOT 26.5. Keep the two concepts separate in the engine.
+
+  swro.availability:
+    id: swro.availability
+    value: 0.95
+    units: fraction
+    low: 0.90
+    high: 0.97
+    confidence: medium
+    citations: [ida_moch_swro]
+    notes: >
+      Design availability across the seven IDA reference cases: 97% (well intake),
+      95% (open intake, Mediterranean/Red Sea), >90% (Arabian Gulf). This is the
+      TECHNICAL availability ceiling, not the realised capacity factor — a plant can be
+      available and still not be dispatched, which is precisely what happens at
+      Carlsbad. The engine must not conflate the two.
+
+  swro.recovery_ratio:
+    id: swro.recovery_ratio
+    value: 0.47
+    units: fraction
+    low: 0.45
+    high: 0.50
+    confidence: medium
+    citations: [ida_moch_swro, watereuse_costs]
+    notes: >
+      IDA gives 45% first-stage conversion for oceanic, Caribbean and Mediterranean
+      feeds (35% for the hypersaline Red Sea and Arabian Gulf cases). WateReuse
+      describes a 50:50 split with concentrate "about twice as salty as the feed".
+      Pacific feed at ~33.5 g/L sits at the favourable end.
+
+  swro.membrane_replacement_rate:
+    id: swro.membrane_replacement_rate
+    value: 0.15
+    units: fraction/year
+    low: 0.08
+    high: 0.20
+    confidence: medium
+    citations: [ida_moch_swro]
+    notes: >
+      IDA Table 3 replacement rates track INTAKE TYPE, which is the connection to
+      California's Ocean Plan: 8%/yr on a clean well intake, 18%/yr on the open
+      Mediterranean intake, 12-20% in the Arabian Gulf. Case C (open intake, 38 g/L)
+      at 18%/yr is the closest analogue to an open-intake Californian plant; a
+      subsurface intake moves this DOWN, which is a real operating-cost offset against
+      the higher subsurface capex and should be modelled as such rather than ignored.
+
+  # ------------------------------------------------------------- O&M cost structure
+  # WateReuse Table 4: shares of total O&M. A test asserts these sum to 1.0.
+  swro.om_share_energy:
+    id: swro.om_share_energy
+    value: 0.55
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Power. The single dominant O&M line, which is why the CA/Israel tariff gap matters."
+
+  swro.om_share_membranes:
+    id: swro.om_share_membranes
+    value: 0.11
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Cartridge filters and RO membrane replacements."
+
+  swro.om_share_other:
+    id: swro.om_share_other
+    value: 0.10
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Unallocated 'other related' in the source table."
+
+  swro.om_share_labor:
+    id: swro.om_share_labor
+    value: 0.06
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+
+  swro.om_share_maintenance:
+    id: swro.om_share_maintenance
+    value: 0.06
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Instruments, pump and facility upkeep, intake pigging, minor equipment replacement."
+
+  swro.om_share_chemicals:
+    id: swro.om_share_chemicals
+    value: 0.06
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+
+  swro.om_share_solids:
+    id: swro.om_share_solids
+    value: 0.04
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Sludge/solids and screen waste disposal."
+
+  swro.om_share_permitting:
+    id: swro.om_share_permitting
+    value: 0.02
+    units: fraction
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: >
+      Environmental monitoring and permit compliance — the RECURRING regulatory cost.
+      Distinct from the one-off approval risk priced in the permitting module; do not
+      double-count them.
+
+  swro.om_nonenergy_share:
+    id: swro.om_nonenergy_share
+    value: 0.45
+    units: fraction
+    confidence: derived
+    derived_from:
+      - swro.om_share_membranes
+      - swro.om_share_other
+      - swro.om_share_labor
+      - swro.om_share_maintenance
+      - swro.om_share_chemicals
+      - swro.om_share_solids
+      - swro.om_share_permitting
+    notes: "Complement of the energy share. 1 - 0.55."
+
+  swro.om_nonenergy:
+    id: swro.om_nonenergy
+    value: 0.20
+    units: USD/m3
+    low: 0.14
+    high: 0.30
+    confidence: low
+    citations: [ida_moch_swro, watereuse_costs]
+    notes: >
+      Non-energy O&M in absolute terms, for use as the engine's driver with the
+      WateReuse shares as a cross-check. Computed from IDA Table 9 by summing
+      membranes + chemicals + maintenance/parts + supervision/labour and dividing by
+      annual production: $0.159/m3 (Case C), $0.169 (D2), $0.224 (E1), $0.161 (E2)
+      for the plants at or above 20,000 m3/d. Those are mid-2000s dollars, hence the
+      escalated central value and the deliberately wide band. LOW CONFIDENCE and
+      escalation-sensitive — sensitivity-test rather than trusting the point value.
+
+  # ------------------------------------------------------------- intake and outfall
+  intake.open.capex_per_mgd:
+    id: intake.open.capex_per_mgd
+    value: 1.0
+    units: USD_million/MGD
+    low: 0.5
+    high: 1.5
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Conventional open intake, excluding land."
+
+  intake.tunnel_offshore.capex_per_mgd:
+    id: intake.tunnel_offshore.capex_per_mgd
+    value: 3.0
+    units: USD_million/MGD
+    low: 1.5
+    high: 3.0
+    confidence: low
+    citations: [watereuse_costs]
+    notes: "Complex tunnel and offshore intake systems: 'up to US$3.0MM per MGD'."
+
+  intake.subsurface_premium:
+    id: intake.subsurface_premium
+    value: 0.45
+    units: fraction
+    low: 0.40
+    high: 0.50
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: >
+      RIVAL HYPOTHESIS FOR THE 5x GAP — one of the two candidates that could explain
+      the residual without invoking institutions. Beach wells are cheaper than open
+      intakes on equipment alone, but "once land acquisition and easements are factored
+      into the process, this intake type is typically 40 to 50% more costly than an
+      open intake of similar capacity." California's Ocean Plan Amendment REQUIRES
+      subsurface intakes where feasible, so this premium is partly mandated. Note the
+      offset: a subsurface intake also lowers pretreatment chemicals and membrane
+      replacement rate (see swro.membrane_replacement_rate), so the net penalty is
+      smaller than the capex premium alone. Model both legs.
+
+  intake_outfall.share_of_capex:
+    id: intake_outfall.share_of_capex
+    value: 0.11
+    units: fraction
+    low: 0.10
+    high: 0.12
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Typical intake + discharge share of total plant construction cost."
+
+  intake_outfall.share_of_capex_complex:
+    id: intake_outfall.share_of_capex_complex
+    value: 0.30
+    units: fraction
+    low: 0.25
+    high: 0.35
+    confidence: low
+    citations: [watereuse_costs]
+    notes: >
+      Where sensitive receiving waters force elaborate diffuser systems, intake and
+      discharge have exceeded 30% of total project expenditure (recent Australian
+      SWRO projects). The relevant comparator for a Californian plant discharging
+      into monitored coastal waters, and a second mandated-design cost channel.
+
+  # ------------------------------------------------------------- brine disposal capex
+  brine.new_outfall_diffusers.capex_per_mgd:
+    id: brine.new_outfall_diffusers.capex_per_mgd
+    value: 3.75
+    units: USD_million/MGD
+    low: 2.0
+    high: 5.5
+    confidence: medium
+    citations: [watereuse_costs]
+
+  brine.power_plant_outfall.capex_per_mgd:
+    id: brine.power_plant_outfall.capex_per_mgd
+    value: 0.4
+    units: USD_million/MGD
+    low: 0.2
+    high: 0.6
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: >
+      Carlsbad's original configuration, co-located with the Encina Power Station.
+      Roughly an order of magnitude cheaper than a new dedicated outfall — and the
+      Ocean Plan's move away from co-location removes this option for new plants.
+
+  brine.deep_well_injection.capex_per_mgd:
+    id: brine.deep_well_injection.capex_per_mgd
+    value: 4.25
+    units: USD_million/MGD
+    low: 2.5
+    high: 6.0
+    confidence: medium
+    citations: [watereuse_costs]
+
+  brine.zld.capex_per_mgd:
+    id: brine.zld.capex_per_mgd
+    value: 10.25
+    units: USD_million/MGD
+    low: 5.5
+    high: 15.0
+    confidence: medium
+    citations: [watereuse_costs]
+    notes: "Zero liquid discharge. The upper bound on disposal cost."
+
+  # ------------------------------------------------------------- energy prices
+  energy.price_industrial_ca:
+    id: energy.price_industrial_ca
+    value: 0.217
+    units: USD/kWh
+    low: 0.19
+    high: 0.24
+    confidence: medium
+    year: 2025
+    citations: [eia_electricity_price]
+    notes: >
+      California average industrial retail price, ~21.6-21.8 c/kWh over 2025 — roughly
+      2.8x the US average. A large plant on a negotiated tariff may do better; the band
+      is deliberately wide.
+
+  energy.price_industrial_israel:
+    id: energy.price_industrial_israel
+    value: 0.105
+    units: USD/kWh
+    low: 0.093
+    high: 0.116
+    confidence: low
+    year: 2025
+    citations: [globalpetrolprices_israel]
+    notes: >
+      Israeli business/industrial tariff, ~9.3-11.6 c/kWh. Secondary source; an Israeli
+      Electricity Authority primary tariff would be better before publication.
+
+  energy.price_ratio_ca_israel:
+    id: energy.price_ratio_ca_israel
+    value: 2.067
+    units: dimensionless
+    low: 1.638
+    high: 2.581
+    confidence: derived
+    derived_from:
+      - energy.price_industrial_ca
+      - energy.price_industrial_israel
+    notes: >
+      MATTERS FOR ACT III. California industrial power costs roughly twice Israel's, so
+      a meaningful part of the Carlsbad/Sorek WATER PRICE gap is a tariff difference
+      rather than an institutional one. But note carefully: this affects the VARIABLE
+      cost leg only. The scale-adjusted 5x result is a CAPEX comparison, which energy
+      prices cannot explain. Keeping the two decompositions separate is what stops this
+      parameter from being used to prove or disprove the wrong claim.
+
+  # ------------------------------------------------------------- energy intensity
+  desal.carlsbad.energy_annual:
+    id: desal.carlsbad.energy_annual
+    value: 246156.0
+    units: MWh/year
+    confidence: medium
+    citations: [ucd_environs_desal]
+    notes: "Roughly the annual consumption of 23,000 homes."
+
+  desal.carlsbad.energy_intensity:
+    id: desal.carlsbad.energy_intensity
+    value: 4600.0
+    units: kWh/acre-foot
+    low: 4100.0
+    high: 5100.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+    notes: >
+      Desalinated water in San Diego County. 4,600 kWh/AF = 3.73 kWh/m3, consistent with
+      swro.sec (3.25, range 2.5-4.0) once conveyance is included. Cross-check:
+      246,156 MWh / 56,000 AF = 4,396 kWh/AF.
+
+  energy.intensity.imported_water:
+    id: energy.intensity.imported_water
+    value: 2650.0
+    units: kWh/acre-foot
+    low: 2000.0
+    high: 3300.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+    notes: "For the Phase 3 supply stack. Imported water is not energy-free — the honest comparator."
+
+  energy.intensity.recycled_potable:
+    id: energy.intensity.recycled_potable
+    value: 1300.0
+    units: kWh/acre-foot
+    low: 600.0
+    high: 2000.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+
+  energy.intensity.surface_water:
+    id: energy.intensity.surface_water
+    value: 750.0
+    units: kWh/acre-foot
+    low: 500.0
+    high: 1000.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+
+  energy.intensity.groundwater:
+    id: energy.intensity.groundwater
+    value: 800.0
+    units: kWh/acre-foot
+    low: 400.0
+    high: 1200.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+
+  # ------------------------------------------------------------- financing: Carlsbad
+  finance.carlsbad.bond_rate:
+    id: finance.carlsbad.bond_rate
+    value: 0.0478
+    units: fraction
+    confidence: high
+    year: 2012
+    citations: [sdcwa_financing_close]
+    notes: >
+      PRIMARY SOURCE, and the single most useful financing number in the project: the
+      Water Authority and Poseidon priced the bonds at 4.78% on 13 December 2012. SDCWA
+      states the rate came in below estimate, saving ~$200M over three decades and
+      lowering water cost by ~$125/AF — which is itself a calibration point for how
+      much financing cost moves the delivered price.
+
+  finance.carlsbad.debt_total:
+    id: finance.carlsbad.debt_total
+    value: 734000000.0
+    units: USD
+    year: 2012
+    confidence: high
+    citations: [sdcwa_financing_close, carlsbaddesal_site]
+    notes: "Tax-exempt bond financing for the plant and the 10-mile pipeline."
+
+  finance.carlsbad.debt_plant:
+    id: finance.carlsbad.debt_plant
+    value: 530000000.0
+    units: USD
+    year: 2012
+    confidence: medium
+    citations: [sdcwa_financing_close]
+    notes: "Private-activity bonds issued for Poseidon to build the plant."
+
+  finance.carlsbad.debt_pipeline:
+    id: finance.carlsbad.debt_pipeline
+    value: 203000000.0
+    units: USD
+    year: 2012
+    confidence: medium
+    citations: [sdcwa_financing_close]
+    notes: >
+      Tax-exempt governmental bonds for the 10-mile pipeline to the San Marcos aqueduct.
+      IMPORTANT FOR THE INTERNATIONAL COMPARISON: this is CONVEYANCE, not plant. Sorek's
+      $489M capex does not include an equivalent, and Israel books grid connection
+      separately (see conveyance.israel.*). Comparing Carlsbad-with-pipeline against
+      Sorek-without would inflate the gap.
+
+  finance.carlsbad.equity:
+    id: finance.carlsbad.equity
+    value: 173000000.0
+    units: USD
+    year: 2012
+    confidence: medium
+    citations: [sdcwa_financing_close]
+    notes: "Equity posted by Stonepeak, Poseidon's equity investor."
+
+  finance.carlsbad.gearing:
+    id: finance.carlsbad.gearing
+    value: 0.809
+    units: fraction
+    confidence: derived
+    derived_from:
+      - finance.carlsbad.debt_total
+      - finance.carlsbad.equity
+    notes: "734 / (734 + 173) = 80.9% debt."
+
+  finance.carlsbad.term:
+    id: finance.carlsbad.term
+    value: 30.0
+    units: years
+    confidence: high
+    citations: [sdcwa_financing_close, carlsbaddesal_site]
+    notes: "Water Purchase Agreement term; expires 23 Dec 2045, extendable up to three years."
+
+  # ------------------------------------------------------------- financing: Sorek
+  finance.sorek.gearing:
+    id: finance.sorek.gearing
+    value: 0.80
+    units: fraction
+    confidence: medium
+    citations: [ijglobal_sorek]
+    notes: >
+      Senior debt covered 80% of total project cost, 20% sponsor equity. NOTE THE
+      FINDING: Carlsbad's gearing is 80.9%. Capital structure is therefore NOT the
+      explanation for the cost gap — the same elimination that Phase 0.5 performed on
+      take-or-pay. Two rival hypotheses down.
+
+  finance.sorek.debt_tenor:
+    id: finance.sorek.debt_tenor
+    value: 22.0
+    units: years
+    confidence: medium
+    citations: [ijglobal_sorek]
+
+  finance.sorek.bot_term:
+    id: finance.sorek.bot_term
+    value: 26.5
+    units: years
+    confidence: medium
+    citations: [ijglobal_sorek]
+    notes: "Build-Operate-Transfer concession length. Comparable to Carlsbad's 30-year WPA."
+
+  finance.cost_of_equity:
+    id: finance.cost_of_equity
+    value: 0.12
+    units: fraction
+    low: 0.09
+    high: 0.15
+    confidence: low
+    citations: [ijglobal_sorek]
+    notes: >
+      WEAKEST FINANCING PARAMETER — an assumption, not an observation. Sponsor equity
+      returns on BOT water projects are not publicly disclosed for either Carlsbad or
+      Sorek. The band is deliberately wide and this must be sensitivity-tested. It also
+      interacts with the permitting module: the whole argument there is that approval
+      risk RAISES required equity return, so treating this as a constant across
+      jurisdictions understates the effect being measured.
+
+  # ------------------------------------------------------------- Israeli tariffs (WDA)
+  # Fixed/variable split from the Israeli Water Desalination Administration. The split is
+  # what lets us separate the capital-recovery leg from the energy leg. Tests assert
+  # fixed + variable == total for each plant.
+  desal.ashkelon.price_fixed:
+    id: desal.ashkelon.price_fixed
+    value: 0.40
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.ashkelon.price_variable:
+    id: desal.ashkelon.price_variable
+    value: 0.30
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.ashkelon.price_total:
+    id: desal.ashkelon.price_total
+    value: 0.70
+    units: USD/m3
+    confidence: derived
+    derived_from: [desal.ashkelon.price_fixed, desal.ashkelon.price_variable]
+
+  desal.palmachim.price_fixed:
+    id: desal.palmachim.price_fixed
+    value: 0.35
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.palmachim.price_variable:
+    id: desal.palmachim.price_variable
+    value: 0.45
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.palmachim.price_total:
+    id: desal.palmachim.price_total
+    value: 0.80
+    units: USD/m3
+    confidence: derived
+    derived_from: [desal.palmachim.price_fixed, desal.palmachim.price_variable]
+
+  desal.hadera.price_fixed:
+    id: desal.hadera.price_fixed
+    value: 0.25
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.hadera.price_variable:
+    id: desal.hadera.price_variable
+    value: 0.40
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+
+  desal.hadera.price_total:
+    id: desal.hadera.price_total
+    value: 0.65
+    units: USD/m3
+    confidence: derived
+    derived_from: [desal.hadera.price_fixed, desal.hadera.price_variable]
+
+  desal.sorek.price_fixed:
+    id: desal.sorek.price_fixed
+    value: 0.25
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+    notes: >
+      THE KEY NUMBER FOR ACT III. This is Sorek's capital-recovery leg — $0.25/m3 =
+      ~$308/AF. Comparing it against the equivalent fixed leg of Carlsbad's tariff
+      isolates the capex gap from the energy-price gap, which is the comparison the
+      5x claim actually needs.
+
+  desal.sorek.price_variable:
+    id: desal.sorek.price_variable
+    value: 0.27
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+    notes: "Energy, chemicals, membranes. ~$333/AF."
+
+  desal.sorek.price_total:
+    id: desal.sorek.price_total
+    value: 0.52
+    units: USD/m3
+    confidence: derived
+    derived_from: [desal.sorek.price_fixed, desal.sorek.price_variable]
+    notes: >
+      $0.52/m3 = ~$641/AF, inside the $505-715/AF band already used. DISCREPANCY TO
+      RESOLVE: desal.sorek.water_price carries $0.58/m3 from MIT. The WDA figure is more
+      primary; the difference is plausibly indexation year or VAT treatment. Report both
+      rather than silently picking one.
+
+  # ------------------------------------------------------------- conveyance
+  conveyance.israel.ashkelon_per_m3:
+    id: conveyance.israel.ashkelon_per_m3
+    value: 0.15
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+    notes: "National grid connection, $30M investment (2002)."
+
+  conveyance.israel.palmachim_per_m3:
+    id: conveyance.israel.palmachim_per_m3
+    value: 0.04
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+    notes: "$8M investment (2003)."
+
+  conveyance.israel.hadera_per_m3:
+    id: conveyance.israel.hadera_per_m3
+    value: 0.30
+    units: USD/m3
+    confidence: medium
+    citations: [tenne_master_plan]
+    notes: >
+      $85M investment (2006). Note the spread: connection cost ranges 0.04-0.30 $/m3
+      across Israeli plants, i.e. conveyance can rival the entire capital-recovery leg.
+      This is why Carlsbad's pipeline must be handled explicitly, not folded in.
+
+  # ------------------------------------------------------------- Carlsbad price ladder
+  desal.carlsbad.price_sdcwa:
+    id: desal.carlsbad.price_sdcwa
+    value: 2430.0
+    units: USD/acre-foot
+    low: 2302.0
+    high: 2559.0
+    confidence: medium
+    citations: [ucd_environs_desal]
+    notes: >
+      RESOLVES THE FLAG ON desal.carlsbad.price_current. The Water Authority's own
+      figure is $2,302-2,559/AF, not $3,500. It also corroborates
+      desal.carlsbad.contract_price_min_volume ($2,290/AF) independently. The $3,500
+      press figure is therefore very likely an EFFECTIVE cost — take-or-pay fixed
+      payments spread over volume actually delivered — rather than a contract unit
+      price. The engine should COMPUTE that wedge from utilisation rather than assert
+      either number.
+
+  desal.carlsbad.price_projected_plant_2013:
+    id: desal.carlsbad.price_projected_plant_2013
+    value: 1956.0
+    units: USD/acre-foot
+    low: 1849.0
+    high: 2064.0
+    confidence: high
+    year: 2013
+    citations: [sdcwa_financing_close]
+    notes: "SDCWA's January 2013 projection, plant only, after the 4.78% bond pricing."
+
+  desal.carlsbad.price_projected_total_2013:
+    id: desal.carlsbad.price_projected_total_2013
+    value: 2135.0
+    units: USD/acre-foot
+    low: 2014.0
+    high: 2257.0
+    confidence: high
+    year: 2013
+    citations: [sdcwa_financing_close]
+    notes: >
+      Including the pipeline. The plant-vs-total pair gives a directly observed
+      conveyance wedge of ~$165-193/AF, which is the cleanest available basis for
+      stripping conveyance out of the Carlsbad/Sorek comparison.
+
+  desal.doheny.price_first_year:
+    id: desal.doheny.price_first_year
+    value: 2058.0
+    units: USD/acre-foot
+    confidence: medium
+    year: 2023
+    citations: [ucd_environs_desal]
+    notes: >
+      Expected first-year cost as of September 2023, for a plant with a SUBSURFACE
+      intake and full Ocean Plan compliance — i.e. the mandated-design cost channel is
+      already inside this number, and it still lands below Carlsbad. Useful evidence
+      against intake mandates being the dominant term.
+
+  desal.huntington_beach.price_projected:
+    id: desal.huntington_beach.price_projected
+    value: 2800.0
+    units: USD/acre-foot
+    confidence: low
+    citations: [ucd_environs_desal]
+    notes: "Up to $2,800/AF if built, against ~$1,200/AF for recycled water and groundwater locally."
+
+  desal.carlsbad.staff:
+    id: desal.carlsbad.staff
+    value: 36.0
+    units: FTE
+    confidence: medium
+    citations: [carlsbaddesal_site]
+    notes: "36 full-time employees for 50 MGD, minimum two operators on site continuously."
+
+  # ------------------------------------------------------------- permitting population
+  permitting.carlsbad.start_year:
+    id: permitting.carlsbad.start_year
+    value: 1998.0
+    units: year
+    confidence: high
+    citations: [sdcwa_financing_close, ucd_environs_desal]
+    notes: >
+      DOCUMENTED START DATE — resolves the flag on permitting.carlsbad.years. Poseidon
+      CEO Carlos Riva, at financial close: "We began developing this project in 1998."
+      The UC Davis review independently dates first proposal to 1998. So: 1998 to
+      financial close and full permitting December 2012 = 14.5 years; to operation
+      December 2015 = 17.5 years.
+
+  permitting.huntington_beach.start_year:
+    id: permitting.huntington_beach.start_year
+    value: 1998.0
+    units: year
+    confidence: high
+    citations: [ucd_environs_desal]
+    notes: >
+      THE NATURAL EXPERIMENT AT THE CENTRE OF ACT III. Same developer (Poseidon), same
+      state, same start year, same 50 MGD nameplate as Carlsbad — one reached operation
+      in 17 years, the other was unanimously denied after 24. Whatever explains the
+      difference, it is not technology, scale, or vintage.
+
+  permitting.marina.start_year:
+    id: permitting.marina.start_year
+    value: 2012.0
+    units: year
+    confidence: medium
+    citations: [ucd_environs_desal]
+    notes: "First proposed April 2012; Coastal Commission approval November 2022 = 10.6 years."
+
+  permitting.ca.decisions_total:
+    id: permitting.ca.decisions_total
+    value: 4.0
+    units: count
+    confidence: low
+    citations: [ucd_environs_desal, lyncean_ca_desal]
+    notes: >
+      Californian seawater desalination projects reaching a Coastal Commission permit
+      decision in the modern era: Carlsbad (approved), Huntington Beach (denied May
+      2022), Doheny (approved Oct 2022), Marina/Cal-Am (approved Nov 2022).
+
+  permitting.ca.decisions_denied:
+    id: permitting.ca.decisions_denied
+    value: 1.0
+    units: count
+    confidence: low
+    citations: [ucd_environs_desal]
+    notes: "Huntington Beach, denied unanimously May 2022."
+
+  permitting.ca.denial_rate:
+    id: permitting.ca.denial_rate
+    value: 0.25
+    units: fraction
+    low: 0.06
+    high: 0.60
+    confidence: derived
+    derived_from:
+      - permitting.ca.decisions_total
+      - permitting.ca.decisions_denied
+    notes: >
+      1 of 4 = 25%. TREAT THE POINT VALUE AS ALMOST MEANINGLESS: n=4. The band shown is
+      the 90% credible interval of a Beta(1+1, 3+1) posterior under a uniform prior,
+      and the engine should SAMPLE that posterior rather than use 0.25. Reporting a
+      point rejection probability off four observations would be exactly the kind of
+      false precision this project is supposed to avoid.
+      Also note the censoring problem: this counts only projects that survived long
+      enough to reach a decision. DeepWater Desal withdrew, People's Moss Landing
+      stalled, and West Basin and Camp Pendleton were shelved without ever getting a
+      vote. The true failure rate for a project at PROPOSAL is materially higher than
+      the denial rate at DECISION, and the two must not be used interchangeably.
+
+  permitting.huntington_beach.development_spend:
+    id: permitting.huntington_beach.development_spend
+    value: 100000000.0
+    units: USD
+    year: 2022
+    confidence: medium
+    citations: [centersquare_hb]
+    notes: >
+      Roughly $100M spent pursuing approval, returned to investors as zero when the
+      Coastal Commission denied the permit in May 2022. The empirical anchor for the
+      permitting-risk module: this is what "at-risk development capital" actually
+      looks like in a real Californian project.
+
+  permitting.development_cost_share:
+    id: permitting.development_cost_share
+    value: 0.071
+    units: fraction
+    low: 0.04
+    high: 0.12
+    confidence: derived
+    derived_from:
+      - permitting.huntington_beach.development_spend
+      - desal.huntington_beach.capex_proposed
+    notes: >
+      Development capital at risk as a share of total project cost:
+      $100M / $1.4B = 7.1%. Band widened either side because we have exactly ONE
+      observation of this quantity, and because the boundary between "development"
+      and "construction" spend is not consistently drawn across projects.
+      This share drives the whole permitting premium linearly — sensitivity-test it.
+
+  permitting.israel.construction_years:
+    id: permitting.israel.construction_years
+    value: 2.4
+    units: years
+    low: 2.0
+    high: 3.0
+    confidence: medium
+    citations: [tenne_master_plan, ijglobal_sorek]
+    notes: >
+      Ashkelon 2003-2005, Palmachim 2005-2007, Hadera 2007-2009 (water Dec 2009),
+      Sorek 2.5 years to 2013. Remarkably consistent. THE CONTRAST THAT CARRIES ACT III:
+      construction is a solved, repeatable 2-3 year exercise in both countries; the
+      Californian schedule difference is almost entirely pre-construction.
+
+  # ------------------------------------------------------------- the rival hypothesis
+  construction.us_admin_premium:
+    id: construction.us_admin_premium
+    value: 2.0
+    units: dimensionless
+    low: 1.3
+    high: 3.0
+    confidence: low
+    citations: [urban_institute_infra, construction_physics_costs]
+    notes: >
+      RIVAL HYPOTHESIS #2 — and the most methodologically dangerous parameter here,
+      because it is NOT independent of the institutional explanation.
+      The US builds administratively-heavy infrastructure at a large multiple of peer
+      countries (Urban Institute: ~3x per mile on some transport infrastructure;
+      Construction Physics: US costs exceed everywhere outside Switzerland and Hong Kong
+      for administration-heavy project types, while US LOW-oversight construction is
+      internationally competitive).
+      The critical point: that literature attributes the premium primarily to
+      administrative overhead, procurement practice, non-standard design and low
+      resulting labour efficiency — NOT to wages or materials. Those are the same
+      mechanisms Act III attributes to permitting.
+      CONSEQUENCE FOR THE MODEL: do not subtract this as an independent rival term and
+      claim the remainder for permitting. That double-counts and would overstate the
+      case. The defensible output is a COMBINED institutional residual, with an explicit
+      statement that the split between "permitting duration/risk" and "general US
+      administrative construction premium" is NOT IDENTIFIED by our data.
