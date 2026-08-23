@@ -1,0 +1,582 @@
+# water_world — curated literature parameters
+#
+# Every number in this project that came from a document rather than a feed lives here,
+# with a citation and, wherever possible, an uncertainty range. Phase 2 samples these
+# directly, so a missing range is an assertion of certainty — avoid it.
+#
+# confidence:
+#   high    - primary source: official filing, dataset, or statute
+#   medium  - reputable secondary reporting, or consistent across independent sources
+#   low     - single secondary source, or contested
+#   derived - our own arithmetic; must list derived_from
+#
+# COMMITTED to git, unlike data/raw. This file is evidence, not cache.
+
+citations:
+  bls_cpi:
+    id: bls_cpi
+    title: "CPI-U series CUUR0000SEHG and CUUR0000SA0"
+    publisher: "US Bureau of Labor Statistics"
+    url: "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+    accessed: 2026-08-22
+  blackridge_sorek:
+    id: blackridge_sorek
+    title: "Sorek Desalination Plant Project — cost and status"
+    publisher: "Blackridge Research"
+    url: "https://www.blackridgeresearch.com/project-profiles/all-about-sorek-desalination-plant-israel-cost-location-detail"
+    accessed: 2026-08-22
+  mit_megascale:
+    id: mit_megascale
+    title: "Megascale Desalination"
+    publisher: "MIT Technology Review"
+    url: "https://www.technologyreview.com/technology/megascale-desalination/"
+    accessed: 2026-08-22
+  vosd_desal:
+    id: vosd_desal
+    title: "San Diegans Owe a Desal Company $35 million for Unmade Water"
+    publisher: "Voice of San Diego"
+    url: "https://voiceofsandiego.org/2025/09/22/san-diegans-owe-a-desal-company-35-million-for-unmade-water/"
+    accessed: 2026-08-22
+  surfrider_wpa:
+    id: surfrider_wpa
+    title: "Poseidon Water Purchase Agreement: Private Profit, Public Risk"
+    publisher: "Surfrider San Diego"
+    url: "https://sandiego.surfrider.org/news/poseidon-water-purchase-agreement-private-profit-public-risk"
+    accessed: 2026-08-22
+  wikipedia_carlsbad:
+    id: wikipedia_carlsbad
+    title: "Claude \"Bud\" Lewis Carlsbad Desalination Plant"
+    publisher: "Wikipedia"
+    url: "https://en.wikipedia.org/wiki/Claude_%22Bud%22_Lewis_Carlsbad_Desalination_Plant"
+    accessed: 2026-08-22
+  enr_hb:
+    id: enr_hb
+    title: "California Coastal Commission Rejects $1.4B Desalination Project"
+    publisher: "Engineering News-Record"
+    url: "https://www.enr.com/articles/54116-california-coastal-commission-rejects-14b-desalination-project"
+    accessed: 2026-08-22
+  calmatters_hb:
+    id: calmatters_hb
+    title: "A salty dispute: California Coastal Commission unanimously rejects desalination plant"
+    publisher: "CalMatters"
+    url: "https://calmatters.org/environment/2022/05/california-desalination-plant-coastal-commission/"
+    accessed: 2026-08-22
+  scwd_doheny:
+    id: scwd_doheny
+    title: "Doheny Ocean Desalination Project"
+    publisher: "South Coast Water District"
+    url: "https://scwd.org/about/district_projects/doheny_ocean_desalination_project/index.php"
+    accessed: 2026-08-22
+  swro_energy_review:
+    id: swro_energy_review
+    title: "A comprehensive review of energy consumption of seawater reverse osmosis desalination plants"
+    publisher: "Desalination (Elsevier)"
+    url: "https://www.sciencedirect.com/science/article/abs/pii/S030626191931339X"
+    accessed: 2026-08-22
+  membranes_sec:
+    id: membranes_sec
+    title: "Opportunities of Reducing the Energy Consumption of Seawater Reverse Osmosis Desalination by Exploiting Salinity Gradients"
+    publisher: "MDPI Membranes"
+    url: "https://www.mdpi.com/2077-0375/12/11/1045"
+    accessed: 2026-08-22
+  calmatters_rates:
+    id: calmatters_rates
+    title: "California cities pay a lot for water; some agricultural districts get it for free"
+    publisher: "CalMatters"
+    url: "https://calmatters.org/environment/2025/12/price-of-california-water-cities-growers/"
+    accessed: 2026-08-22
+  iid_water:
+    id: iid_water
+    title: "About IID Water"
+    publisher: "Imperial Irrigation District"
+    url: "https://www.iid.com/water/about-iid-water"
+    accessed: 2026-08-22
+  mwd_pvid:
+    id: mwd_pvid
+    title: "Metropolitan's board supports funding for community improvements in Palo Verde Valley"
+    publisher: "Metropolitan Water District of Southern California"
+    url: "https://www.mwdh2o.com/press-releases/metropolitans-board-supports-funding-for-community-improvements-in-palo-verde-valley"
+    accessed: 2026-08-22
+  lao_salton:
+    id: lao_salton
+    title: "The Salton Sea: A Status Update"
+    publisher: "California Legislative Analyst's Office"
+    url: "https://lao.ca.gov/Publications/Report/3879"
+    accessed: 2026-08-22
+  qsa_factsheet:
+    id: qsa_factsheet
+    title: "Quantification Settlement Agreement fact sheet"
+    publisher: "San Diego County Water Authority"
+    url: "https://www.sdcwa.org/sites/default/files/qsa-fs.pdf"
+    accessed: 2026-08-22
+  wef_qsa:
+    id: wef_qsa
+    title: "Quantification Settlement Agreement"
+    publisher: "Water Education Foundation"
+    url: "https://www.watereducation.org/aquapedia/quantification-settlement-agreement"
+    accessed: 2026-08-22
+  flex_brackish:
+    id: flex_brackish
+    title: "Can flexible operation of brackish desalination facilities reduce the cost of desalted water? A case study in Southern California"
+    publisher: "Desalination (Elsevier)"
+    url: "https://www.sciencedirect.com/science/article/pii/S0011916426002535"
+    accessed: 2026-08-22
+  swro_deferrable:
+    id: swro_deferrable
+    title: "Seawater reverse osmosis (SWRO) as deferrable load in micro grids"
+    publisher: "Elsevier"
+    url: "https://www.sciencedirect.com/science/article/pii/S1944398624183968"
+    accessed: 2026-08-22
+  nature_flex:
+    id: nature_flex
+    title: "Valuing energy flexibility from water systems"
+    publisher: "Nature Water"
+    url: "https://www.nature.com/articles/s44221-024-00316-4"
+    accessed: 2026-08-22
+  unit_definition:
+    id: unit_definition
+    title: "Acre-foot definition (43,560 cubic feet)"
+    publisher: "US Geological Survey"
+    url: "https://www.usgs.gov/special-topics/water-science-school/science/water-qa-what-acre-foot"
+    accessed: 2026-08-22
+
+parameters:
+
+  # ------------------------------------------------------------------ constants
+  unit.acre_foot_m3:
+    id: unit.acre_foot_m3
+    value: 1233.48
+    units: m3
+    confidence: high
+    citations: [unit_definition]
+    notes: "1 acre-foot = 43,560 ft^3 = 1233.48 m^3. Used for every $/AF <-> $/m3 conversion."
+
+  # ------------------------------------------------------------------ Act I: prices
+  cpi.water_sewer_trash.pct_change_2000_2025:
+    id: cpi.water_sewer_trash.pct_change_2000_2025
+    value: 207.0
+    units: percent
+    confidence: high
+    citations: [bls_cpi]
+    notes: >
+      Jan 2000 -> Dec 2025, series CUUR0000SEHG. VERIFIED against the primary BLS series
+      in Phase 1, independently reproducing the secondary-source figure used in Phase 0.
+
+  cpi.all_items.pct_change_2000_2025:
+    id: cpi.all_items.pct_change_2000_2025
+    value: 92.0
+    units: percent
+    confidence: high
+    citations: [bls_cpi]
+    notes: >
+      Jan 2000 -> Dec 2025, series CUUR0000SA0. Phase 0's secondary source said 93%;
+      the primary series gives 92%. Immaterial to the argument.
+
+  cpi.water.real_pct_change_2000_2025:
+    id: cpi.water.real_pct_change_2000_2025
+    value: 60.0
+    units: percent
+    confidence: derived
+    derived_from:
+      - cpi.water_sewer_trash.pct_change_2000_2025
+      - cpi.all_items.pct_change_2000_2025
+    notes: >
+      Household water/sewer/trash rose ~60% in real terms over the period. This is the
+      number that falsifies the original "water has not kept pace with earnings" claim
+      for residential users, and forces Act I to aim at the ag/urban divergence instead.
+
+  rates.iid.agricultural:
+    id: rates.iid.agricultural
+    value: 20.0
+    units: USD/acre-foot
+    confidence: medium
+    citations: [calmatters_rates, iid_water]
+    notes: >
+      IID charges farmers a conveyance-cost-only rate; the Colorado River water itself is
+      free to the district under its rights. Reported as unchanged "for years" — the
+      length of the nominal freeze is flagged for verification.
+
+  rates.ca_ag_districts.average:
+    id: rates.ca_ag_districts.average
+    value: 30.0
+    units: USD/acre-foot
+    confidence: medium
+    citations: [calmatters_rates]
+
+  rates.ca_city_utilities.average:
+    id: rates.ca_city_utilities.average
+    value: 512.0
+    units: USD/acre-foot
+    confidence: medium
+    citations: [calmatters_rates]
+    notes: "~17x the agricultural district average. The core Act I disparity."
+
+  # ------------------------------------------------------------------ Act II: alternatives
+  fallowing.pvid.acres:
+    id: fallowing.pvid.acres
+    value: 26000.0
+    units: acres
+    confidence: medium
+    citations: [mwd_pvid]
+    notes: "~30% of farmland in the Palo Verde Valley, under the 2023 agreement."
+
+  fallowing.pvid.conserved:
+    id: fallowing.pvid.conserved
+    value: 117000.0
+    units: acre-feet/year
+    confidence: medium
+    citations: [mwd_pvid]
+
+  fallowing.pvid.entry_payment:
+    id: fallowing.pvid.entry_payment
+    value: 3170.0
+    units: USD/acre
+    confidence: medium
+    citations: [mwd_pvid]
+    notes: "One-time payment to enter the programme."
+
+  fallowing.pvid.annual_payment:
+    id: fallowing.pvid.annual_payment
+    value: 800.0
+    units: USD/acre/year
+    confidence: medium
+    citations: [mwd_pvid]
+    notes: "Escalating; 800 is the current level."
+
+  fallowing.direct_cost:
+    id: fallowing.direct_cost
+    value: 280.0
+    units: USD/acre-foot
+    low: 240.0
+    high: 320.0
+    confidence: derived
+    derived_from:
+      - fallowing.pvid.conserved
+      - fallowing.pvid.acres
+      - fallowing.pvid.entry_payment
+      - fallowing.pvid.annual_payment
+      - econ.discount_rate
+    notes: >
+      Annual payment (800/4.5 = ~178/AF) plus entry payment amortised over 10y at 7%
+      (3170 * 0.1424 / 4.5 = ~100/AF). Excludes the Salton Sea externality entirely —
+      see fallowing.social_cost for the figure that should be used in comparisons.
+
+  # ------------------------------------------------------------------ Salton Sea externality
+  salton.qsa_mitigation_cap:
+    id: salton.qsa_mitigation_cap
+    value: 133000000.0
+    units: USD
+    year: 2003
+    confidence: high
+    citations: [lao_salton, wef_qsa]
+    notes: "Capped liability of IID, CVWD and SDCWA. California is the backstop beyond it."
+
+  salton.qsa_cap_with_interest:
+    id: salton.qsa_cap_with_interest
+    value: 288000000.0
+    units: USD
+    confidence: medium
+    citations: [lao_salton]
+
+  salton.phase1_cost:
+    id: salton.phase1_cost
+    value: 420000000.0
+    units: USD
+    confidence: high
+    citations: [lao_salton]
+    notes: "Ten-year management plan, 2018-2028."
+
+  salton.playa_projected:
+    id: salton.playa_projected
+    value: 48300.0
+    units: acres
+    confidence: high
+    citations: [lao_salton]
+    notes: "Projected exposure over the Phase I decade."
+
+  salton.playa_covered:
+    id: salton.playa_covered
+    value: 29800.0
+    units: acres
+    confidence: high
+    citations: [lao_salton]
+    notes: "Planned project coverage — ~62% of projected exposure."
+
+  salton.om_annual:
+    id: salton.om_annual
+    value: 9000000.0
+    units: USD/year
+    low: 8000000.0
+    high: 10000000.0
+    confidence: high
+    citations: [lao_salton]
+    notes: "Ongoing operations and maintenance after Phase I."
+
+  salton.qsa_transfer_volume:
+    id: salton.qsa_transfer_volume
+    value: 303000.0
+    units: acre-feet/year
+    confidence: medium
+    citations: [qsa_factsheet, wef_qsa, lao_salton]
+    notes: >
+      IID->SDCWA 200,000 AF/yr plus IID->CVWD 103,000 AF/yr. Matches the LAO's
+      "approximately 300,000 acre-feet" of transfers expediting playa exposure.
+
+  salton.externality:
+    id: salton.externality
+    value: 197.0
+    units: USD/acre-foot
+    low: 140.0
+    high: 255.0
+    confidence: derived
+    derived_from:
+      - salton.phase1_cost
+      - salton.playa_projected
+      - salton.playa_covered
+      - salton.om_annual
+      - salton.qsa_transfer_volume
+    notes: >
+      LOAD-BEARING AND CONTESTED. Low end = Phase I as planned (62% coverage):
+      420M/10yr / 303k AF = ~139/AF. High end = extrapolated to full coverage
+      (420M/0.62 = 677M) plus O&M = ~255/AF. Assumes all QSA transfer drives playa
+      exposure and all restoration spend is dust-driven; neither is strictly true.
+      IID shifted from fallowing to efficiency measures around 2012, and some exposure
+      would have occurred regardless. Sensitivity-test before this carries a conclusion.
+
+  fallowing.social_cost:
+    id: fallowing.social_cost
+    value: 477.0
+    units: USD/acre-foot
+    low: 380.0
+    high: 575.0
+    confidence: derived
+    derived_from:
+      - fallowing.direct_cost
+      - salton.externality
+    notes: >
+      Direct cost plus the socialised dust externality. This is the figure that overlaps
+      with Sorek-cost desalination and collapses reallocation's apparent 12x advantage
+      to roughly parity against *reformed* desal.
+      BAND CORRECTED in Phase 1: the Phase 0.5 write-up quoted 420-535, which added the
+      externality's range to the direct cost's POINT value. Propagating both uncertainties
+      gives 380-575. The overlap conclusion is unaffected — Sorek B at ~$505/AF still sits
+      inside the band, and more comfortably than before.
+
+  # ------------------------------------------------------------------ Act III: desal costs
+  desal.sorek.capex:
+    id: desal.sorek.capex
+    value: 489000000.0
+    units: USD
+    year: 2013
+    confidence: medium
+    citations: [blackridge_sorek]
+    notes: "Including interest. Other sources round to $500M."
+
+  desal.sorek.capacity:
+    id: desal.sorek.capacity
+    value: 624000.0
+    units: m3/day
+    confidence: medium
+    citations: [blackridge_sorek, mit_megascale]
+    notes: "Sources give 624,000-640,000 m3/day."
+
+  desal.sorek.water_price:
+    id: desal.sorek.water_price
+    value: 0.58
+    units: USD/m3
+    confidence: medium
+    citations: [mit_megascale]
+    notes: "Price to the Israeli government. ~$715/AF."
+
+  desal.sorek_b.water_price:
+    id: desal.sorek_b.water_price
+    value: 0.41
+    units: USD/m3
+    confidence: medium
+    citations: [mit_megascale]
+    notes: "Contracted price for Sorek B. ~$505/AF. Claimed global benchmark."
+
+  desal.carlsbad.capex:
+    id: desal.carlsbad.capex
+    value: 1000000000.0
+    units: USD
+    year: 2015
+    confidence: medium
+    citations: [wikipedia_carlsbad]
+
+  desal.carlsbad.capacity:
+    id: desal.carlsbad.capacity
+    value: 189270.0
+    units: m3/day
+    confidence: high
+    citations: [wikipedia_carlsbad]
+    notes: "50 MGD."
+
+  desal.carlsbad.price_current:
+    id: desal.carlsbad.price_current
+    value: 3500.0
+    units: USD/acre-foot
+    low: 3000.0
+    high: 3700.0
+    confidence: low
+    citations: [vosd_desal]
+    notes: >
+      What SDCWA reportedly pays today. FLAGGED for confirmation against SDCWA primary
+      rate documents before publication — it is the headline comparison figure.
+
+  desal.carlsbad.contract_price_min_volume:
+    id: desal.carlsbad.contract_price_min_volume
+    value: 2290.0
+    units: USD/acre-foot
+    confidence: medium
+    citations: [surfrider_wpa]
+    notes: "Estimated unit price at the 48,000 AF/yr contract minimum."
+
+  desal.carlsbad.min_volume:
+    id: desal.carlsbad.min_volume
+    value: 48000.0
+    units: acre-feet/year
+    confidence: medium
+    citations: [surfrider_wpa]
+    notes: "Take-or-pay minimum under a 30-year agreement."
+
+  desal.huntington_beach.capex_proposed:
+    id: desal.huntington_beach.capex_proposed
+    value: 1400000000.0
+    units: USD
+    year: 2022
+    confidence: medium
+    citations: [enr_hb, calmatters_hb]
+    notes: "Proposed; unanimously rejected by the Coastal Commission in May 2022."
+
+  desal.huntington_beach.capacity_proposed:
+    id: desal.huntington_beach.capacity_proposed
+    value: 189270.0
+    units: m3/day
+    confidence: high
+    citations: [enr_hb]
+    notes: "50 MGD, same nameplate as Carlsbad."
+
+  desal.doheny.capex:
+    id: desal.doheny.capex
+    value: 140000000.0
+    units: USD
+    confidence: medium
+    citations: [scwd_doheny]
+
+  desal.doheny.capacity:
+    id: desal.doheny.capacity
+    value: 18927.0
+    units: m3/day
+    confidence: high
+    citations: [scwd_doheny]
+    notes: "5 MGD = 5,600 AF/yr. First fully Ocean-Plan-compliant plant, subsurface intake."
+
+  # ------------------------------------------------------------------ energy
+  swro.sec:
+    id: swro.sec
+    value: 3.25
+    units: kWh/m3
+    low: 2.5
+    high: 4.0
+    confidence: high
+    citations: [swro_energy_review, membranes_sec]
+    notes: "Typical large-scale SWRO specific energy consumption, with energy recovery."
+
+  swro.sec_thermodynamic_min:
+    id: swro.sec_thermodynamic_min
+    value: 1.6
+    units: kWh/m3
+    low: 0.79
+    high: 1.6
+    confidence: medium
+    citations: [membranes_sec]
+    notes: >
+      Sources differ on the framing: ~1.6 kWh/m3 for 35 g/L at 50% recovery, ~0.79 for
+      the idealised minimum. The gap to practice is only ~2x, which is why energy is
+      not a large enough cost term to carry the flexibility thesis alone.
+
+  # ------------------------------------------------------------------ flexibility question
+  flex.brackish.saving_rtp:
+    id: flex.brackish.saving_rtp
+    value: 0.161
+    units: fraction
+    confidence: medium
+    citations: [flex_brackish]
+    notes: "LCOW reduction under aggressive real-time pricing. Brackish, not seawater."
+
+  flex.brackish.saving_designed_for_flex:
+    id: flex.brackish.saving_designed_for_flex
+    value: 0.47
+    units: fraction
+    confidence: medium
+    citations: [flex_brackish]
+    notes: >
+      With larger feed pumps and lower minimum flow rates. Brackish is less
+      capex-intensive per m3 than seawater, so this is probably an OPTIMISTIC bound
+      for SWRO. Replacing it with an SWRO-specific figure is the point of the Phase 2
+      capacity-factor model.
+
+  flex.storage.water_tank_per_m3:
+    id: flex.storage.water_tank_per_m3
+    value: 98.0
+    units: USD/m3
+    confidence: low
+    citations: [nature_flex]
+    notes: "Storage-medium comparison at 2 kWh/m3."
+
+  flex.storage.battery_per_m3_equivalent:
+    id: flex.storage.battery_per_m3_equivalent
+    value: 600.0
+    units: USD/m3
+    confidence: low
+    citations: [nature_flex]
+    notes: >
+      ~6x the tank cost per unit of energy shifted. Favours the flexibility thesis at
+      the storage-medium boundary; the whole-system studies disagree because idling
+      strands RO capex. See swro_deferrable for the opposing conclusion.
+
+  # ------------------------------------------------------------------ economics
+  econ.discount_rate:
+    id: econ.discount_rate
+    value: 0.07
+    units: fraction
+    low: 0.05
+    high: 0.10
+    confidence: low
+    citations: [swro_energy_review]
+    notes: "Working assumption for levelisation. Phase 2 should sensitivity-test."
+
+  econ.capex_scaling_exponent:
+    id: econ.capex_scaling_exponent
+    value: 0.8
+    units: dimensionless
+    low: 0.75
+    high: 0.9
+    confidence: low
+    citations: [swro_energy_review]
+    notes: >
+      capex ∝ Q^exponent. Literature convention. This value DRIVES the scale-adjusted
+      Israel/California gap, so the 5x headline must be reported with a sensitivity
+      across the low-high range.
+
+  # ------------------------------------------------------------------ permitting
+  permitting.carlsbad.years:
+    id: permitting.carlsbad.years
+    value: 15.0
+    units: years
+    low: 12.0
+    high: 18.0
+    confidence: low
+    citations: [wikipedia_carlsbad]
+    notes: "Approximate; needs a documented start date for the permitting-risk model."
+
+  permitting.huntington_beach.years:
+    id: permitting.huntington_beach.years
+    value: 24.0
+    units: years
+    confidence: medium
+    citations: [calmatters_hb, enr_hb]
+    notes: >
+      Project introduced ~1998, unanimously rejected May 2022. The canonical data point
+      for permitting-as-financial-instrument: two decades of spend, zero return.

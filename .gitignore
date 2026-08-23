@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Fetched originals and derived tables are reproducible from the source registry.
+# Never commit them: they are large, and provenance lives in the manifest.
+data/raw/
+data/processed/
+# Regenerated on every fetch, and describes a cache the repo does not carry.
+# Phase 4 should emit a deliberate citation-ready snapshot instead.
+data/manifest.json
+
+# Generated reports
+output/
+
+.DS_Store
