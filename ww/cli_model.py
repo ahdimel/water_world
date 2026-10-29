@@ -16,7 +16,7 @@ import random
 from dataclasses import replace
 
 from ww import params
-from ww.model import lcow, montecarlo, permitting, plants, scale
+from ww.model import deflate, lcow, montecarlo, permitting, plants, salton, scale, stack
 
 #: Parameters the Monte Carlo varies. Everything else is held at its stated value.
 _SAMPLED = (
@@ -36,7 +36,7 @@ def cmd_lcow(args: argparse.Namespace) -> int:
     names = [args.plant] if args.plant else list(plants.REFERENCE_PLANTS)
     finance_for = {"sorek": plants.sorek_finance}
 
-    _rule("Levelised cost of water")
+    _rule(f"Levelised cost of water, {deflate.BASE_YEAR} dollars")
     print(f"  {'plant':<18}{'fixed':>9}{'variable':>10}{'conveyance':>12}"
           f"{'$/m3':>9}{'$/AF':>10}")
     for name in names:
@@ -60,10 +60,8 @@ def cmd_lcow(args: argparse.Namespace) -> int:
     print()
     print("  CAVEAT ON DOHENY: every Californian plant here is run on Carlsbad's")
     print("  PRIVATE financing (80.9% geared, private equity return). Doheny is a")
-    print("  public district project carrying no equity return, which is most of why")
-    print("  the model puts it near $2,990/AF against an expected $2,058/AF. Public")
-    print("  versus private financing is a real cost channel and is not yet")
-    print("  parameterised — treat Doheny's figure here as an upper bound.")
+    print("  public district project with no equity return; `ww stack` prices every")
+    print("  plant on public finance instead. Treat Doheny's figure here as an upper bound.")
     return 0
 
 
@@ -172,12 +170,74 @@ def cmd_montecarlo(args: argparse.Namespace) -> int:
     print(f"  median            ${dist.median:,.0f}/AF")
     print(f"  90% band          ${lo:,.0f} to ${hi:,.0f}/AF")
     print(f"  mean              ${dist.mean:,.0f}/AF")
-    sdcwa = params.value("desal.carlsbad.price_sdcwa")
-    print(f"  P(cost > SDCWA's reported ${sdcwa:,.0f}/AF) = "
-          f"{dist.probability_above(sdcwa):.0%}")
+    today = params.value("desal.carlsbad.price_current")
+    print(f"  P(cost > SDCWA's current ${today:,.0f}/AF) = "
+          f"{dist.probability_above(today):.0%}   (model at full output; SDCWA pays")
+    print("  for the 48,000 AF minimum, so the model should sit somewhat below it)")
     print()
     print("  Range-less parameters contribute no spread by design, so this band is a")
     print("  LOWER bound on true uncertainty. Capex itself carries no stated range.")
+    return 0
+
+
+def cmd_deflator(args: argparse.Namespace) -> int:
+    """Show (or rebuild) the CPI-U table every dollar is restated with."""
+    if args.rebuild:
+        print(f"  wrote {deflate.rebuild()}")
+    table = deflate.load()
+    _rule(f"CPI-U annual averages, factor to {deflate.BASE_YEAR} dollars")
+    for year in sorted(table)[-16:]:
+        print(f"  {year}  {table[year]:>8.3f}   x{deflate.factor(year):.3f}")
+    return 0
+
+
+def cmd_salton(args: argparse.Namespace) -> int:  # noqa: ARG001
+    """The Salton Sea externality, one correction at a time."""
+    w = salton.walk()
+    _rule(f"Salton Sea dust cost per Imperial acre-foot, {deflate.BASE_YEAR} dollars")
+    dust = params.value("salton.dust_share_of_spend")
+    iid = params.value("ag.iid_share_of_conservation")
+    lines = [
+        ("Phase 0.5 (all decline is the transfer's, all spend is dust)", w.full_attribution),
+        (f"x QSA share of the inflow decline ({salton.qsa_share():.0%})", w.after_qsa_share),
+        (f"x dust share of restoration spend ({dust:.0%})", w.after_dust_share),
+        (f"per AF of California ag conservation ({iid:.0%} Imperial)", w.per_blended_ag_af),
+        ("", None),
+        ("stress case, dust never mitigated (damage basis)", w.damage_basis),
+    ]
+    for label, v in lines:
+        print(f"  {label:<62}${v:>7,.0f}" if v is not None else "")
+    print()
+    print("  Applies only to Imperial Valley water: Palo Verde drains to the river,")
+    print("  not the Sea. Phase 0.5 attached this cost to Palo Verde's price.")
+    print("  The damage basis is the Pacific Institute's cost of inaction; mitigation")
+    print("  is the cheaper path by a factor of ~40, IF the state builds it.")
+    return 0
+
+
+def cmd_stack(args: argparse.Namespace) -> int:
+    """Phase 3: every option on one axis, and the framing gate."""
+    draws = stack.simulate(n=args.n, seed=args.seed)
+    _rule(f"Supply stack, {deflate.BASE_YEAR} dollars, delivered treated, n={args.n}")
+    print(f"  {'option':<50}{'median':>9}{'90% band':>20}")
+    rows = sorted(stack.OPTIONS, key=lambda k: stack.distribution(draws, k).median)
+    for k in rows:
+        d = stack.distribution(draws, k)
+        lo, hi = d.band_90
+        mark = "" if stack.OPTIONS[k].on_stack else "  (off stack)"
+        print(f"  {stack.OPTIONS[k].label:<50}{d.median:>9,.0f}{lo:>10,.0f} - {hi:<7,.0f}{mark}")
+    print()
+    for t in (params.value("ca.colorado_cut"), params.get("ca.colorado_cut").high):
+        _rule(f"Framing gate at a {t:,.0f} AF/yr cut")
+        for comp in ("desal_israeli", "desal_permit_reform"):
+            g = stack.gate(draws, comparator=comp, target=t)
+            print(f"  vs {stack.OPTIONS[comp].label}")
+            print(f"    P(reallocation cheaper)       {g.p_cheaper:.3f}")
+            print(f"    P(ag capacity covers the cut) {g.p_capacity:.3f}")
+            print(f"    -> row {g.row}: {g.verdict}")
+    print()
+    print("  Rule fixed before the first run (see ww/model/stack.py). Ag capacity is a")
+    print("  LOW-confidence assumption; at 440k AF it sits on the row 1/2 boundary.")
     return 0
 
 
@@ -204,3 +264,15 @@ def register(sub: argparse._SubParsersAction) -> None:
     p_mc.add_argument("--seed", type=int, default=20260822)
     p_mc.add_argument("--utilisation", type=float, default=1.0)
     p_mc.set_defaults(func=cmd_montecarlo)
+
+    p_defl = sub.add_parser("deflator", help="CPI-U table used to restate dollars")
+    p_defl.add_argument("--rebuild", action="store_true", help="regenerate from the BLS cache")
+    p_defl.set_defaults(func=cmd_deflator)
+
+    p_salton = sub.add_parser("salton", help="Salton Sea externality attribution")
+    p_salton.set_defaults(func=cmd_salton)
+
+    p_stack = sub.add_parser("stack", help="Phase 3 supply stack and framing gate")
+    p_stack.add_argument("-n", type=int, default=10_000)
+    p_stack.add_argument("--seed", type=int, default=20261028)
+    p_stack.set_defaults(func=cmd_stack)

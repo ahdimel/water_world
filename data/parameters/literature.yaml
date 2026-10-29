@@ -219,6 +219,114 @@ citations:
     publisher: "Poseidon Water / Carlsbad Desalination Plant"
     url: "https://www.carlsbaddesal.com/how-we-do-it.html"
     accessed: 2026-08-22
+  aquapedia_desal:
+    id: aquapedia_desal
+    title: "Desalination (Aquapedia)"
+    publisher: "Water Education Foundation"
+    url: "https://www.watereducation.org/aquapedia/desalination"
+    accessed: 2026-10-28
+  sdcwa_wpa_release:
+    id: sdcwa_wpa_release
+    title: "Water Authority Releases Proposed Carlsbad Desalination Water Purchase Agreement"
+    publisher: "San Diego County Water Authority"
+    url: "https://www.sdcwa.org/water-authority-releases-proposed-carlsbad-desalination-water-purchase-agreement/"
+    accessed: 2026-10-28
+  pacinst_hazards_toll:
+    id: pacinst_hazards_toll
+    title: "Hazard's Toll: The Costs of Inaction at the Salton Sea (M. Cohen, 2014)"
+    publisher: "Pacific Institute"
+    url: "https://pacinst.org/publication/hazards-toll/"
+    accessed: 2026-10-28
+  abman_ajae_2025:
+    id: abman_ajae_2025
+    title: "Water, dust, and environmental justice: The case of agricultural water diversions"
+    publisher: "American Journal of Agricultural Economics (Abman et al., 2025)"
+    url: "https://onlinelibrary.wiley.com/doi/full/10.1111/ajae.12472"
+    accessed: 2026-10-28
+  laist_salton_conservation:
+    id: laist_salton_conservation
+    title: "Colorado River conservation is drying the Salton Sea"
+    publisher: "LAist"
+    url: "https://laist.com/news/climate-environment/colorado-river-conservation-drying-salton-sea"
+    accessed: 2026-10-28
+  ap_iid_fallowing_2023:
+    id: ap_iid_fallowing_2023
+    title: "In dry West, farmers balk at idling land to save water (AP, 4 Mar 2023)"
+    publisher: "Associated Press, via San Diego Union-Tribune"
+    url: "https://www.pressreader.com/usa/san-diego-union-tribune/20230304/281642489381047"
+    accessed: 2026-10-28
+  usbr_lc_conservation_2022:
+    id: usbr_lc_conservation_2022
+    title: "Lower Colorado River Basin System Conservation and Efficiency Program — program letter with enclosures"
+    publisher: "US Bureau of Reclamation"
+    url: "https://www.usbr.gov/inflation-reduction-act/docs/LC-Conservation-Program-Letter-with-Enclosures.pdf"
+    accessed: 2026-10-28
+  usbr_post2026_rod:
+    id: usbr_post2026_rod
+    title: "Post-2026 Colorado River Operations — Record of Decision (21 Aug 2026)"
+    publisher: "US Bureau of Reclamation"
+    url: "https://www.usbr.gov/ColoradoRiverBasin/post2026/decision-doc/P26_RecordofDecision_Final.pdf"
+    accessed: 2026-10-28
+  lvsun_rod_2026:
+    id: lvsun_rod_2026
+    title: "Feds finalize 10-year Colorado River management framework forcing cuts on Nevada, Arizona, California"
+    publisher: "Las Vegas Sun, 22 Aug 2026"
+    url: "https://lasvegassun.com/news/2026/aug/22/feds-finalize-10-year-colorado-river-management-fr/"
+    accessed: 2026-10-28
+  mwdoc_rates_2026:
+    id: mwdoc_rates_2026
+    title: "Resolution No. 2171 — 2026 water rates (Metropolitan rate components passed through)"
+    publisher: "Municipal Water District of Orange County"
+    url: "https://www.mwdoc.com/wp-content/uploads/2026/01/Resolution-No.-2171.pdf"
+    accessed: 2026-10-28
+  calleguas_rates_2026:
+    id: calleguas_rates_2026
+    title: "2026 Water Rates Adopted"
+    publisher: "Calleguas Municipal Water District"
+    url: "https://www.calleguas.com/wp-content/uploads/2026/01/2026-Water-Rates-Adopted.pdf"
+    accessed: 2026-10-28
+  mwd_pwsc_cost_2025:
+    id: mwd_pwsc_cost_2025
+    title: "Pure Water Southern California Program Cost Update (public hearing, Sept 2025)"
+    publisher: "Metropolitan Water District of Southern California"
+    url: "https://www-admin.mwdh2o.com/media/lklcriey/pure-water-cost-estimate-public-hearing-september-2025.pdf"
+    accessed: 2026-10-28
+  pacinst_cost_2016:
+    id: pacinst_cost_2016
+    title: "The Cost of Alternative Urban Water Supply and Efficiency Options in California (Cooley & Phurisamban, 2016) — Executive Summary, Figure ES1"
+    publisher: "Pacific Institute"
+    url: "https://pacinst.org/wp-content/uploads/2016/10/PI_TheCostofAlternativeWaterSupplyEfficiencyOptionsinCA_ExecutiveSummary.pdf"
+    accessed: 2026-10-28
+  pacinst_stormwater_2014:
+    id: pacinst_stormwater_2014
+    title: "Stormwater Capture Potential in Urban and Suburban California (issue brief, with NRDC, 2014)"
+    publisher: "Pacific Institute / NRDC"
+    url: "https://pacinst.org/wp-content/uploads/2014/06/ca-water-stormwater.pdf"
+    accessed: 2026-10-28
+  pacinst_untapped_2022:
+    id: pacinst_untapped_2022
+    title: "The Untapped Potential of California's Urban Water Supply: Water Efficiency, Water Reuse, and Stormwater Capture (2022)"
+    publisher: "Pacific Institute"
+    url: "https://pacinst.org/publication/california-urban-water-supply-potential-2022/"
+    accessed: 2026-10-28
+  ucr_turf_review:
+    id: ucr_turf_review
+    title: "Review of turf-removal ('cash for grass') programme cost-effectiveness"
+    publisher: "UC Riverside Turfgrass Research"
+    url: "https://turfgrass.ucr.edu/media/274/download"
+    accessed: 2026-10-28
+  water_la_2018:
+    id: water_la_2018
+    title: "Water LA 2018 Report (incl. LADWP stormwater project costs per acre-foot)"
+    publisher: "Water LA"
+    url: "https://saveballona.org/Water_LA_2018_Report.pdf"
+    accessed: 2026-10-28
+  vosd_pure_water_2025:
+    id: vosd_pure_water_2025
+    title: "Water Independence — Not at Any Price (Voice of San Diego, 31 Oct 2025)"
+    publisher: "Voice of San Diego, via Maven's Notebook"
+    url: "https://mavensnotebook.com/2025/10/31/voice-of-san-diego-water-independence-not-at-any-price/"
+    accessed: 2026-10-28
 
 parameters:
 
@@ -311,6 +419,7 @@ parameters:
     id: fallowing.pvid.entry_payment
     value: 3170.0
     units: USD/acre
+    year: 2023
     confidence: medium
     citations: [mwd_pvid]
     notes: "One-time payment to enter the programme."
@@ -319,6 +428,7 @@ parameters:
     id: fallowing.pvid.annual_payment
     value: 800.0
     units: USD/acre/year
+    year: 2023
     confidence: medium
     citations: [mwd_pvid]
     notes: "Escalating; 800 is the current level."
@@ -327,6 +437,7 @@ parameters:
     id: fallowing.direct_cost
     value: 280.0
     units: USD/acre-foot
+    year: 2023
     low: 240.0
     high: 320.0
     confidence: derived
@@ -362,6 +473,7 @@ parameters:
     id: salton.phase1_cost
     value: 420000000.0
     units: USD
+    year: 2018
     confidence: high
     citations: [lao_salton]
     notes: "Ten-year management plan, 2018-2028."
@@ -386,6 +498,7 @@ parameters:
     id: salton.om_annual
     value: 9000000.0
     units: USD/year
+    year: 2018
     low: 8000000.0
     high: 10000000.0
     confidence: high
@@ -406,6 +519,7 @@ parameters:
     id: salton.externality
     value: 197.0
     units: USD/acre-foot
+    year: 2018
     low: 140.0
     high: 255.0
     confidence: derived
@@ -464,6 +578,7 @@ parameters:
     id: desal.sorek.water_price
     value: 0.58
     units: USD/m3
+    year: 2015
     confidence: medium
     citations: [mit_megascale]
     notes: "Price to the Israeli government. ~$715/AF."
@@ -496,21 +611,27 @@ parameters:
     id: desal.carlsbad.price_current
     value: 3500.0
     units: USD/acre-foot
-    low: 3000.0
+    low: 3300.0
     high: 3700.0
-    confidence: low
-    citations: [vosd_desal]
+    year: 2025
+    confidence: medium
+    citations: [vosd_desal, aquapedia_desal]
     notes: >
-      What SDCWA reportedly pays today. FLAGGED for confirmation against SDCWA primary
-      rate documents before publication — it is the headline comparison figure.
+      What SDCWA pays today, attributed to the Water Authority by the Water Education
+      Foundation. REINSTATED in Phase 3 after Phase 2 retired it. Phase 2 compared it
+      with the $2,302-2,559 figure below and found a 1.44x gap that under-delivery
+      could not explain; both numbers were nominal dollars from different years. The
+      2012 contract price ($2,290) is ~$3,210 in 2025 dollars, within ~9% of this, and
+      the engine in 2025 dollars at the contract minimum gives ~$3,330.
 
   desal.carlsbad.contract_price_min_volume:
     id: desal.carlsbad.contract_price_min_volume
     value: 2290.0
     units: USD/acre-foot
+    year: 2012
     confidence: medium
-    citations: [surfrider_wpa]
-    notes: "Estimated unit price at the 48,000 AF/yr contract minimum."
+    citations: [surfrider_wpa, sdcwa_wpa_release]
+    notes: "Estimated unit price at the 48,000 AF/yr contract minimum, 2012 dollars ($2,042-2,290 across volumes)."
 
   desal.carlsbad.min_volume:
     id: desal.carlsbad.min_volume
@@ -541,6 +662,7 @@ parameters:
     id: desal.doheny.capex
     value: 140000000.0
     units: USD
+    year: 2023
     confidence: medium
     citations: [scwd_doheny]
 
@@ -812,6 +934,7 @@ parameters:
     id: swro.om_nonenergy
     value: 0.20
     units: USD/m3
+    year: 2015
     low: 0.14
     high: 0.30
     confidence: low
@@ -1225,6 +1348,7 @@ parameters:
     id: desal.sorek.price_fixed
     value: 0.25
     units: USD/m3
+    year: 2013
     confidence: medium
     citations: [tenne_master_plan]
     notes: >
@@ -1237,6 +1361,7 @@ parameters:
     id: desal.sorek.price_variable
     value: 0.27
     units: USD/m3
+    year: 2013
     confidence: medium
     citations: [tenne_master_plan]
     notes: "Energy, chemicals, membranes. ~$333/AF."
@@ -1245,6 +1370,7 @@ parameters:
     id: desal.sorek.price_total
     value: 0.52
     units: USD/m3
+    year: 2013
     confidence: derived
     derived_from: [desal.sorek.price_fixed, desal.sorek.price_variable]
     notes: >
@@ -1291,13 +1417,12 @@ parameters:
     confidence: medium
     citations: [ucd_environs_desal]
     notes: >
-      RESOLVES THE FLAG ON desal.carlsbad.price_current. The Water Authority's own
-      figure is $2,302-2,559/AF, not $3,500. It also corroborates
-      desal.carlsbad.contract_price_min_volume ($2,290/AF) independently. The $3,500
-      press figure is therefore very likely an EFFECTIVE cost — take-or-pay fixed
-      payments spread over volume actually delivered — rather than a contract unit
-      price. The engine should COMPUTE that wedge from utilisation rather than assert
-      either number.
+      SUPERSEDED as the comparator by desal.carlsbad.price_current (Phase 3). UC Davis
+      cites this as SDCWA's figure via the Water Education Foundation page, visited
+      April 2024; that same page now gives ~$3,500. NO DOLLAR YEAR is stated — almost
+      certainly a late-2010s price — so it cannot be deflated reliably and is kept
+      only as the record of what Phase 2 compared against. Its agreement with the
+      2012 contract price ($2,290) is itself evidence that it is an older-year figure.
 
   desal.carlsbad.price_projected_plant_2013:
     id: desal.carlsbad.price_projected_plant_2013
@@ -1498,3 +1623,469 @@ parameters:
       case. The defensible output is a COMBINED institutional residual, with an explicit
       statement that the split between "permitting duration/risk" and "general US
       administrative construction premium" is NOT IDENTIFIED by our data.
+
+  # ================================================================== PHASE 3 ADDITIONS
+  # Everything below was added for the Phase 3 supply stack (2026-10-28). Dollar
+  # parameters all carry `year:`; the stack restates them in 2025 dollars via
+  # ww/model/deflate.py. Where a range is our allowance rather than a published band,
+  # the note says so.
+
+  # ------------------------------------------------------------- Carlsbad, reconciled
+  desal.carlsbad.price_wpa_full_purchase:
+    id: desal.carlsbad.price_wpa_full_purchase
+    value: 2042.0
+    units: USD/acre-foot
+    year: 2012
+    confidence: high
+    citations: [sdcwa_wpa_release]
+    notes: >
+      The WPA's unit price when SDCWA buys the full 56,000 AF/yr, in 2012 dollars.
+      Pairs with desal.carlsbad.contract_price_min_volume ($2,290 at the 48,000 AF
+      minimum): the spread between them is the utilisation wedge, observed directly.
+
+  # ------------------------------------------------------------- Salton Sea attribution
+  salton.inflow_2003:
+    id: salton.inflow_2003
+    value: 1250000.0
+    units: acre-feet/year
+    low: 1200000.0
+    high: 1300000.0
+    confidence: medium
+    citations: [lao_salton]
+    notes: "Annual inflow to the Sea at the QSA's signing. Sources give 1.2-1.3 MAF."
+
+  salton.inflow_post2020:
+    id: salton.inflow_post2020
+    value: 750000.0
+    units: acre-feet/year
+    low: 700000.0
+    high: 800000.0
+    confidence: medium
+    citations: [lao_salton]
+    notes: >
+      LAO's projection of annual inflow after 2020, "due to both the QSA transfers and
+      longer-term reduction trends". The decline is therefore NOT all the transfer's
+      doing, which is the point of salton.qsa_share_of_decline.
+
+  salton.qsa_share_of_decline:
+    id: salton.qsa_share_of_decline
+    value: 0.606
+    units: fraction
+    low: 0.505
+    high: 0.758
+    confidence: derived
+    derived_from:
+      - salton.qsa_transfer_volume
+      - salton.inflow_2003
+      - salton.inflow_post2020
+    notes: >
+      Fraction of the Sea's inflow decline attributable to the QSA transfers:
+      303,000 / (1.25M - 0.75M) = 0.61. Band takes the decline's own range
+      (400k-600k AF). Assumes conserved water would otherwise have reached the Sea
+      roughly one-for-one, which holds for fallowing AND for on-farm efficiency (both
+      cut drain flow) — so IID's ~2012 shift from fallowing to efficiency does NOT
+      remove the externality, as the Phase 2 caveat had suggested. Abman et al. (2025)
+      find playa exposure and dust accelerating after 2011 as the transfer ramped.
+
+  salton.dust_share_of_spend:
+    id: salton.dust_share_of_spend
+    value: 0.75
+    units: fraction
+    low: 0.5
+    high: 1.0
+    confidence: low
+    citations: [lao_salton]
+    notes: >
+      Share of the Salton Sea Management Program's spend that is dust suppression
+      rather than habitat. The programme builds combined "habitat and dust suppression"
+      projects on exposed playa, so the split is not published. The band is OUR
+      ALLOWANCE: half to all of it. Restoration is not the same as dust mitigation.
+
+  salton.externality_attributed:
+    id: salton.externality_attributed
+    value: 89.5
+    units: USD/acre-foot
+    low: 35.4
+    high: 193.2
+    year: 2018
+    confidence: derived
+    derived_from:
+      - salton.externality
+      - salton.qsa_share_of_decline
+      - salton.dust_share_of_spend
+    notes: >
+      THE PHASE 3 REPLACEMENT for salton.externality. The full-attribution figure
+      ($140-255/AF) times the QSA's share of the decline times the dust share of spend:
+      197 x 0.606 x 0.75 = ~$90/AF (2018 dollars), band 35-193 (low x low x low,
+      high x high x high). Applies ONLY to water conserved in the Imperial Valley,
+      which drains to the Sea. Palo Verde drains back to the river: it carries none.
+      Phase 0.5 had added the full externality to PVID's price — the wrong district.
+
+  salton.damage_noaction:
+    id: salton.damage_noaction
+    value: 49500000000.0
+    units: USD over 30 years
+    low: 29000000000.0
+    high: 70000000000.0
+    year: 2014
+    confidence: medium
+    citations: [pacinst_hazards_toll]
+    notes: >
+      Pacific Institute's cost of INACTION at the Sea over 30 years: air-quality health
+      costs, lost habitat, recreation and property value. $29B under optimistic
+      assumptions, up to $70B; ~$37B of the upper figure is health. Central value is
+      the midpoint. Used only for the stress case where mitigation is not delivered.
+
+  salton.externality_damage_basis:
+    id: salton.externality_damage_basis
+    value: 3300.0
+    units: USD/acre-foot
+    low: 1611.0
+    high: 5833.0
+    year: 2014
+    confidence: derived
+    derived_from:
+      - salton.damage_noaction
+      - salton.qsa_share_of_decline
+      - salton.qsa_transfer_volume
+    notes: >
+      STRESS CASE, NOT THE CENTRAL ESTIMATE. If the state does not deliver the dust
+      mitigation it is the statutory backstop for, the right price of a transferred
+      acre-foot is the damage, not the mitigation: 49.5B/30 x 0.606 / 303k = ~$3,300/AF
+      (2014 dollars). Mitigation is the cheaper path by more than an order of
+      magnitude — which is why the central case prices mitigation, and why whether the
+      state actually builds it is the hinge of the whole reallocation story.
+
+  salton.playa_response_2023:
+    id: salton.playa_response_2023
+    value: 3500.0
+    units: acres
+    confidence: medium
+    citations: [laist_salton_conservation]
+    notes: >
+      After the 2023 compensated-conservation year, the Sea fell ~10 inches and lost
+      ~3,500 acres of surface. A directly observed link from paid conservation to new
+      exposed lakebed.
+
+  # ------------------------------------------------------------- paying farmers
+  ag.conservation_price:
+    id: ag.conservation_price
+    value: 365.0
+    units: USD/acre-foot
+    low: 280.0
+    high: 400.0
+    year: 2022
+    confidence: medium
+    citations: [usbr_lc_conservation_2022, mwd_pvid]
+    notes: >
+      What a farm district is actually paid to leave Colorado River water in the
+      river. Reclamation's 2022 programme paid $330 (1-yr), $365 (2-yr) and $400 (3-yr)
+      per AF; PVID's fallowing programme works out to ~$280 (fallowing.direct_cost).
+      IID said the 1A prices were insufficient for its own programme, so the top of the
+      band may be low. Water at the river, not at a city tap.
+
+  ag.iid_share_of_conservation:
+    id: ag.iid_share_of_conservation
+    value: 0.625
+    units: fraction
+    low: 0.5
+    high: 0.8
+    confidence: medium
+    citations: [ap_iid_fallowing_2023, usbr_lc_conservation_2022]
+    notes: >
+      Share of California's paid ag conservation that comes from the Imperial Valley
+      (and so carries the Salton Sea externality): IID pledged 250,000 of California's
+      400,000 AF/yr in 2023. Band is our allowance around that one observation.
+
+  ag.conservation_capacity:
+    id: ag.conservation_capacity
+    value: 400000.0
+    units: acre-feet/year
+    low: 250000.0
+    high: 700000.0
+    confidence: low
+    citations: [usbr_lc_conservation_2022, ap_iid_fallowing_2023]
+    notes: >
+      How much ADDITIONAL ag water California's Colorado River farms can sell each year
+      at around these prices. Central = the 400,000 AF/yr California actually pledged
+      and delivered in the 2023-2026 programme. Low = IID's 250,000 alone. High =
+      700,000 = that programme plus a second QSA-sized transfer — an ASSUMPTION, not an
+      observation; the binding limits are political, community and Salton Sea, not
+      hydrological.
+
+  iid.fallowing_2003_2017.volume:
+    id: iid.fallowing_2003_2017.volume
+    value: 1800000.0
+    units: acre-feet
+    confidence: medium
+    citations: [ap_iid_fallowing_2023]
+    notes: "Water conserved by IID's QSA fallowing programme over its 15 years (~300,000 acre-years fallowed)."
+
+  iid.fallowing_2003_2017.payments:
+    id: iid.fallowing_2003_2017.payments
+    value: 161000000.0
+    units: USD
+    year: 2010
+    confidence: medium
+    citations: [ap_iid_fallowing_2023]
+    notes: >
+      Total paid to farmers, nominal across 2003-2017; `year` is the programme
+      midpoint, an approximation. Implies ~$89/AF — what the original transfer paid
+      farmers per acre-foot, before anyone priced the lakebed it exposed.
+
+  # ------------------------------------------------------------- getting it to the coast
+  mwd.rate.system_access_2026:
+    id: mwd.rate.system_access_2026
+    value: 492.0
+    units: USD/acre-foot
+    year: 2026
+    confidence: high
+    citations: [mwdoc_rates_2026, calleguas_rates_2026]
+    notes: "Metropolitan's charge for use of its conveyance and distribution system."
+
+  mwd.rate.system_power_2026:
+    id: mwd.rate.system_power_2026
+    value: 179.0
+    units: USD/acre-foot
+    year: 2026
+    confidence: high
+    citations: [mwdoc_rates_2026, calleguas_rates_2026]
+    notes: "Metropolitan's charge for the power to pump water through the CRA and SWP."
+
+  mwd.rate.treatment_2026:
+    id: mwd.rate.treatment_2026
+    value: 544.0
+    units: USD/acre-foot
+    year: 2026
+    confidence: high
+    citations: [mwdoc_rates_2026, calleguas_rates_2026]
+
+  mwd.rate.full_service_treated_2026:
+    id: mwd.rate.full_service_treated_2026
+    value: 1528.0
+    units: USD/acre-foot
+    year: 2026
+    confidence: high
+    citations: [mwdoc_rates_2026, calleguas_rates_2026]
+    notes: >
+      What a Southern California member agency pays Metropolitan for treated imported
+      water in 2026 ($492 access + $179 power + $313 supply + $544 treatment). The
+      reference line on the supply stack: the price of the water being cut.
+
+  conveyance.colorado_to_coast:
+    id: conveyance.colorado_to_coast
+    value: 697.0
+    units: USD/acre-foot
+    low: 179.0
+    high: 1215.0
+    year: 2026
+    confidence: derived
+    derived_from:
+      - mwd.rate.system_power_2026
+      - mwd.rate.system_access_2026
+      - mwd.rate.treatment_2026
+    notes: >
+      Cost of getting an acre-foot left in the river at Palo Verde or Imperial to a
+      coastal city, treated. Water at the river is not water at the tap, and Phase 0
+      compared the first with desal's second. LOW = power only (the aqueduct and
+      treatment plants are built and, after California's cut, under-used, so their
+      capital is sunk). HIGH = Metropolitan's full wheeling-plus-treatment charge
+      ($492 + $179 + $544), what an agency actually pays. Central is the midpoint.
+      Desal and the urban options are already delivered into the system.
+
+  # ------------------------------------------------------------- the need
+  ca.colorado_cut:
+    id: ca.colorado_cut
+    value: 440000.0
+    units: acre-feet/year
+    high: 1056000.0
+    confidence: medium
+    citations: [lvsun_rod_2026, usbr_post2026_rod]
+    notes: >
+      California's share of the Lower Basin's 1.25 MAF/yr reduction under the
+      2027-2028 guidelines, IF the states follow their proposed sharing agreement
+      (Arizona 760k, Nevada 50k). HIGH = California's same 35.2% share of the 3 MAF
+      maximum Lower Basin reduction the framework allows in extreme conditions. The
+      Record of Decision itself fixes no volumes; Nevada is suing.
+
+  # ------------------------------------------------------------- urban options
+  stormwater.cost:
+    id: stormwater.cost
+    value: 1000.0
+    units: USD/acre-foot
+    low: 470.0
+    high: 1660.0
+    year: 2015
+    confidence: medium
+    citations: [pacinst_cost_2016, water_la_2018]
+    notes: >
+      Pacific Institute (2015 dollars, full-system cost): large projects median $590
+      (two projects), small projects $980-1,660 (25th-75th pct, median ~$1,500, read
+      off Figure ES1). LADWP projects $470-1,220 (2018). Central is the midpoint of the
+      large and small medians.
+
+  stormwater.quantity_socal:
+    id: stormwater.quantity_socal
+    value: 350000.0
+    units: acre-feet/year
+    low: 200000.0
+    high: 450000.0
+    confidence: low
+    citations: [pacinst_stormwater_2014, pacinst_untapped_2022]
+    notes: >
+      Pacific Institute/NRDC 2014: 420,000-630,000 AF/yr for urban Southern California
+      AND the Bay Area together; the Southern California share is not separated in our
+      sources and is ASSUMED to be about two-thirds. Highly weather-dependent: the 2022
+      update gives 580,000 AF statewide in a dry year against 3 MAF in a wet one.
+
+  conservation.cost:
+    id: conservation.cost
+    value: 900.0
+    units: USD/acre-foot
+    low: 500.0
+    high: 1830.0
+    year: 2015
+    confidence: medium
+    citations: [ucr_turf_review, pacinst_cost_2016]
+    notes: >
+      Utility cost of landscape-led urban conservation, the marginal measure once the
+      cheap indoor fixtures are done. Turf-removal programmes: $512, $532, $718, $1,834
+      per AF (average $899). Pacific Institute's landscape conversion: $580-1,400 at
+      $5/sq ft. Many indoor measures are negative-cost to the customer and are not
+      priced here. Dollar year approximate.
+
+  conservation.quantity_socal:
+    id: conservation.quantity_socal
+    value: 500000.0
+    units: acre-feet/year
+    low: 250000.0
+    high: 1000000.0
+    confidence: low
+    citations: [pacinst_untapped_2022]
+    notes: >
+      Pacific Institute 2022: statewide urban efficiency potential 2.0-3.1 MAF/yr
+      (30-48% of 6.6 MAF urban use). Southern California is roughly half of urban
+      use; we take a quarter to two-thirds of that half as achievable at programme
+      cost. An ASSUMPTION, deliberately wide, and sensitivity-tested.
+
+  reuse.pwsc.unit_cost:
+    id: reuse.pwsc.unit_cost
+    value: 5200.0
+    units: USD/acre-foot
+    low: 5200.0
+    high: 6800.0
+    year: 2025
+    confidence: high
+    citations: [mwd_pwsc_cost_2025]
+    notes: >
+      Pure Water Southern California, Metropolitan's own "point-in-time" unit cost,
+      2025 dollars, 100% debt at 4% over 30 years: $5,200 (45 MGD and 150 MGD),
+      $5,400 (115 MGD), $6,800 (75 MGD). Same financing convention the stack uses for
+      desal. Over a 100-year life Metropolitan quotes $2,800-3,400 (see
+      reuse.pwsc.unit_cost_lifecycle) — a desal plant amortised over 100 years would
+      look cheaper too, so that is not the like-for-like figure.
+
+  reuse.pwsc.unit_cost_lifecycle:
+    id: reuse.pwsc.unit_cost_lifecycle
+    value: 2900.0
+    units: USD/acre-foot
+    low: 2800.0
+    high: 3400.0
+    year: 2025
+    confidence: high
+    citations: [mwd_pwsc_cost_2025]
+
+  reuse.pwsc.yield:
+    id: reuse.pwsc.yield
+    value: 154600.0
+    units: acre-feet/year
+    low: 46400.0
+    high: 154600.0
+    confidence: high
+    citations: [mwd_pwsc_cost_2025]
+    notes: "150 MGD full programme; 46,400 AF at 45 MGD. Online 2035-2045 depending on phasing."
+
+  reuse.pwsc.capex:
+    id: reuse.pwsc.capex
+    value: 11315000000.0
+    units: USD
+    year: 2025
+    confidence: high
+    citations: [mwd_pwsc_cost_2025]
+    notes: >
+      Total programme cost at 150 MGD including the sanitation district's share
+      ($9.84B Metropolitan + $1.47B LACSD). ~$75M per MGD, against Carlsbad's ~$22M
+      per MGD in the same 2025 dollars. The Californian cost premium is not specific to
+      desalination.
+
+  reuse.pwsc.capacity_mgd:
+    id: reuse.pwsc.capacity_mgd
+    value: 150.0
+    units: MGD
+    confidence: high
+    citations: [mwd_pwsc_cost_2025]
+
+  reuse.ipr_large.cost:
+    id: reuse.ipr_large.cost
+    value: 1780.0
+    units: USD/acre-foot
+    low: 1590.0
+    high: 2000.0
+    year: 2015
+    confidence: medium
+    citations: [pacinst_cost_2016]
+    notes: >
+      Large indirect potable reuse projects as built up to 2015 (median and 25th-75th
+      percentile, read off Figure ES1). Context: what potable reuse USED to cost.
+
+  reuse.pure_water_sd.unit_cost:
+    id: reuse.pure_water_sd.unit_cost
+    value: 3527.0
+    units: USD/acre-foot
+    year: 2025
+    confidence: low
+    citations: [vosd_pure_water_2025]
+    notes: "City of San Diego's 2025 estimate, up from earlier $1,700-1,900. Single secondary source."
+
+  desal.seawater_large.cost_pi:
+    id: desal.seawater_large.cost_pi
+    value: 2100.0
+    units: USD/acre-foot
+    low: 2000.0
+    high: 2540.0
+    year: 2015
+    confidence: medium
+    citations: [pacinst_cost_2016]
+    notes: "Pacific Institute's large seawater desal median and IQR. Independent cross-check on the engine."
+
+  brackish.cost:
+    id: brackish.cost
+    value: 1170.0
+    units: USD/acre-foot
+    low: 980.0
+    high: 1340.0
+    year: 2015
+    confidence: medium
+    citations: [pacinst_cost_2016]
+    notes: "Large brackish desal. Inland and groundwater-limited; quantity not assessed, so off the stack."
+
+  # ------------------------------------------------------------- public finance
+  finance.public.rate:
+    id: finance.public.rate
+    value: 0.04
+    units: fraction/year
+    low: 0.035
+    high: 0.05
+    confidence: medium
+    citations: [mwd_pwsc_cost_2025]
+    notes: >
+      Metropolitan's own assumption for financing Pure Water: 100% debt at 4% over 30
+      years. Band is our allowance. Used for every option on the stack so that
+      financing structure does not decide the ranking.
+
+  finance.public.term:
+    id: finance.public.term
+    value: 30.0
+    units: years
+    confidence: medium
+    citations: [mwd_pwsc_cost_2025]

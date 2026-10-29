@@ -112,21 +112,49 @@ class TestLCOWMechanics:
 # --------------------------------------------------------------------------------------
 
 
+def _carlsbad_at_minimum(year: int) -> float:
+    """Carlsbad's cost at the 48,000 AF/yr take-or-pay minimum, in `year` dollars."""
+    nameplate_af = plants.carlsbad().nameplate_m3_year / params.value("unit.acre_foot_m3")
+    u = params.value("desal.carlsbad.min_volume") / nameplate_af
+    return lcow.lcow(plants.carlsbad(year=year, utilisation=u), plants.carlsbad_finance()).total_usd_af
+
+
 class TestValidation:
-    def test_carlsbad_reproduces_the_sdcwa_price(self):
-        """The strongest evidence the engine is sound. Nothing here was tuned: capex,
-        80.9% gearing, the observed 4.78% bond rate, California industrial power and
-        generic SWRO O&M are all independent inputs, and they land within a few percent
-        of the price the Water Authority actually reports paying."""
-        modelled = lcow.lcow(plants.carlsbad(), plants.carlsbad_finance()).total_usd_af
-        lo, hi = params.band("desal.carlsbad.price_sdcwa")
+    """Each check runs the model in the DOLLAR YEAR of the figure it is checked against.
+
+    Phase 2 originally validated a 2015-capex/2025-energy hybrid against an undated
+    SDCWA figure and got 1.1%. That agreement was partly two vintage errors cancelling.
+    These are the like-for-like replacements, and the model now meets three Carlsbad
+    figures from three different years with the same inputs.
+    """
+
+    def test_carlsbad_reproduces_the_2012_contract_price(self):
+        """The Water Purchase Agreement priced water at ~$2,290/AF (2012 dollars) at
+        the 48,000 AF minimum. Nothing in the model was tuned to it."""
+        modelled = _carlsbad_at_minimum(2012)
+        assert modelled == pytest.approx(
+            params.value("desal.carlsbad.contract_price_min_volume"), rel=0.05
+        )
+
+    def test_carlsbad_reproduces_the_2013_projection(self):
+        """SDCWA's January 2013 projection including the pipeline, at full output."""
+        modelled = lcow.lcow(plants.carlsbad(year=2013), plants.carlsbad_finance()).total_usd_af
+        lo, hi = params.band("desal.carlsbad.price_projected_total_2013")
         assert lo * 0.95 <= modelled <= hi * 1.05
 
+    def test_carlsbad_reproduces_todays_price(self):
+        """SDCWA's current ~$3,500/AF, against the model in 2025 dollars at the
+        take-or-pay minimum. The model sits ~5% low, consistent with the post-2019
+        intake upgrades (~$159M) that are in the price but not in the model's capex."""
+        modelled = _carlsbad_at_minimum(2025)
+        assert modelled == pytest.approx(params.value("desal.carlsbad.price_current"), rel=0.07)
+        assert modelled < params.value("desal.carlsbad.price_current")
+
     def test_sorek_reproduces_the_published_fixed_leg(self):
-        """The Israeli WDA publishes Sorek's fixed price at $0.25/m3. The model builds
-        it from capex, 80% gearing and a 22-year tenor and gets within a couple of
-        percent — which is what licenses using the same machinery on both countries."""
-        modelled = lcow.lcow(plants.sorek(), plants.sorek_finance()).fixed_usd_m3
+        """The Israeli WDA publishes Sorek's fixed price at $0.25/m3 (2013-era). The
+        model builds it from capex, 80% gearing and a 22-year tenor and gets within a
+        few percent — which is what licenses using the same machinery on both countries."""
+        modelled = lcow.lcow(plants.sorek(year=2013), plants.sorek_finance()).fixed_usd_m3
         assert modelled == pytest.approx(params.value("desal.sorek.price_fixed"), rel=0.10)
 
     def test_sorek_variable_leg_overshoots_the_published_tariff(self):

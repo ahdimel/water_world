@@ -7,6 +7,14 @@ what the owner has decided, what is still contested, and what to do next.
 Read this first, then CLAUDE.md, then [PHASE0_FINDINGS.md](PHASE0_FINDINGS.md) when you
 need the evidence itself.
 
+> **STATUS, 2026-10-28: Phase 3 is done and the project is closing.** The owner chose to
+> finish with the full supply stack (§4b) and then end the project with ONE deliverable:
+> a long-form, data-driven article on ahdimel.com, co-authored by ahdimel and Claude. The
+> model bill, legislator deck and Colorado submission are dropped. Comparators: Colorado
+> and Israel only. SWRO flexibility and ship-mounted desal were cut from scope and are
+> named in the article as open questions. Sections 4a and earlier are kept as history;
+> where Phase 3 overturned them it says so in place.
+
 ---
 
 ## 1. Where this came from
@@ -84,12 +92,14 @@ documents that has $3,500 on one side.
 | Decision | Choice |
 |---|---|
 | Thesis | Combined arc: mispricing → supply stack → 5x gap |
-| Deliverables | **All four** — see below |
-| Framing (desal-forward vs fallowing-baseline) | **Deferred to the model.** Explicitly. |
+| Deliverables | ~~All four~~ → **one article on ahdimel.com, then close** (2026-10-28) |
+| Framing (desal-forward vs fallowing-baseline) | **Decided by the model** — §4b |
+| Comparators | **Colorado + Israel only** (2026-10-28) |
+| Byline | "ahdimel and Claude" |
 
-**Deliverables:** D1 HTML findings paper (GitHub Pages), D2 California desal procurement
-model bill + memo, D3 legislator pitch deck, D4′ Colorado River submission at the next
-operating-guidelines cycle.
+**Deliverables, original:** D1 HTML findings paper, D2 California desal procurement
+model bill + memo, D3 legislator pitch deck, D4′ Colorado River submission. Only D1
+survives, as the ahdimel.com article.
 
 ### The framing gate — the one rule not to break
 
@@ -102,11 +112,11 @@ mapping each possible model outcome to the argument the paper would then make.
 This is also the main defence against motivated reasoning, which is a live risk — the
 project now has both a stated prior *and* a preferred villain (permitting).
 
-### Still unanswered — ask before assuming
+### Answered 2026-10-28
 
-1. Comparator basins (Spain, Israel, Murray–Darling) in the paper, or Colorado-only?
-2. How much of the national water-affordability material survives into D1 versus
-   compressing to a single exhibit?
+1. Comparator basins: **Colorado + Israel only.**
+2. National affordability material: compresses to a single exhibit in the article
+   (water bills vs CPI since 2000).
 
 ---
 
@@ -117,10 +127,14 @@ built the cost engine on top of it — see §4a, which is where the interesting 
 
 **Verified from primary data:**
 
-- **Both major reservoirs are at all-time lows and still falling.** As of 2026-08-21 the
-  six lowest readings in each record are the last six days. Mead at 23% of its historic
-  maximum, Powell at 20% (excluding its 1963 filling). The owner already knew this — it
-  is what started the project — but it is now sourced from USBR rather than journalism.
+- **Both major reservoirs hit all-time lows in autumn 2026** (re-fetched 2026-10-28,
+  data to 10-27). Mead's lowest reading ever is 2026-10-22 (6.78 MAF, 22.7% of its 1942
+  peak) and it is still near there. Powell's lowest since first filling is 2026-09-15
+  (5.07 MAF); a freak October storm (San Juan River flooding, ~65,000 cfs inflow on
+  Oct 20-22, second-highest October on record) has since lifted it ~10 ft to 5.84 MAF,
+  still ~23% full — "a drop in the bucket" per hydrologists. Do not write "still
+  falling" for Powell. The August claim ("six lowest readings are the last six days")
+  is stale.
 - **The water-price claim, re-verified against BLS directly:** +207% water/sewer/trash vs
   +92% CPI, Jan 2000 – Dec 2025. A 60% real increase.
 
@@ -216,11 +230,78 @@ make the honest version the easy one. Do not undo this to get a sharper headline
 
 ---
 
+## 4b. Phase 3 — the supply stack, and what the gate said
+
+Built 2026-10-28. `ww/model/deflate.py`, `ww/model/salton.py`, `ww/model/stack.py`;
+CLI `ww deflator | salton | stack`; tests in `tests/test_phase3.py` (180 total pass).
+Every option is priced in **2025 dollars**, **delivered treated into the Southern
+California system**, on **public finance** (100% debt, 4%, 30 yr — Metropolitan's own
+convention for Pure Water).
+
+**The stack (medians, 90% bands, n=10,000):**
+
+| Option | $/AF |
+|---|---|
+| Paying farmers, delivered, dust mitigated | **1,134** (791–1,475) |
+| Stormwater capture | 1,397 (880–1,980) |
+| Urban conservation (landscape-led) | 1,423 (907–2,156) |
+| *Imported water today (MWD treated rate, reference)* | *1,481* |
+| Desal at Israeli capex, built in California | 1,788 (1,614–1,976) |
+| Desal, permitting reformed | 2,294 (2,027–2,527) |
+| Desal at Carlsbad cost, public finance | 2,653 (2,461–2,854) |
+| *Desal as built (Carlsbad, private finance)* | *3,043* |
+| *Paying farmers, dust NEVER controlled* | *3,916* (2,975–5,026) |
+| Potable reuse, Pure Water SoCal | 5,677 (5,242–6,445) |
+
+**The gate (rule fixed before the first run; see the stack.py docstring).** Reallocation
+beats even the Israeli-cost desal counterfactual with P = 0.999. Whether ag capacity alone
+covers California's 440,000 AF/yr cut is a **coin flip** — exact P = 0.5007, which puts
+it on the row 1 / row 2 boundary, and the gate says so rather than reporting the side the
+noise fell on. At the extreme cut (1.056 MAF) it is **decisively row 2: cheap but
+capped.** So the paper argues REQUIREMENTS row 2, with the caveat that at today's cut
+the ceiling is roughly the size of the need. Conservation and stormwater are also below
+any desal: options cheaper than Israeli-cost desal total ~1.24 MAF median and cover the
+440k cut in 98% of draws; at 440k the marginal acre-foot is never desal.
+
+**Six corrections to earlier phases, each pinned by a test:**
+
+1. **The "12x" was river water against tap water.** Phase 0 priced fallowing at the
+   river and desal delivered. Delivered treated, paying farmers is $402 (payment) +
+   $675 (getting it to the coast) + $72 (dust) = ~$1,150. Against Carlsbad as built
+   that is ~2.6x, against Israeli-cost desal ~1.6x. **Conveyance is the biggest line.**
+2. **The $477/AF "social cost of fallowing" used the wrong district.** The Salton Sea
+   dust cost belongs to Imperial Valley water; Palo Verde drains back to the river.
+3. **The Salton externality, attributed:** $253 (full, 2025$) → $153 after the QSA's 61%
+   share of the inflow decline → **$115** after a 75% dust share of spend. IID's shift to
+   efficiency does NOT remove it (efficiency cuts drain flow too). Unmitigated, the
+   damage basis is **~$4,500/AF** — at which paying farmers loses to every reformed desal.
+   The whole reallocation case rests on the state building the dust control it owes.
+4. **$3,500 is reinstated.** Phase 2 retired it by comparing it with older nominal
+   figures. The 2012 contract price is ~$3,210 in 2025 dollars; the model at the
+   take-or-pay minimum gives ~$3,330. The engine now validates against FOUR figures in
+   their own dollar years (2012 contract, 2013 projection, today's ~$3,500, Sorek 2013).
+   Phase 2's 1.1% match was partly two vintage errors cancelling.
+5. **The gap in 2025 dollars is 4.13x** (3.89–4.65x); permitting still explains 1.38x;
+   ~3x is still unexplained. Permitting reform is worth ~$576/AF on private finance.
+   Public finance alone takes Carlsbad from ~$3,040 to ~$2,650.
+6. **Potable reuse is now the most expensive option.** Pure Water SoCal at Metropolitan's
+   own published $5,200/AF (30-yr basis) costs more than Carlsbad. Its capex is ~$75M per
+   MGD against Carlsbad's ~$22M. **The Californian premium is not desal-specific** —
+   which supports the "combined institutional residual" reading in §4a.
+
+**Weakest inputs, in order:** `ag.conservation_capacity` (decides row 1 vs 2; an
+assumption anchored on one programme), the urban quantities (`*.quantity_socal`, both
+assumptions), `salton.dust_share_of_spend` (our allowance), and the conveyance band
+($179 power-only to $1,215 full wheeling — the widest single term in delivered ag cost).
+
+---
+
 ## 5. What is contested — handle with care
 
 Ranked by how much damage being wrong would do:
 
-1. **`salton.externality` (~$140–255/AF).** The most load-bearing *and* most contested
+1. **`salton.externality` (~$140–255/AF)** — *superseded in Phase 3 by
+   `salton.externality_attributed` (~$115/AF in 2025$, §4b). Kept as history:* the most load-bearing *and* most contested
    number in the project. It assumes all QSA transfer drives playa exposure and all
    restoration spend is dust-driven. Neither is strictly true: IID shifted from fallowing
    to efficiency measures around 2012, some exposure would have happened anyway, and
@@ -237,8 +318,8 @@ Ranked by how much damage being wrong would do:
    hypothesis is not an independent rival that can be subtracted.
 3. **`econ.capex_scaling_exponent` (0.8) drives the 5x headline.** Always report with the
    0.75–0.9 sensitivity. A test enforces the result survives both extremes.
-4. ~~**`desal.carlsbad.price_current` ($3,500/AF) is low-confidence**~~ — **checked in
-   Phase 2, and it did not hold up.** SDCWA's own figure is $2,302-2,559/AF, which
+4. **REVERSED IN PHASE 3: $3,500 is today's price (§4b item 4).** What Phase 2 said:
+   ~~checked in Phase 2, and it did not hold up.~~ SDCWA's own figure is $2,302-2,559/AF, which
    independently corroborates the Surfrider reading of the WPA ($2,290/AF) and the
    model's own $2,456/AF. The $3,500 press figure is ~1.44x that, and the modelled
    utilisation wedge only accounts for ~1.09x. **Use `desal.carlsbad.price_sdcwa` as the
@@ -251,52 +332,30 @@ Ranked by how much damage being wrong would do:
 
 ---
 
-## 6. What is left, and what comes next
+## 6. What is left
 
-**The Phase 2 cost engine is done** — LCOW with explicit financing, the scale-adjusted
-comparison with exponent sensitivity, the permitting-risk module, and Monte Carlo over
-the ranges. See §4a for what it produced. Four Phase 2 items remain open:
+**The article** — the project's only remaining deliverable. Source lives in this repo
+(`article/`), is built from the model so numbers cannot drift, and is imported into
+ahdimel.com by a tool in that repo (same pattern as the exoplanets paper). After it is
+live, the project is closed.
 
-- **Salton Sea attribution model (§5.1).** Still the most load-bearing contested number
-  in the project, and still un-sensitised. This is the highest-value remaining work in
-  Phase 2 because it decides whether Act II's ranking is close or not.
-- **The $3,500/AF reconciliation.** The utilisation wedge explains ~1.09x, not the ~1.44x
-  needed. Find what else is in that figure — SDCWA supply-portfolio allocation, the
-  pipeline debt service, or a different denominator — before the paper quotes either
-  number as *the* Carlsbad price.
-- **Public vs private financing.** The engine runs every Californian plant on Carlsbad's
-  private structure (80.9% geared, private equity return). Doheny is a public district
-  project with no equity return, which is most of why the model puts it at ~$2,990/AF
-  against an expected $2,058. That is a real cost channel and Act III should price it —
-  a public procurement route may be worth more than permitting reform.
-- **SWRO flexibility** (see §5.5) and **ship-mounted desal** as a bounded extension.
-  Ships exist at emergency scale (Saudi barges since 2008, NIOT Chennai 2007), so the
-  question is why it never scaled. **Cite operating plants only** — this space attracts
-  vaporware; one heavily-promoted concept was debunked in 2026 with doubts the vessel
-  exists.
+Deliberately NOT done, named in the article as open questions: SWRO flexible operation,
+ship-mounted desal, an ENR-based construction deflator (CPI-U is used; it understates
+post-2020 construction inflation), a Salton attribution that uses bathymetry rather than
+inflow shares, and the Israeli variable-leg overshoot (still pinned, still not tuned).
 
-Two calibration limitations are pinned by tests rather than fixed, deliberately:
-
-- **The Israeli variable leg overshoots.** Using Israel's general industrial tariff, the
-  model puts Sorek's variable cost well above the published $0.27/m3. Israeli desal
-  probably does not pay the general industrial rate, and the WDA tariffs are of an
-  earlier vintage. **Do not tune the energy price to close this** — the same SEC and O&M
-  assumptions are what make the Carlsbad validation independent, and fitting one would
-  destroy the other.
-- **Vintage mixing.** Sorek's capex is 2013, Carlsbad's 2015, energy prices 2025,
-  WateReuse O&M 2011. A deflator pass is needed before publication.
-
-If CAISO hourly prices are needed, `ww/sources/caiso.py` is implemented and tested but
-registers no windows by default — a year is ~12 chunked queries against a throttled
-endpoint. Use `caiso.make_window()` and decide deliberately how much history to pull.
-
-**Then Phase 3** (supply stack, and the framing gate opens), **Phase 4** (D1),
-**Phase 5** (D2/D3).
+If CAISO hourly prices are ever needed, `ww/sources/caiso.py` is implemented and tested
+but registers no windows by default. Use `caiso.make_window()`.
 
 ---
 
 ## 7. Traps that have already bitten
 
+- **Never compare water at the river with water at the tap.** Phase 0's "12x" did. Any
+  Colorado River option needs `conveyance.colorado_to_coast` before it meets desal.
+- **Never compare dollar figures without their years.** Phase 2 retired a correct price
+  this way. Every dollar parameter carries `year:`; `deflate.real()` refuses one that
+  does not.
 - **Never cite Fondomonte/Butler Valley as a Colorado River example.** That is Arizona
   *groundwater* and those leases were cancelled in 2023. Fondomonte's **Palo Verde Valley**
   operation is Colorado River water — use that one. Getting this wrong would discredit the

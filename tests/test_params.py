@@ -11,6 +11,7 @@ from __future__ import annotations
 import pytest
 
 from ww import params
+from ww.model import deflate
 
 
 @pytest.fixture(scope="module")
@@ -315,14 +316,17 @@ class TestPhase2CrossChecks:
         lo, _ = params.band("desal.carlsbad.price_sdcwa")
         assert contract == pytest.approx(lo, rel=0.05)
 
-    def test_the_3500_headline_does_not_reconcile_with_the_contract_price(self):
-        """Deliberately asserts the DISAGREEMENT. The press figure and the contract
-        price differ by far too much to be the same quantity, which is the evidence
-        that one is an effective cost inflated by under-delivery. If a future edit ever
-        makes these agree, someone has quietly conflated them."""
+    def test_the_3500_headline_is_the_contract_price_after_inflation(self):
+        """REVERSES a Phase 2 result. Phase 2 found $3,500 was ~1.44x the contract price
+        and only ~1.09x of that was explained by under-delivery, so it "retired" the
+        figure. Both sides were nominal dollars from different years. The 2012
+        contract price restated in 2025 dollars is ~$3,210, within ~9% of SDCWA's
+        current figure; the remainder is consistent with the post-2019 intake upgrades.
+        $3,500 is today's price, not an inflated one."""
         press = params.value("desal.carlsbad.price_current")
-        contract = params.value("desal.carlsbad.price_sdcwa")
-        assert press / contract > 1.3
+        contract_2025 = deflate.real("desal.carlsbad.contract_price_min_volume")
+        assert press / params.value("desal.carlsbad.contract_price_min_volume") > 1.3
+        assert press == pytest.approx(contract_2025, rel=0.10)
 
     def test_conveyance_wedge_is_observable_from_the_2013_projections(self):
         """Plant-only vs with-pipeline gives a directly measured conveyance cost, which
@@ -352,8 +356,8 @@ class TestPhase2CrossChecks:
         10x SMALLER than Carlsbad — so scale economies work against it — yet it still
         prices below Carlsbad. Evidence that mandated intake technology is not the
         dominant term in the residual."""
-        doheny = params.value("desal.doheny.price_first_year")
-        carlsbad = params.value("desal.carlsbad.price_sdcwa")
+        doheny = deflate.real("desal.doheny.price_first_year")
+        carlsbad = deflate.real("desal.carlsbad.price_current")
         assert doheny < carlsbad
         assert params.value("desal.doheny.capacity") < params.value(
             "desal.carlsbad.capacity"

@@ -2,6 +2,10 @@
 
 Operational reference: layout, commands, and traps.
 
+> **2026-10-28: Phase 3 done; project closing with one article on ahdimel.com.** See
+> HANDOFF.md status block and §4b. Everything below "Current state" is history unless
+> it says otherwise.
+
 **Picking this up cold? Read [HANDOFF.md](HANDOFF.md) first** — it carries the reasoning
 (how the thesis got here, what the owner decided, what is contested, what to do next).
 This file assumes you already have that context.
@@ -42,9 +46,12 @@ ww/model/              PHASE 2 cost engine
   permitting.py          approval delay + rejection risk priced as capital (§2.2)
   plants.py              reference plants assembled from literature.yaml
   montecarlo.py          parameter ranges -> outcome distributions
+  deflate.py             PHASE 3: CPI-U restatement into 2025 dollars (table committed)
+  salton.py              PHASE 3: Salton Sea externality, attributed + damage stress case
+  stack.py               PHASE 3: supply stack, joint Monte Carlo, the framing gate
 ww/cli_model.py        Phase 2 CLI commands (kept out of __main__ so caveats are testable)
 ww/__main__.py         CLI
-data/parameters/       COMMITTED evidence: literature.yaml
+data/parameters/       COMMITTED evidence: literature.yaml, cpi_u_annual.yaml (generated)
 data/raw/              gitignored cache
 tests/                 offline; parsers run against fixtures, cache against a stubbed downloader
 ```
@@ -63,9 +70,12 @@ python -m ww lcow [plant]         # levelised cost by leg: carlsbad, sorek, dohe
 python -m ww gap                  # scale-adjusted Carlsbad/Sorek capex comparison
 python -m ww permitting           # approval delay and rejection risk, priced in $/AF
 python -m ww montecarlo -n 10000  # LCOW as a distribution
+python -m ww deflator [--rebuild] # CPI-U table; --rebuild regenerates it from the cache
+python -m ww salton               # the Salton externality, one correction at a time
+python -m ww stack                # Phase 3 supply stack + framing gate
 ```
 
-## Current state — Phase 1 complete
+## Current state — Phase 3 complete (history of Phases 0-1 follows)
 
 **Phase 0 and 0.5 (desk research) and Phase 1 (data layer) are done. 76 tests pass.**
 
@@ -111,7 +121,9 @@ Powell at 20% (excluding its 1963 filling period).
 - **`salton.externality` is the most contested load-bearing number.** It assumes all QSA
   transfer drives playa exposure and all restoration spend is dust-driven. Neither is
   strictly true. Sensitivity-test before it carries a conclusion.
-- **Do not use `desal.carlsbad.price_current` ($3,500/AF) as the Carlsbad comparator.**
+- **SUPERSEDED (Phase 3): $3,500 IS the current price** — the bullet below was a
+  dollar-year error. Kept as history. ~~Do not use `desal.carlsbad.price_current`
+  ($3,500/AF) as the Carlsbad comparator.~~
   Phase 2 checked it against primary sources and it did not hold: SDCWA's own figure is
   **$2,302-2,559/AF** (`desal.carlsbad.price_sdcwa`), independently corroborated by the
   WPA reading and by the model. The $3,500 press figure stays in the file, flagged, only
@@ -157,7 +169,26 @@ reported as ONE combined institutional quantity; the split between "permitting" 
 "general US administrative premium" is **not identified** by our data. `scale.decompose`
 enforces this.
 
-## Next
+## Phase 3 — supply stack built (2026-10-28)
+
+180 tests. Every option in 2025 dollars, delivered treated, on public finance. The gate:
+reallocation beats even Israeli-cost desal (P = 0.999); whether ag capacity alone covers
+the 440k AF cut is a coin flip (rows 1/2 not separable); at the extreme cut it is row 2,
+cheap but capped. Full table and the six corrections to earlier phases: HANDOFF §4b.
+
+Phase 3 gotchas:
+
+- **Dollar parameters need `year:`.** `deflate.real()` raises without one. Plant
+  builders take `year=` and default to 2025; validations pass the figure's own year.
+- **CPI-U October 2025 does not exist** (federal shutdown). The table averages 11 months
+  for 2025 and records the gap; 2026 is a provisional year-to-date average.
+- **Stack options are drawn independently** (child-seeded rng per option), so adding a
+  sampler does not reshuffle the others — but shared inputs (CA power, public rate) do
+  NOT co-move across options. Harmless for ag vs desal (no shared inputs).
+- **Python urllib downloads from usbr.gov intermittently truncate** (IncompleteRead) in
+  this sandbox; retry single sources (`ww fetch <id> --force`) rather than `--all`.
+
+## Next (historical)
 
 **Phase 3 — supply stack, and the framing gate opens.**
 
