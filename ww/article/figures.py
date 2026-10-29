@@ -20,6 +20,9 @@ from ww.model import deflate, lcow, permitting, plants, salton, scale, stack
 N_DRAWS = 10_000
 SEED = 20261028
 
+#: Publication date printed in the byline and the citation. Bump it when republishing.
+PUBLISHED = date(2026, 10, 29)
+
 
 @lru_cache(maxsize=1)
 def draws() -> list[stack.Draw]:
@@ -199,7 +202,7 @@ def numbers() -> dict:
     contract_2025 = deflate.real("desal.carlsbad.contract_price_min_volume")
     phase0_ratio = params.value("desal.carlsbad.price_current") / params.value("fallowing.direct_cost")
     return {
-        "today": date(2026, 10, 28),
+        "today": PUBLISHED,
         "n_draws": N_DRAWS,
         "res": res,
         "mead_low_pct": res["mead"]["low_maf"] / res["mead"]["peak_maf"],

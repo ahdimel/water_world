@@ -6,6 +6,12 @@
 <title>The Price of Water</title>
 <meta name="description" content="California is about to lose a tenth of its Colorado River water. We priced every way to replace it: farms, lawns, stormwater, recycling and desalination.">
 <meta name="author" content="ahdimel and Claude">
+<meta name="citation_title" content="The Price of Water">
+<meta name="citation_author" content="ahdimel">
+<meta name="citation_author" content="Claude">
+<meta name="citation_publication_date" content="$built_iso">
+<meta name="citation_public_url" content="https://ahdimel.com/water/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "The Price of Water", "author": [{"@type": "Person", "name": "ahdimel"}, {"@type": "Person", "name": "Claude"}], "datePublished": "$built_iso", "url": "https://ahdimel.com/water/", "publisher": {"@type": "Organization", "name": "ahdimel.com"}}</script>
 <style>
 :root {
   --a-bg: #faf8f5; --a-ink: #1f1d1a; --a-ink-2: #4a4641; --a-muted: #6b6560;
@@ -41,7 +47,7 @@ body { background: var(--a-bg); color: var(--a-ink); }
 .article p { margin: 0 auto 1.1em; }
 .article a { color: var(--a-accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .article > .hero { max-width: 1100px; margin: -24px auto 40px; }
-.hero img { display: block; width: 100%; height: auto; min-height: 220px; object-fit: cover; object-position: 50% 55%; border-radius: 6px; }
+.hero img { display: block; width: 100%; height: auto; min-height: 220px; object-fit: cover; object-position: 50% 70%; border-radius: 6px; }
 .hero figcaption { font-family: var(--sans); font-size: 13px; line-height: 1.45; color: var(--a-muted); margin-top: 8px; }
 .hero figcaption a { color: inherit; }
 .kicker { font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--a-accent); margin-bottom: 14px; }
@@ -143,8 +149,8 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 <main class="article">
 
 <figure class="hero wide">
-  <img src="hero.jpg" width="2000" height="758" alt="The Colorado River curling around Horseshoe Bend between red sandstone cliffs.">
-  <figcaption>The Colorado River at Horseshoe Bend, Arizona, a few miles above Lees Ferry. Photo: <a href="https://commons.wikimedia.org/wiki/File:Horseshoe_Bend_panorama.jpg" rel="noopener">Clementp.fr</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC BY-SA 4.0</a>, cropped.</figcaption>
+  <img src="hero.jpg" width="2000" height="758" alt="The green Colorado River winding through the dark inner gorge of the Grand Canyon, beneath layered red cliffs.">
+  <figcaption>The Colorado River in the Grand Canyon, Arizona. Photo: <a href="https://commons.wikimedia.org/wiki/File:Grand_Canyon_and_Colorado_River_panorama_-_Arizona,_United_States_-_30_Nov._2014.jpg" rel="noopener">Jonathan Fox</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/" rel="noopener">CC BY-SA 2.0</a>, cropped.</figcaption>
 </figure>
 
 <div class="kicker">The Colorado River</div>
@@ -277,13 +283,15 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 
 <hr class="sep">
 
-<h2>Methods</h2>
+<h2>About</h2>
 
-<p class="endnote">Costs are levelized over 30 years and restated in 2025 dollars with the consumer price index. Uncertain inputs are drawn from their published ranges, $n_draws times. The rule deciding the article's conclusion was written into the code before the final run: farm water had to beat the cheapest plausible desalination in 90 percent of runs, and a second test compared its volume with California's cut. The desalination model was checked against published prices it wasn't tuned to:</p>
+<p class="endnote">Co-authored by ahdimel and Claude. Ahdimel framed the problem space, the current challenges, a hypothesis and the goals of this study, then advised on scope and method. Claude Opus, an advanced AI model, did most of the literature research, built a Python model, derived the numbers in this article and drafted the text.</p>
+
+<p class="endnote"><b>Methods.</b> Costs are levelized over 30 years and restated in 2025 dollars with the consumer price index. Uncertain inputs are drawn from their published ranges, $n_draws times. The rule deciding the article's conclusion was written into the code before the final run: farm water had to beat the cheapest plausible desalination in 90 percent of runs, and a second test compared its volume with California's cut. Reservoir data is current to Oct. 27, 2026. The desalination model was checked against published prices it wasn't tuned to:</p>
 
 $table_validation
 
-<p class="endnote"><b>About this article.</b> Co-authored by ahdimel and Claude. ahdimel, an engineer, framed the question and made the calls on scope and method. Claude, an AI model made by Anthropic, did most of the research, built the model and drafted the text. Both checked the numbers. Reservoir data is current to Oct. 27, 2026.</p>
+<p class="endnote"><b>How to cite.</b> If you use this work, please cite it as: ahdimel and Claude, "The Price of Water," ahdimel.com, $built, https://ahdimel.com/water/.</p>
 
 <details class="data"><summary>All sources</summary>$sources</details>
 

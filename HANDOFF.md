@@ -346,9 +346,12 @@ prose asks for a number the model does not provide. ahdimel.com imports it with
 `tools/import_water_article.py` (reads HEAD, so commit first) to `/water/`. To change a
 sentence, edit the template; to change a number, fix the model or literature.yaml and
 rebuild — never hand-edit numbers in the HTML. A literal `$` in the prose is `$$`.
-Headline photo `docs/hero.jpg`: "Horseshoe Bend panorama" by Clementp.fr, Wikimedia
-Commons, CC BY-SA 4.0, cropped to 2000x758 (credit is in the article's caption; the crop
-inherits BY-SA). The site importer copies it next to the page with a ?v= tag.
+Headline photo `docs/hero.jpg`: "Grand Canyon and Colorado River panorama" (30 Nov 2014)
+by Jonathan Fox, Wikimedia Commons, CC BY-SA 2.0, left two-thirds cropped to 2000x758
+(credit is in the caption; the crop inherits BY-SA). The owner rejected an earlier
+Horseshoe Bend panorama for visible retouching artifacts at its right edge — check edges.
+The article's About section must NOT describe the owner (no profession or other PII); it
+uses the owner's own wording. Publication date = `figures.PUBLISHED`; bump it on republish. The site importer copies it next to the page with a ?v= tag.
 Owner's editorial rules for the article (2026-10-28): present only final, corrected
 numbers (no "our first estimate was..." passages); keep the project's own development
 story to a pivot or two; short section titles; sparing bold/italics on key findings;

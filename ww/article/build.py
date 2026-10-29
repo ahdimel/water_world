@@ -354,6 +354,7 @@ def prose(n: dict) -> dict[str, str]:
         "cheap_median": f"{n['cheap_median'] / 1e6:.1f} million",
         "n_draws": f"{n['n_draws']:,}",
         "built": mdate(n["today"]),
+        "built_iso": n["today"].isoformat(),
     }
     for k in ("ag", "conservation", "stormwater", "desal_israeli", "desal_permit_reform",
               "desal_public", "desal_as_built", "reuse", "ag_unmitigated"):
