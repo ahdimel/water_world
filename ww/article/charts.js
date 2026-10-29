@@ -233,7 +233,7 @@
       const yy = y0 + 24;
       const band = el("line", { x1: x(r.lo), x2: x(Math.min(r.hi, xmax)), y1: yy, y2: yy, class: "band s" + r.slot + (r.on_stack ? "" : " off") }, svg);
       const dot = el("circle", { cx: x(r.median), cy: yy, r: 5.5, class: "dot s" + r.slot + (r.on_stack ? "" : " hollow") }, svg);
-      const html = `<b>${r.label}</b><br>Median <b>${usd10(r.median)}</b>/AF<br>90% of runs: ${usd10(r.lo)}–${usd10(r.hi)}` + (r.on_stack ? "" : "<br><i>Off the stack: shown for comparison</i>");
+      const html = `<b>${r.label}</b><br>Best estimate <b>${usd10(r.median)}</b>/AF<br>Likely range: ${usd10(r.lo)}–${usd10(r.hi)}` + (r.on_stack ? "" : "<br><i>Off the stack: shown for comparison</i>");
       hover(dot, html); hover(band, html);
       const v = usd10(r.median);
       if (x(Math.min(r.hi, xmax)) + 8 + tw(v) < w) text(svg, x(Math.min(r.hi, xmax)) + 8, yy + 4, v, "t-value");

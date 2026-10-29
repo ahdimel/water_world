@@ -346,9 +346,14 @@ prose asks for a number the model does not provide. ahdimel.com imports it with
 `tools/import_water_article.py` (reads HEAD, so commit first) to `/water/`. To change a
 sentence, edit the template; to change a number, fix the model or literature.yaml and
 rebuild — never hand-edit numbers in the HTML. A literal `$` in the prose is `$$`.
+Headline photo `docs/hero.jpg`: "Horseshoe Bend panorama" by Clementp.fr, Wikimedia
+Commons, CC BY-SA 4.0, cropped to 2000x758 (credit is in the article's caption; the crop
+inherits BY-SA). The site importer copies it next to the page with a ?v= tag.
 Owner's editorial rules for the article (2026-10-28): present only final, corrected
 numbers (no "our first estimate was..." passages); keep the project's own development
-story to a pivot or two; short section titles; sparing bold/italics on key findings.
+story to a pivot or two; short section titles; sparing bold/italics on key findings;
+no "share of runs" percentages in reader-facing text (Methods only); the Salton Sea is a
+supporting thread, not a headline.
 
 Deliberately NOT done, named in the article as open questions: SWRO flexible operation,
 ship-mounted desal, an ENR-based construction deflator (CPI-U is used; it understates

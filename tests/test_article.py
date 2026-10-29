@@ -52,7 +52,7 @@ def test_headline_numbers_match_the_model(page):
 
     n = figures.numbers()
     assert f"{n['gap']['gap']:.1f} times" in page
-    assert f"{n['gate'].p_cheaper * 100:.1f}%" in page
+    assert f"${round(n['ag_total'] / 50) * 50:,.0f} an acre-foot" in page
     assert stack.GATE_PROBABILITY == 0.9
 
 

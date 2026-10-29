@@ -119,10 +119,8 @@ def chart_data(n: dict) -> dict:
                      "to": ag["payment"] + ag["conveyance"], "cls": "s1",
                      "valueLabel": "+" + money(ag["conveyance"]),
                      "tip": f"+{money(ag['conveyance'])}/AF (range {money(n['conveyance_band'][0])}–{money(n['conveyance_band'][1])})"},
-                    {"label": "+ Salton Sea dust", "from": ag["payment"] + ag["conveyance"],
-                     "to": n["ag_total"], "cls": "s2", "valueLabel": "+" + money(ag["dust"]),
-                     "tip": f"+{money(ag['dust'])}/AF, spread across all California farm conservation"},
-                    {"label": "Delivered to a coastal city", "to": n["ag_total"], "cls": "ink"},
+                    {"label": "Delivered to a coastal city", "to": n["ag_total"], "cls": "ink",
+                     "tip": f"{money(n['ag_total'], 50)}/AF, including ~{money(ag['dust'])} toward Salton Sea dust control"},
                 ],
                 "refs": [
                     {"value": ladder[3][1], "label": "Desal at Israeli cost", "anchor": "end"},
@@ -252,7 +250,7 @@ def tables(n: dict, data: dict) -> dict[str, str]:
         "salton": _table(["Basis", "$ per acre-foot (2025 $)"],
                          [[html.escape(r["label"]), money(r["to"])] for r in data["bars"]["salton"]["rows"]]),
         "ladder": _table(["Version of the plant", "$/AF (2025 $)"], [[html.escape(l), money(v)] for l, v in n["ladder"]]),
-        "stack": _table(["Option", "Median $/AF", "5th pct", "95th pct", "On the stack?"],
+        "stack": _table(["Option", "Best estimate $/AF", "Low", "High", "Ranked?"],
                         [[html.escape(FAMILY[k][1]), money(st[k]["median"]), money(st[k]["lo"]),
                           money(st[k]["hi"]), "yes" if st[k]["on_stack"] else "no, comparison"]
                          for k in sorted(FAMILY, key=lambda k: st[k]["median"])]),
@@ -381,7 +379,7 @@ def build(out: Path = OUT) -> Path:
     values["alt_delivered"] = (
         f"Bar chart building the delivered cost of farm water: "
         f"{values['ag_payment']} paid to farmers, plus {values['ag_conveyance']} to move and "
-        f"treat it, plus {values['ag_dust']} for Salton Sea dust, about {values['ag_total']} in all, "
+        f"treat it, about {values['ag_total']} in all including a small Salton Sea charge, "
         f"against {values['ladder3']} for desal at Israeli cost and {values['ladder0']} for desal as built."
     )
     values["alt_ladder"] = (
