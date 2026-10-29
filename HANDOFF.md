@@ -337,12 +337,18 @@ Ranked by how much damage being wrong would do:
 **The article — "The Price of Water"** — the project's only deliverable. Source is
 `ww/article/` (`template.html` = the prose with `$placeholders`, `figures.py` = every
 number, computed from the model with a fixed seed, `charts.js` = 9 client-side charts,
-`basemap.py`/`basemap.json` = Natural Earth geometry, generated once and committed).
+`basemap.py`/`basemap.json` = Natural Earth + USGS WBD basin geometry, and
+`relief.py`/`relief.jpg` = shaded relief from AWS/Mapzen Terrain Tiles (needs numpy +
+Pillow, which the project does not depend on — run from a scratch venv); both generated
+once by hand and committed, and both share the same projection frame).
 `python -m ww article` writes `docs/article.html` (committed); the build fails if the
 prose asks for a number the model does not provide. ahdimel.com imports it with
 `tools/import_water_article.py` (reads HEAD, so commit first) to `/water/`. To change a
 sentence, edit the template; to change a number, fix the model or literature.yaml and
 rebuild — never hand-edit numbers in the HTML. A literal `$` in the prose is `$$`.
+Owner's editorial rules for the article (2026-10-28): present only final, corrected
+numbers (no "our first estimate was..." passages); keep the project's own development
+story to a pivot or two; short section titles; sparing bold/italics on key findings.
 
 Deliberately NOT done, named in the article as open questions: SWRO flexible operation,
 ship-mounted desal, an ENR-based construction deflator (CPI-U is used; it understates

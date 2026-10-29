@@ -12,6 +12,7 @@ imported into ahdimel.com by that repo's tools/import_water_article.py.
 
 from __future__ import annotations
 
+import base64
 import html
 import json
 from pathlib import Path
@@ -83,6 +84,7 @@ def chart_data(n: dict) -> dict:
     water_max = max(v for _, v in pr["water"])
     return {
         "basemap": json.loads((HERE / "basemap.json").read_text()),
+        "relief": "data:image/jpeg;base64," + base64.b64encode((HERE / "relief.jpg").read_bytes()).decode(),
         "map": MAP,
         "n": {"imported": n["imported"]},
         "lines": {
@@ -112,8 +114,6 @@ def chart_data(n: dict) -> dict:
             "delivered": {
                 "xmax": 3400,
                 "rows": [
-                    {"label": "First estimate: at the river (2023 $)", "to": 280,
-                     "cls": "muted", "tip": "$280/AF: Palo Verde fallowing, in 2023 dollars. Phase 0's number."},
                     {"label": "Paid to farmers today", "to": ag["payment"], "cls": "s3"},
                     {"label": "+ moving and treating it", "from": ag["payment"],
                      "to": ag["payment"] + ag["conveyance"], "cls": "s1",
@@ -130,13 +130,11 @@ def chart_data(n: dict) -> dict:
                 ],
             },
             "salton": {
-                "xmax": 300,
+                "xmax": 5000,
                 "rows": [
-                    {"label": "First estimate: all decline, all dust", "to": n["salton"].full_attribution, "cls": "muted"},
-                    {"label": f"Transfer's share of decline ({pct(n['qsa_share'])})", "to": n["salton"].after_qsa_share, "cls": "s3"},
-                    {"label": f"Dust share of spending ({pct(n['dust_share'])})", "to": n["salton"].after_dust_share, "cls": "s3"},
-                    {"label": f"Averaged over CA farm water ({pct(n['iid_share'])} Imperial)", "to": n["salton"].per_blended_ag_af, "cls": "s3"},
-                    {"label": "If never controlled", "to": n["salton"].damage_basis, "cls": "s2",
+                    {"label": "If the state controls the dust", "to": n["salton"].after_dust_share, "cls": "s3",
+                     "tip": f"{money(n['salton'].after_dust_share, 5)}/AF: the transfer's share of dust-control spending"},
+                    {"label": "If it never does", "to": n["salton"].damage_basis, "cls": "s2",
                      "tip": f"{money(n['salton'].damage_basis)}/AF: the Pacific Institute's cost of inaction, attributed the same way"},
                 ],
             },
@@ -158,7 +156,9 @@ def chart_data(n: dict) -> dict:
 
 
 #: Map overlays, as (lon, lat). Aqueduct routes are schematic, through documented
-#: waypoints, and labelled as approximate.
+#: waypoints, and labelled as approximate. Label placement was checked for collisions at
+#: 358, 736 and 900 px: `short` replaces a name below 520 px, `labelMinW` hides only the
+#: label below that width, `minW` hides the place entirely.
 MAP = {
     "canals": [
         {"name": "Colorado River Aqueduct", "note": "Lake Havasu to Lake Mathews, 242 miles (Metropolitan). Route approximate.",
@@ -167,33 +167,44 @@ MAP = {
         {"name": "All-American Canal", "note": "Imperial Dam to the Imperial Valley. Route approximate.",
          "pts": [[-114.47, 32.88], [-114.70, 32.73], [-115.00, 32.70], [-115.30, 32.68], [-115.50, 32.80]]},
     ],
-    "states": [
-        {"name": "California", "at": [-118.4, 36.9]}, {"name": "Nevada", "at": [-116.6, 37.7]},
-        {"name": "Utah", "at": [-112.4, 37.75]}, {"name": "Arizona", "at": [-111.4, 34.7]},
-        {"name": "Mexico", "at": [-114.2, 31.75]},
+    "basins": [
+        {"name": "Upper Basin", "at": [-107.4, 38.3], "narrow": [-107.1, 37.9]},
+        {"name": "Lower Basin", "at": [-111.6, 34.25]},
     ],
-    # Labels: `short` replaces the name below 520px; `minW` hides the label (not the dot)
-    # below that chart width. Placements were checked for collisions at 358, 736 and 900px.
+    "states": [
+        {"name": "California", "at": [-119.0, 36.4]}, {"name": "Nevada", "at": [-116.9, 39.4]},
+        {"name": "Utah", "at": [-113.0, 39.6]}, {"name": "Arizona", "at": [-112.7, 35.3]},
+        {"name": "Colorado", "at": [-105.35, 39.15]}, {"name": "New Mexico", "at": [-106.0, 33.8]},
+        {"name": "Wyoming", "at": [-107.7, 43.25]}, {"name": "Mexico", "at": [-113.8, 31.6]},
+    ],
+    # dx/dy are screen pixels. `narrow` overrides placement below 520 px, where Southern
+    # California is ~46 px across; `short` replaces the name below `shortBelow` (520).
     "places": [
-        {"name": "Lake Powell", "at": [-110.9, 37.15], "kind": "lake", "dx": -8, "dy": 18, "anchor": "end",
+        {"name": "Lake Powell", "at": [-110.55, 37.55], "kind": "lake", "dx": 4, "dy": 4,
          "note": "Record low since first filling: Sept. 15, 2026"},
-        {"name": "Lake Mead", "at": [-114.35, 36.15], "kind": "lake", "dx": 12, "dy": 14,
+        {"name": "Lees Ferry", "at": [-111.59, 36.87], "kind": "divide", "dx": -9, "dy": 4, "anchor": "end",
+         "labelMinW": 520,
+         "note": "Where the 1922 Compact divides the river between the Upper and Lower Basins"},
+        {"name": "Lake Mead", "at": [-114.45, 36.2], "kind": "lake", "dx": -8, "dy": -6, "anchor": "end",
          "note": "Lowest in a record back to 1937: Oct. 22, 2026"},
-        {"name": "Salton Sea", "at": [-115.6, 33.25], "kind": "lake", "dx": 6, "dy": 4,
-         "note": "Fed mostly by Imperial Valley farm drainage. Shrinking."},
-        {"name": "Los Angeles", "at": [-118.24, 34.05], "big": True, "dx": 9, "dy": -7},
-        {"name": "San Diego", "at": [-117.16, 32.72], "big": True, "dx": -9, "anchor": "end", "dy": 5},
-        {"name": "Carlsbad desal plant", "short": "Carlsbad", "at": [-117.34, 33.14], "kind": "desal",
-         "dx": -9, "anchor": "end", "dy": 3,
+        {"name": "Salton Sea", "at": [-116.05, 33.55], "kind": "lake", "dx": -6, "dy": -2, "anchor": "end",
+         "narrow": {"dy": 3}, "note": "Fed mostly by Imperial Valley farm drainage. Shrinking."},
+        {"name": "Los Angeles", "short": "L.A.", "at": [-118.24, 34.05], "big": True, "dx": 9, "dy": -7},
+        {"name": "San Diego", "at": [-117.16, 32.72], "big": True, "dx": -6, "anchor": "end", "dy": 17,
+         "narrow": {"dx": 0, "anchor": "middle", "dy": 17}},
+        {"name": "Carlsbad desal plant", "at": [-117.34, 33.14], "kind": "desal",
+         "dx": -9, "anchor": "end", "dy": 3, "labelMinW": 820,
          "note": "50 million gallons a day. Development began 1998; water from December 2015."},
-        {"name": "Huntington Beach", "at": [-118.0, 33.66], "kind": "denied", "dx": -9, "dy": 5, "anchor": "end",
-         "minW": 700, "note": "Proposed desal plant. Same developer, size and start year as Carlsbad. Denied unanimously, May 2022."},
-        {"name": "Palo Verde Valley", "short": "Palo Verde", "at": [-114.60, 33.60], "kind": "farm", "dx": 9, "dy": 4,
+        {"name": "Huntington Beach", "at": [-118.0, 33.66], "kind": "denied", "minW": 520, "labelMinW": 99999,
+         "note": "Proposed desal plant. Same developer, size and start year as Carlsbad. Denied unanimously, May 2022."},
+        {"name": "Palo Verde Valley", "short": "Palo Verde", "shortBelow": 820, "at": [-114.60, 33.60], "kind": "farm",
+         "dx": 9, "dy": 4, "labelMinW": 520,
          "note": "Farmers paid to fallow ~26,000 acres. Drains back to the river, not the Salton Sea."},
-        {"name": "Imperial Valley", "short": "Imperial", "at": [-115.45, 32.85], "kind": "farm", "dx": 9, "dy": 12,
+        {"name": "Imperial Valley", "short": "Imperial", "shortBelow": 99999, "at": [-115.45, 32.85],
+         "kind": "farm", "dx": 0, "dy": 18, "anchor": "middle", "labelMinW": 520,
          "note": "Largest user of Colorado River water. Drains to the Salton Sea."},
-        {"name": "Las Vegas", "at": [-115.14, 36.17], "minW": 520, "dx": -8, "anchor": "end"},
         {"name": "Phoenix", "at": [-112.07, 33.45], "minW": 520, "dx": 8, "dy": 4},
+        {"name": "Denver", "at": [-104.99, 39.74], "minW": 520, "dx": -8, "anchor": "end"},
     ],
 }
 
@@ -368,8 +379,8 @@ def build(out: Path = OUT) -> Path:
     values |= {f"table_{k}": v for k, v in tables(n, data).items()}
     values["sources"] = sources_html()
     values["alt_delivered"] = (
-        f"Bar chart building the delivered cost of farm water: $280 as first priced, "
-        f"{values['ag_payment']} paid to farmers today, plus {values['ag_conveyance']} to move and "
+        f"Bar chart building the delivered cost of farm water: "
+        f"{values['ag_payment']} paid to farmers, plus {values['ag_conveyance']} to move and "
         f"treat it, plus {values['ag_dust']} for Salton Sea dust, about {values['ag_total']} in all, "
         f"against {values['ladder3']} for desal at Israeli cost and {values['ladder0']} for desal as built."
     )
@@ -378,9 +389,8 @@ def build(out: Path = OUT) -> Path:
         f"with permitting reform {values['ladder2']}; at Israeli construction cost {values['ladder3']}; "
         f"paying farmers about {values['ag_total']}.")
     values["alt_salton"] = (
-        f"Bar chart: the dust cost falls from {values['salton_full']} to {values['salton_dust']} per "
-        f"Imperial acre-foot once attributed, but would be about {values['salton_damage']} if the dust "
-        f"is never controlled.")
+        f"Bar chart: the Salton Sea dust cost is about {values['salton_dust']} per Imperial "
+        f"acre-foot if the state controls the dust, and about {values['salton_damage']} if it never does.")
     for k in ("alt_delivered", "alt_ladder", "alt_salton"):
         values[k] = html.escape(values[k])  # substituted values are not re-parsed
     values["data_json"] = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")

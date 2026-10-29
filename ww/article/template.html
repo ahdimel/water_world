@@ -4,15 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Price of Water</title>
-<meta name="description" content="We set out to prove the American West should build desalination plants. The numbers had other ideas — about farms, a dying lake, and why California pays four times what Israel does for the same plant.">
+<meta name="description" content="California is about to lose a tenth of its Colorado River water. We priced every way to replace it: farms, lawns, stormwater, recycling and desalination.">
 <meta name="author" content="ahdimel and Claude">
 <style>
 :root {
   --a-bg: #faf8f5; --a-ink: #1f1d1a; --a-ink-2: #4a4641; --a-muted: #6b6560;
   --a-line: #e7e2db; --a-accent: #c2410c; --a-panel: #f3efe9;
   --grid: #e7e3dc; --axis: #c3c2b7; --ref: #8a847d;
-  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s-muted: #8f887f; --s-ink: #4a4641;
-  --map-sea: #cfdfec; --map-land: #f8f5f0; --map-line: #9d9588; --map-river: #3f82c7;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s-muted: #8f887f; --s-ink: #4a4641; --map-river: #3f82c7;
   --serif: "Iowan Old Style", "Charter", "Georgia", "Times New Roman", serif;
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
@@ -22,8 +21,7 @@
     --a-bg: #161514; --a-ink: #ece8e3; --a-ink-2: #c9c3bb; --a-muted: #9c958d;
     --a-line: #2f2d2a; --a-accent: #fb923c; --a-panel: #201e1c;
     --grid: #2c2a28; --axis: #45423e; --ref: #9c958d;
-    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s-muted: #6f6962; --s-ink: #c9c3bb;
-    --map-sea: #0a1520; --map-land: #2d2a25; --map-line: #615b53; --map-river: #4f8fd6;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s-muted: #6f6962; --s-ink: #c9c3bb; --map-river: #4f8fd6;
     color-scheme: dark;
   }
 }
@@ -31,8 +29,7 @@
   --a-bg: #161514; --a-ink: #ece8e3; --a-ink-2: #c9c3bb; --a-muted: #9c958d;
   --a-line: #2f2d2a; --a-accent: #fb923c; --a-panel: #201e1c;
   --grid: #2c2a28; --axis: #45423e; --ref: #9c958d;
-  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s-muted: #6f6962; --s-ink: #c9c3bb;
-  --map-sea: #0a1520; --map-land: #2d2a25; --map-line: #615b53; --map-river: #4f8fd6;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s-muted: #6f6962; --s-ink: #c9c3bb; --map-river: #4f8fd6;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -107,17 +104,25 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 .bar.muted { fill: var(--s-muted); } .bar.ink { fill: var(--s-ink); }
 .hit { cursor: default; }
 .hit:hover { filter: brightness(1.1); }
-.map-sea { fill: var(--map-sea); }
-.map-land { fill: var(--map-land); stroke: var(--map-line); stroke-width: 1.2; }
-.map-coast { fill: none; stroke: var(--map-line); stroke-width: 1.2; }
-.map-river { fill: none; stroke: var(--map-river); stroke-width: 1.6; opacity: .75; stroke-linejoin: round; }
-.map-river.main { stroke-width: 3; opacity: 1; }
+.viz.map-frame { border: 1px solid var(--a-line); border-radius: 10px; overflow: hidden; line-height: 0; }
+.viz.map-frame svg { overflow: hidden; }
+.map-relief { image-rendering: auto; }
+:root[data-theme="dark"] .map-relief { filter: brightness(.5) saturate(.7) contrast(1.1); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map-relief { filter: brightness(.5) saturate(.7) contrast(1.1); } }
+.map-veil { fill: var(--a-bg); opacity: .5; }
+.map-upper { fill: var(--map-river); opacity: .10; }
+.map-basin { fill: none; stroke: var(--a-ink); opacity: .55; }
+.map-state-line { fill: none; stroke: var(--a-ink); opacity: .22; }
+.map-river { fill: none; stroke: var(--map-river); opacity: .85; stroke-linejoin: round; stroke-linecap: round; }
+.map-river.main { opacity: 1; }
+.map-basin-label { font-family: var(--sans); font-weight: 700; letter-spacing: .16em; fill: var(--a-ink); paint-order: stroke; stroke: var(--a-bg); stroke-width: 4px; stroke-linejoin: round; opacity: .85; }
 .map-lake { fill: var(--map-river); }
 .map-canal { fill: none; stroke: var(--s2); }
-.map-dot { fill: var(--a-ink); stroke: var(--map-land); stroke-width: 1; }
+.map-dot { fill: var(--a-ink); stroke: var(--a-bg); }
 .map-dot.desal { fill: var(--s2); } .map-dot.denied { fill: var(--a-bg); stroke: var(--s2); stroke-width: 2; }
 .map-dot.farm { fill: var(--s3); } .map-dot.lake { display: none; }
-.map-label { font-family: var(--sans); font-weight: 600; fill: var(--a-ink); paint-order: stroke; stroke: var(--map-land); stroke-width: 3px; stroke-linejoin: round; }
+.map-dot.divide { fill: var(--a-bg); stroke: var(--a-ink); }
+.map-label { font-family: var(--sans); font-weight: 600; fill: var(--a-ink); paint-order: stroke; stroke: var(--a-bg); stroke-linejoin: round; }
 .map-state { font-family: var(--sans); font-weight: 600; letter-spacing: .14em; fill: var(--a-muted); opacity: .8; }
 .viz-tip { position: fixed; z-index: 50; display: none; pointer-events: none; max-width: 280px; font: 14px/1.45 var(--sans); color: var(--a-ink); background: var(--a-bg); border: 1px solid var(--a-line); border-radius: 8px; padding: 8px 10px; box-shadow: 0 6px 24px rgba(0,0,0,.14); }
 .viz-tip .tip-h { font-weight: 650; margin-bottom: 2px; }
@@ -132,213 +137,154 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 <body>
 <main class="article">
 
-<div class="kicker">The Colorado River · An investigation</div>
+<div class="kicker">The Colorado River</div>
 <h1>The Price of Water</h1>
-<p class="dek">We set out to show that the American West should be building desalination plants. Months of modeling later, the numbers had other ideas — about farms, a dying lake, and why California pays four times what Israel does for the same plant.</p>
+<p class="dek">California is about to lose a tenth of its Colorado River water. We priced every way to replace it. We expected the answer to be desalination. It wasn't.</p>
 <p class="byline">Co-authored by <b>ahdimel</b> and <b>Claude</b><br>$built · All dollar figures in 2025 dollars unless noted</p>
 
-<p class="lead">On $mead_low_date, Lake Mead fell to $mead_low — the least water the reservoir has held in a record that begins in 1937, and $mead_low_pct of its 1942 peak. Five weeks earlier, on $powell_low_date, Lake Powell upstream hit its own low: $powell_low, the least since it first filled.</p>
+<p class="lead">On $mead_low_date, Lake Mead fell to $mead_low, the least water it has held in a record that begins in 1937 and <b>$mead_low_pct of its 1942 peak</b>. Five weeks earlier, Lake Powell upstream hit its own record low. An October storm that flooded towns in southeastern Utah lifted Powell about 10 feet. Hydrologists called it a drop in the bucket: the lake is still less than a quarter full.</p>
 
-<p>Then a storm stalled over the Four Corners. The San Juan River flooded towns in southeastern Utah, and Powell rose about 10 feet in October. Hydrologists called it a drop in the bucket. As of this week Powell holds $powell_last million acre-feet. It is still less than a quarter full.</p>
-
-<p>Two months ago the federal government finished rewriting the rules for sharing the river. Under the framework signed on Aug. 21, the three lower-basin states must use 1.25 million acre-feet a year less in 2027 and 2028. If they divide the cut as they have proposed, California's share is <b>$cut acre-feet a year</b>. The framework allows Lower Basin cuts of up to 3 million acre-feet in extreme conditions; if California bore the same share of that, it would lose about $cut_hi acre-feet a year. Nevada has sued to block the framework.</p>
+<p>In August, the federal government set new rules for sharing the river. The three lower-basin states must use 1.25 million acre-feet a year less in 2027 and 2028. Under the split they have proposed, <b>California loses $cut acre-feet a year</b>. In the deepest cuts the framework allows, its share could reach about $cut_hi. Nevada has sued to block it.</p>
 
 <figure class="chart wide">
-  <figcaption><div class="t">Two reservoirs, one long decline</div><div class="s">Water stored in Lake Mead and Lake Powell, million acre-feet. Monthly, through Oct. 27, 2026. Powell's record low is measured after its first filling, which ended in 1980.</div></figcaption>
-  <div class="viz" data-chart="reservoirs" data-label="Line chart of Lake Mead and Lake Powell storage since 1937, both at or near record lows in 2026."></div>
+  <figcaption><div class="t">Two reservoirs, one long decline</div><div class="s">Water stored in Lake Mead and Lake Powell, million acre-feet, through Oct. 27, 2026.</div></figcaption>
+  <div class="viz" data-chart="reservoirs" data-label="Line chart of Lake Mead and Lake Powell storage since 1937, both at record lows in autumn 2026."></div>
   <div class="legend"><span style="--c: var(--s1)">Lake Mead</span><span style="--c: var(--s2)">Lake Powell</span></div>
-  <div class="source">Source: U.S. Bureau of Reclamation daily reservoir data.</div>
+  <div class="source">Source: U.S. Bureau of Reclamation. Powell's record is measured after its first filling, in 1980.</div>
   $table_reservoirs
 </figure>
 
-<p>An acre-foot is the volume that would cover an acre of land a foot deep — about 326,000 gallons, or roughly what two to three Southern California households use in a year. It is the unit everything in this story is priced in.</p>
+<p>An acre-foot is about 326,000 gallons, roughly what two to three Southern California households use in a year. In the Imperial Valley, the river's largest single user, farmers pay around $iid_rate an acre-foot for delivery. California cities pay an average of $city_rate, <b>$city_ag_ratio times what farm districts pay</b>.</p>
 
-<p>This project began with a contradiction that anyone who reads about the Colorado River eventually runs into. The reservoirs are at record lows, and in the desert along the lower river, farms grow alfalfa — some of it shipped overseas — on water that costs them almost nothing. In the Imperial Valley, the largest single user of the river, farmers pay around $iid_rate an acre-foot for delivery. The average California city utility pays about $city_rate, $city_ag_ratio times what the average farm district pays.</p>
-
-<p>Our starting hunch was that a river priced like that would mismanage itself into collapse, and that the fix was to build supply: desalination plants on the coast, running on cheap midday solar, storing water instead of electricity. We were wrong about that, and about several other things along the way. This is an account of what the evidence said instead.</p>
-
-<div class="box">
-<h3>How we did this</h3>
-<p>We built a cost model of every way Southern California could replace the water it is about to lose, from paying farmers to tearing out lawns to building plants that turn seawater into drinking water. Every number comes from a cited public source or from arithmetic that our tests re-check. The model runs each calculation $n_draws times across the plausible range of every input, so results come as ranges, not single numbers.</p>
-<p>Before the final run, we wrote down the rule that would decide what this article argued, and we did not change it after seeing the results. Where the evidence went against what we expected, we say so — there is a list near the end.</p>
-</div>
+<p>That gap is where this project began. We assumed that a river priced like this would eventually force the West to build supply: desalination plants on the coast, turning seawater into drinking water. So we built a cost model of every way Southern California could replace the water it is losing, with every input traced to a public source and every result run $n_draws times across the plausible range of its inputs. <em>Desalination came in near the bottom of the list.</em></p>
 
 <figure class="chart wide">
-  <figcaption><div class="t">Where the river's water goes</div><div class="s">The lower Colorado River, its two great reservoirs, and the canals that carry its water to Southern California's cities and farms. Hover or tap for details.</div></figcaption>
-  <div class="viz" data-chart="map" data-label="Map of the lower Colorado River basin and Southern California, with Lakes Powell and Mead, the Salton Sea, the Colorado River Aqueduct to Los Angeles, the All-American Canal to the Imperial Valley, and the Carlsbad desalination plant."></div>
-  <div class="legend"><span style="--c: var(--map-river)">Rivers and reservoirs</span><span style="--c: var(--s2)">Aqueducts (routes approximate) and desalination; hollow = denied</span><span style="--c: var(--s3)">Farm districts in this story</span></div>
-  <div class="source">Base map: Natural Earth (public domain). Aqueduct routes are schematic.</div>
+  <figcaption><div class="t">One river, two basins</div><div class="s">The 1922 Colorado River Compact splits the river at Lees Ferry, below Lake Powell. Aqueducts carry Lower Basin water to Southern California's cities and farms. Hover or tap for details.</div></figcaption>
+  <div class="viz map-frame" data-chart="map" data-label="Shaded relief map of the Colorado River basin from Wyoming to Mexico, divided into the Upper and Lower Basins at Lees Ferry, with Lakes Powell and Mead, the Salton Sea, the Colorado River Aqueduct to Los Angeles and the All-American Canal to the Imperial Valley."></div>
+  <div class="legend"><span style="--c: var(--map-river)">Rivers and reservoirs</span><span style="--c: var(--s2)">Aqueducts and desalination (hollow: Huntington Beach, denied)</span><span style="--c: var(--s3)">Farm districts</span></div>
+  <div class="source">Relief: Mapzen Terrain Tiles (USGS, NASA SRTM). Basins: USGS Watershed Boundary Dataset. Base map: Natural Earth. Aqueduct routes are schematic.</div>
 </figure>
 
-<h2>Priced by right, not by scarcity</h2>
+<h2>Priced by right</h2>
 
-<p>Water in the American West is mostly allocated by legal right, and the prices attached to those rights were set when the rivers were not under pressure. Physical scarcity has changed a great deal since. The price signal has not.</p>
-
-<p>Our first claim about prices was wrong. We assumed household water had stayed cheap. It hasn't: since January 2000, the price index for water, sewer and trash service has risen $cpi_water percent, against $cpi_all percent for prices overall — a real increase of about $cpi_real percent. But that increase pays for pipes, pumps and treatment plants. It is not a scarcity signal. Farm water, meanwhile, has stayed close to flat in nominal terms, which means it has gotten cheaper in real terms. Neither price tells anyone that the river is running out.</p>
+<p>Western water is allocated mostly by legal right, under prices set when the rivers weren't under pressure. Since 2000, the index for household water, sewer and trash bills has risen <b>$cpi_water percent</b>, against $cpi_all percent for everything else. But that rise pays for pipes and treatment plants, not for scarcity. Farm water has stayed close to flat. <em>Neither price tells anyone the river is running out.</em></p>
 
 <figure class="chart">
-  <figcaption><div class="t">Household water bills outran inflation</div><div class="s">Consumer price index, U.S. city average, January 2000 = 100.</div></figcaption>
+  <figcaption><div class="t">Water bills outran inflation</div><div class="s">Consumer price index, U.S. city average, January 2000 = 100.</div></figcaption>
   <div class="viz" data-chart="prices" data-label="Line chart: the water, sewer and trash price index roughly tripled since 2000 while overall prices roughly doubled."></div>
   <div class="legend"><span style="--c: var(--s1)">Water, sewer & trash</span><span style="--c: var(--s2)">All items</span></div>
-  <div class="source">Source: Bureau of Labor Statistics, series CUUR0000SEHG and CUUR0000SA0.</div>
+  <div class="source">Source: Bureau of Labor Statistics.</div>
   $table_prices
 </figure>
 
-<h2>The 12-to-1 that wasn't</h2>
+<h2>Farm water, delivered</h2>
 
-<p>The desalination idea died in the first week. Seawater plants are expensive mostly because they are expensive to build, so idling one to chase cheap electricity strands the capital. Published studies of flexible operation found little or no saving under today's power tariffs.</p>
+<p>The cheapest water in the West is the water farmers agree not to use. Federal and district programs pay them about <b>$ag_payment an acre-foot</b> to leave it in the river. In the Palo Verde Valley, the region's wholesaler pays farmers to idle about $pvid_acres acres.</p>
 
-<p>Worse for the idea, there was a much cheaper option. In the Palo Verde Valley, on the California side of the river, the region's main water wholesaler pays farmers to leave about $pvid_acres acres unplanted and the water in the river. Worked out per acre-foot, that came to about $$280. Carlsbad, the largest desalination plant in the Western Hemisphere, sells water to San Diego for about $press_price. Paying farmers looked roughly $phase0_ratio times cheaper.</p>
-
-<p>That comparison has a flaw, and it took us until the final phase to see it. The $$280 is water left in the river more than 200 miles from the coast. Carlsbad's price is water delivered, treated, into San Diego's pipes. To compare them, river water has to be pumped across the desert through the Colorado River Aqueduct and treated — and that turns out to be the largest part of its cost.</p>
+<p>But water in the river is not water at the tap. Getting it more than 200 miles across the desert through the Colorado River Aqueduct and treating it adds about $ag_conveyance an acre-foot. That is anywhere from $conv_lo, counting only the electricity to pump it, to $conv_hi at the wholesaler's full rate. Delivered to a coastal city, farm water costs about <b>$ag_total an acre-foot</b>. That's still the cheapest new water in Southern California. Carlsbad, the largest desalination plant in the Western Hemisphere, costs about $delivered_ratio times as much.</p>
 
 <figure class="chart">
-  <figcaption><div class="t">What an acre-foot of farm water costs by the time it reaches a city</div><div class="s">Dollars per acre-foot. The dashed lines are seawater desalination, for comparison.</div></figcaption>
+  <figcaption><div class="t">What farm water costs by the time it reaches a city</div><div class="s">Dollars per acre-foot. Dashed lines: seawater desalination, for comparison.</div></figcaption>
   <div class="viz" data-chart="delivered" data-label="$alt_delivered"></div>
-  <div class="source">Sources: Bureau of Reclamation conservation program prices; Palo Verde fallowing program; Metropolitan Water District 2026 rates; our Salton Sea attribution (below).</div>
+  <div class="source">Sources: Bureau of Reclamation; Metropolitan Water District 2026 rates; our Salton Sea estimate.</div>
   $table_delivered
 </figure>
 
-<p>Federal and district programs now pay farmers roughly $ag_payment an acre-foot to conserve. Moving that water to the coast and treating it adds about $ag_conveyance. The range is wide, from $conv_lo if you count only the electricity to pump it to $conv_hi if you count the full rate the region's wholesaler charges. Add a share of the Salton Sea's dust bill, which comes next, and paying farmers delivers water to a coastal city for about <b>$ag_total an acre-foot</b>.</p>
+<h2>The Salton Sea's bill</h2>
 
-<p>That is still the cheapest new water in Southern California. But Carlsbad's water costs about $delivered_ratio times as much, not $phase0_ratio.</p>
+<p>That price includes a cost the buyer doesn't see. The Salton Sea, California's largest lake, has survived for a century mostly on Imperial Valley farm drainage. When those farmers sell water to cities, less reaches the lake, and its exposed lakebed blows toxic dust over the roughly 650,000 people who live nearby. The 2003 deal that moves about $qsa_volume acre-feet a year from Imperial to San Diego and the Coachella Valley capped the water agencies' liability at $qsa_cap. <b>The State of California is on the hook for the rest.</b></p>
 
-<h2>The lake that sends the bill</h2>
+<p>The transfer accounts for about $qsa_share of the lake's shrinking inflow. Charging it that share of the state's dust-control spending comes to about <b>$salton_dust per Imperial acre-foot</b>. Water from Palo Verde, which drains back into the river, carries none.</p>
 
-<p>The Salton Sea is California's largest lake. It formed when the Colorado River broke through an irrigation canal in 1905, and it has survived since then mostly on the Imperial Valley's farm drainage. When farmers there use less water, less reaches the lake.</p>
+<p class="pull">The cheapest water in California is cheap because the public pays part of the bill.</p>
 
-<p>In 2003, a set of agreements known as the Quantification Settlement Agreement began moving about $qsa_volume acre-feet a year of conserved Imperial Valley water to San Diego and the Coachella Valley. The deal capped the water agencies' liability for the lake at $qsa_cap. Beyond that, the State of California is the backstop. As the lake shrinks it exposes dry lakebed, and wind lifts the dust into the lungs of the roughly 650,000 people who live nearby. A 2025 study found the dust worsened after 2011, as the transfer ramped up, and that the increase fell hardest on disadvantaged communities. After a single year of paid conservation in 2023, the lake lost about $playa_2023 acres of surface.</p>
-
-<p class="pull">The cheapest water in California is cheap because someone else is paying part of the bill.</p>
-
-<p>This is the same pattern as the farm prices: the cost sits with the public rather than the buyer. Our first estimate put that hidden cost at $salton_full per acre-foot transferred. That figure blamed the transfer for all of the lake's decline and counted every dollar of restoration as dust control. Neither is true.</p>
-
-<p>Inflow to the lake is projected to fall from about 1.25 million acre-feet a year to about 750,000. The transfer accounts for about $qsa_share of that decline, so we charged it $qsa_share of the bill. The state's projects mix habitat and dust suppression, and we assumed $dust_share of the spending is for dust. That leaves <b>$salton_dust</b> per Imperial acre-foot. The cost applies only to water from the Imperial Valley. Palo Verde drains back into the river, and our own first estimate had charged it to the wrong valley.</p>
+<p>That estimate assumes the state actually builds the dust control. If it doesn't, the right price is the damage instead. The Pacific Institute put the cost of doing nothing at the Salton Sea at $$29 billion to $$70 billion over 30 years. Attributed the same way, that is about <b>$salton_damage per acre-foot</b>, and at that price paying farmers becomes one of the most expensive ways to get water.</p>
 
 <figure class="chart">
-  <figcaption><div class="t">The Salton Sea's dust bill, per acre-foot of transferred water</div><div class="s">Dollars per acre-foot, as each assumption is corrected. The last bar is off the scale.</div></figcaption>
+  <figcaption><div class="t">The dust bill, per acre-foot of transferred water</div><div class="s">Dollars per Imperial acre-foot, depending on whether the state controls the dust.</div></figcaption>
   <div class="viz" data-chart="salton" data-label="$alt_salton"></div>
   <div class="source">Sources: California Legislative Analyst's Office; Pacific Institute, "Hazard's Toll" (2014); our attribution.</div>
   $table_salton
 </figure>
 
-<p>All of that assumes the state actually builds the dust control it is legally responsible for. If it doesn't, the right price is the damage instead. The Pacific Institute put the cost of doing nothing at the Salton Sea at $$29 billion to $$70 billion over 30 years. Attributed the same way, that comes to about <b>$salton_damage per acre-foot</b>, roughly $salton_ratio times the cost of mitigation. At that price, paying farmers stops being the cheapest water in the region and becomes one of the most expensive.</p>
+<h2>Same plant, four times the price</h2>
 
-<h2>Same engineers, a quarter of the price</h2>
+<p>Israel gets most of its drinking water from the sea. Its Sorek plant cost about $sk_unit per cubic meter of daily capacity; Carlsbad cost $cb_unit. The same company, IDE Technologies, built Sorek and designed Carlsbad. Adjusted for Sorek's larger size, <b>California builds desalination at about $gap times Israel's cost</b> (between $gap_lo and $gap_hi times, depending on how strongly cost falls with size).</p>
 
-<p>Israel gets most of its drinking water from the sea. Sorek, south of Tel Aviv, is one of the largest seawater plants in the world. It cost about $sk_unit per cubic meter of daily capacity, in today's dollars. Carlsbad cost $cb_unit, about $raw_gap times as much. The company that built Sorek, IDE Technologies, also designed Carlsbad and operates it. So whatever explains the difference, it is not engineering know-how.</p>
-
-<p>Some of the gap is scale: Sorek is more than three times bigger, and big plants are cheaper per unit. Adjusted for size, California still builds desalination capacity at about <b>$gap times</b> Israel's cost (between $gap_lo and $gap_hi times, depending on how strongly cost scales with size). Our first estimate said five. Part of that was an accounting artifact: Carlsbad's cost includes a 10-mile pipeline, and Sorek's does not.</p>
-
-<p>We tested the obvious explanations and most of them failed. Contract structure: both countries use take-or-pay contracts, in which the buyer pays for a minimum volume whether it takes it or not. Borrowing: both plants were about 80 percent debt-financed. Environmental rules on intakes: Carlsbad got the cheap version, an open intake and an existing power-plant outfall.</p>
-
-<p>What does differ is time. Carlsbad's developer started work in 1998 and reached permits and financing in December 2012; water flowed three years later. Huntington Beach — same developer, same size, same start year — was denied unanimously in May 2022 after about $hb_spend of development spending. Israel builds its plants in two to three years on sites the government picks in advance.</p>
+<p>The usual suspects don't explain it. Both countries use the same kind of contract, both plants borrowed about 80 percent of their cost, and Carlsbad got the cheap version of the intake rules. What differs is time. Carlsbad's developer started in 1998 and got water flowing in 2015. Huntington Beach, a plant of the same size from the same developer, started the same year and was denied in 2022 after about $hb_spend of development work. Israel builds its plants in two to three years, on sites the government picks in advance.</p>
 
 <figure class="chart wide">
-  <figcaption><div class="t">Two California plants, one start year</div><div class="s">Development and permitting (gray) and construction (orange). Sorek's bar shows construction only; Israel tenders plants on pre-designated sites.</div></figcaption>
+  <figcaption><div class="t">Two California plants, one start year</div><div class="s">Development and permitting (gray), construction (orange). Sorek's bar shows construction only.</div></figcaption>
   <div class="viz" data-chart="timeline" data-label="Timeline: Carlsbad 1998 to 2015, Huntington Beach 1998 to its 2022 denial, Sorek built in about two and a half years to 2013."></div>
-  <div class="source">Sources: San Diego County Water Authority; Engineering News-Record; Blackridge Research; Israel Water Desalination Administration.</div>
+  <div class="source">Sources: San Diego County Water Authority; Engineering News-Record; Israel Water Desalination Administration.</div>
   $table_timeline
 </figure>
 
-<p>We priced that delay the way an investor would. A developer's money sits at risk for years and can be lost outright, so the projects that do get built have to earn it back. Done that way, California's permitting process explains about $permit_x times of the $gap-times gap. Roughly <b>$residual_x times survives full permitting reform</b>, and we cannot name what it is.</p>
-
-<p>The best candidate is the most uncomfortable one. Studies of American infrastructure find that the U.S. pays far more than peer countries for the same project types, mostly because of administrative overhead, procurement practice and one-off design. The evidence here points the same way: Pure Water Southern California, the region's flagship water-recycling project, is budgeted at $pwsc_mgd per million gallons a day of capacity, against $cb_mgd for Carlsbad. Whatever is wrong, it is not specific to desalination.</p>
+<p>Priced the way an investor would, as money held at risk for years and sometimes lost outright, California's permitting explains about $permit_x times of the gap. <b>Roughly $residual_x times is left unexplained.</b> The likeliest culprit isn't specific to desalination. Pure Water Southern California, the region's planned water-recycling plant, is budgeted at $pwsc_mgd per million gallons a day of capacity, against $cb_mgd for Carlsbad.</p>
 
 <figure class="chart">
-  <figcaption><div class="t">What it would take to make desalination cheap</div><div class="s">Cost of water from a Carlsbad-sized plant, dollars per acre-foot, as each change is applied. Delivered, in 2025 dollars.</div></figcaption>
+  <figcaption><div class="t">What it would take to make desalination cheap</div><div class="s">A Carlsbad-sized plant, dollars per acre-foot, as each change is applied.</div></figcaption>
   <div class="viz" data-chart="ladder" data-label="$alt_ladder"></div>
-  <div class="source">Source: our cost model. Public finance follows Metropolitan's own assumption for Pure Water: all debt, 4 percent, 30 years.</div>
+  <div class="source">Source: our cost model. Public finance: all debt at 4 percent over 30 years, Metropolitan's assumption for Pure Water.</div>
   $table_ladder
 </figure>
 
-<p>Two changes are within California's control. Financing the plant with public debt, as the region's wholesaler plans to do for its recycling project, would cut about $public_saving an acre-foot. Reforming permitting would cut about $reform_saving more. Even then, the plant would cost about $ladder2, not the $ladder3 it would cost at Israeli construction prices. Part of the remaining difference is electricity, which costs California industry about twice what it costs Israel's. Energy alone is about $energy_af of every acre-foot of Californian desalinated water.</p>
+<p>Two fixes are within California's reach. Public financing would cut about $public_saving an acre-foot, and permitting reform about $reform_saving more. That still leaves a plant at about $ladder2, well above the $ladder3 it would cost at Israeli prices. Part of the remaining gap is electricity, which costs California industry about twice what it costs Israel's. Electricity alone is about $energy_af of every acre-foot.</p>
 
-<div class="box">
-<h3>The $$3,500 question</h3>
-<p>Midway through, we decided the widely quoted price of Carlsbad water, $press_price an acre-foot, was wrong. The Water Authority's own figure, as cited in a 2025 UC Davis law journal article, was $$2,302 to $$2,559, and our model agreed with it almost exactly.</p>
-<p>We were comparing dollars from different years. The 2012 contract set a price of $contract_2012 at the minimum purchase volume. In today's dollars, that is $contract_2025. The current figure is that contract a decade of inflation later; the remaining 9 percent or so is consistent with later work on the plant. Once every number was put in 2025 dollars, the model matched four published prices from three different years, each within 5 percent. Our earlier, closer match had been partly two errors canceling out.</p>
-</div>
+<h2>Every option</h2>
 
-<h2>Every option on one line</h2>
-
-<p>Here is every way we priced for Southern California to find more water, on the same basis: 2025 dollars, delivered treated into the regional system, financed with public debt. The dot is the middle of $n_draws model runs, and the bar spans 90 percent of them.</p>
+<p>Here is every option on the same footing: delivered and treated, financed with public debt, in 2025 dollars. The dot is the middle of $n_draws runs; the bar spans 90 percent of them.</p>
 
 <figure class="chart wide">
-  <figcaption><div class="t">The price of an acre-foot, every option</div><div class="s">Dollars per acre-foot, delivered and treated. Hollow dots and an asterisk mark options shown for comparison but not part of the ranking.</div></figcaption>
-  <div class="viz" data-chart="stack" data-label="Dot plot of median cost and 90 percent range for each water option. Paying farmers is cheapest at about $$1,130; potable reuse is the most expensive at about $$5,700."></div>
+  <figcaption><div class="t">The price of an acre-foot</div><div class="s">Dollars per acre-foot, delivered and treated. Hollow dots (*) are shown for comparison, not ranked.</div></figcaption>
+  <div class="viz" data-chart="stack" data-label="Dot plot of the cost of each water option. Paying farmers is cheapest at about $$1,130; potable reuse is the most expensive at about $$5,700."></div>
   <div class="legend"><span style="--c: var(--s3)">Paying farmers</span><span style="--c: var(--s1)">Local city supply</span><span style="--c: var(--s2)">Seawater desalination</span></div>
-  <div class="source">Source: our cost model; inputs and citations listed at the end.</div>
+  <div class="source">Source: our cost model; inputs and citations below.</div>
   $table_stack
 </figure>
 
-<p>Paying farmers comes in between $ag_lo and $ag_hi an acre-foot in 90 percent of runs. Capturing stormwater and tearing out lawns cost about $stormwater_med and $conservation_med. For comparison, the region's wholesaler charges member cities $imported_nominal this year for treated imported water ($imported in 2025 dollars). Desalination costs about $ladder3 at Israeli construction prices, $ladder2 with permitting reformed, $ladder1 at Carlsbad's actual cost on public finance, and about $ladder0 as Carlsbad was actually financed.</p>
+<p>Farm water, stormwater capture and tearing out lawns all cost roughly what cities pay for imported water today: $imported_nominal an acre-foot this year. Desalination starts at about $ladder3 even at Israeli prices. The surprise is at the top: recycling wastewater into drinking water at Pure Water Southern California would cost <b>$pwsc_cost to $pwsc_hi an acre-foot</b> by the agency's own estimate, more than Carlsbad.</p>
 
-<p>The most expensive option is the one often presented as the cheaper alternative to desalination. Recycling wastewater into drinking water at Pure Water Southern California comes to $pwsc_cost to $pwsc_hi an acre-foot on the same 30-year basis, by the agency's own estimate, depending on how much of it is built. That is more than Carlsbad, and more than twice what large recycling projects cost a decade ago (about $ipr_2015 in today's dollars). Spread over a 100-year life, as the agency also presents it, the figure is $pwsc_life, but a desalination plant would look cheaper on that basis too.</p>
-
-<p>Price is only half the question. Each cheap option can supply only so much water.</p>
+<p>Price is only half of it. Each cheap option can supply only so much.</p>
 
 <figure class="chart wide">
-  <figcaption><div class="t">How far the cheap water goes</div><div class="s">Each block is one option: its width is how much water it can supply a year, its height what it costs. Bought cheapest first. Middle estimates; the volumes are the least certain inputs in the model.</div></figcaption>
+  <figcaption><div class="t">How far the cheap water goes</div><div class="s">Each block's width is how much water an option can supply a year; its height, the cost. Bought cheapest first. Middle estimates.</div></figcaption>
   <div class="viz" data-chart="curve" data-label="Stepped supply curve: farm water, stormwater and conservation together supply over a million acre-feet a year before desalination is needed."></div>
   <div class="legend"><span style="--c: var(--s3)">Paying farmers</span><span style="--c: var(--s1)">Local city supply</span><span style="--c: var(--s2)">Seawater desalination</span></div>
-  <div class="source">Source: our cost model. Potable reuse costs more than desalination here, so it never makes the curve.</div>
+  <div class="source">Source: our cost model. Recycled water costs more than desalination, so it never makes the curve.</div>
   $table_curve
 </figure>
 
-<h2>What the model decided</h2>
-
-<p>Before the last run, we wrote down three possible conclusions and the rule for choosing among them. If paying farmers beat even the cheapest plausible desalination in at least 90 percent of runs, farm water would be the region's cheapest water. A second test would then decide whether its volume was large enough to cover California's cut.</p>
-
-<p>Paying farmers beat desalination at Israeli prices in <b>$p_cheaper percent</b> of runs. Whether farm conservation alone could cover the $cut-acre-foot cut was a coin flip, $p_capacity percent. Our best guess of how much farmers can sell is about the size of the cut itself. At the framework's worst case it can't come close.</p>
-
-<p>Under the rule we set in advance, that means:</p>
+<h2>The verdict</h2>
 
 <div class="facts">
-  <div class="fact"><div class="v">$ag_total</div><div class="l">Farm water, delivered: still the cheapest new water in Southern California</div></div>
-  <div class="fact"><div class="v">~1 : 1</div><div class="l">What farmers can sell, against the size of California's cut</div></div>
-  <div class="fact"><div class="v">$p_cheap_cut</div><div class="l">Share of runs where cheaper options cover the cut without any desalination</div></div>
+  <div class="fact"><div class="v">$ag_total</div><div class="l">Farm water, delivered: the cheapest new water in Southern California</div></div>
+  <div class="fact"><div class="v">$p_cheaper%</div><div class="l">Share of runs where it beat even Israeli-priced desalination</div></div>
+  <div class="fact"><div class="v">$p_cheap_cut</div><div class="l">Share of runs where cheaper options cover the cut with no desalination</div></div>
   <div class="fact"><div class="v">$salton_damage</div><div class="l">Hidden cost per Imperial acre-foot if the Salton Sea's dust is never controlled</div></div>
 </div>
 
-<p><b>The cheap water is real, and it is capped.</b> Paying farmers is the cheapest water in the region, and the ceiling on it is the story. Today's cut is about as large as what farmers can sell. Add stormwater and conservation, which also beat any desalination plant, and the cheaper options together come to about $cheap_median acre-feet a year. That covers California's current cut in $p_cheap_cut of runs, and the worst case in $p_cheap_hi.</p>
+<p><b>The cheap water is real, but capped.</b> What farmers can sell is about the size of California's cut. Whether it alone would cover the cut is a coin flip. Add stormwater and conservation and the cheaper options reach about $cheap_median acre-feet a year. That covers the cut in $p_cheap_cut of runs and the deepest cut the framework allows in $p_cheap_hi.</p>
 
-<p><b>The cheap water depends on a promise.</b> Farm water is cheap only if California builds the dust control at the Salton Sea that it took on in 2003. If it doesn't, the hidden bill is roughly $salton_ratio times larger, and paying farmers becomes more expensive than any reformed desalination plant.</p>
+<p><b>It depends on a promise.</b> Farm water stays cheap only if California builds the dust control it took on at the Salton Sea in 2003. If it doesn't, paying farmers costs more than any reformed desalination plant.</p>
 
-<p><b>When the expensive water comes, California will pay for its institutions.</b> If cuts deepen beyond what the cheaper options can cover, the next acre-foot comes from the sea. It will cost about $ladder1 under the current way of doing things, or about $ladder3 if California could build like Israel. Only part of that difference is something we can name.</p>
+<p><b>When the expensive water comes, institutions set its price.</b> If cuts outrun the cheap options, the next acre-foot comes from the sea. It would cost about $ladder1 the way California builds today, or about $ladder3 if it could build like Israel.</p>
 
-<p>We started this project believing markets price scarcity better than the West's current system. Nothing here contradicts that. But the market answer turned out not to be the one we expected: price water properly and the first things you buy are farmland left fallow and lawns torn out, not desalination plants.</p>
+<p>Price water properly, in other words, and <em>the first things a market buys are fallow fields and torn-out lawns, not desalination plants.</em></p>
 
-<div class="box">
-<h3>What we got wrong along the way</h3>
-<ol>
-<li><b>Desalination running on cheap solar.</b> The idea that started the project. Plants are too capital-heavy to idle.</li>
-<li><b>"Water hasn't kept pace with incomes."</b> Household water bills rose about $cpi_real percent faster than inflation. The real gap is between farm and city prices.</li>
-<li><b>Desalination costs 12 times as much as farm water.</b> That compared water in the river with water at the tap. Delivered, the ratio is about $delivered_ratio.</li>
-<li><b>The Salton Sea's cost was charged to the wrong valley,</b> and blamed the transfer for all of the lake's decline. Attributed properly, it fell by more than half.</li>
-<li><b>We retired the $$3,500 Carlsbad price, then reinstated it.</b> Our earlier figures were in older dollars.</li>
-<li><b>"California builds desalination at five times Israel's cost."</b> It is about $gap times, once Carlsbad's pipeline is taken out.</li>
-<li><b>"Permitting explains the gap."</b> It explains about $permit_x times of it.</li>
-</ol>
-</div>
+<h2>Caveats</h2>
 
-<h2>What we don't know</h2>
-
-<p>The volumes are the weakest part of the model. How much water farmers will sell is anchored on a single program, in which California pledged 400,000 acre-feet a year for 2023 to 2026; we allowed 250,000 to 700,000. The stormwater and conservation volumes are our own estimates from statewide studies. The cost of moving river water to the coast spans a factor of six depending on how the aqueduct's costs are counted. The dust share of the state's Salton Sea spending is an assumption.</p>
-
-<p>The model also leaves things out. The cost of fallowing to farm towns isn't priced: Palo Verde already has nearly a third of its farmland enrolled. Dollar figures are adjusted with general inflation, which understates how fast construction costs have risen since 2020. We did not model plants that run harder when power is cheap, or desalination on ships. And cost is only one way to decide. Who owns the water, and who pays, are political questions this model can't answer.</p>
+<p>The volumes are the model's weakest inputs. Farm sales rest on one program, in which California pledged 400,000 acre-feet a year for 2023 to 2026 (we allowed 250,000 to 700,000). The stormwater and conservation volumes are our estimates from statewide studies. The cost of moving water to the coast varies sixfold depending on how the aqueduct is counted. The model doesn't price fallowing's toll on farm towns, uses general inflation to adjust construction costs, and can't answer the political question of who should pay.</p>
 
 <hr class="sep">
 
-<h2>Methods and sources</h2>
+<h2>Methods</h2>
 
-<p class="endnote">The model is written in Python and tested: automated tests re-derive every figure we computed ourselves, and pin each result that went against our expectations so it can't quietly drift. Costs are levelized over 30 years. Every option is priced in 2025 dollars, restated with the consumer price index (October 2025 is missing because of the federal shutdown, so 2025 is averaged over 11 months). Seawater plants are modeled from their construction cost, financing, energy use and operating costs. The model was checked against published prices it was not tuned to:</p>
+<p class="endnote">Costs are levelized over 30 years and restated in 2025 dollars with the consumer price index. Uncertain inputs are drawn from their published ranges, $n_draws times. The rule deciding the article's conclusion was written into the code before the final run: farm water had to beat the cheapest plausible desalination in 90 percent of runs, and a second test compared its volume with California's cut. The desalination model was checked against published prices it wasn't tuned to:</p>
 
 $table_validation
 
-<p class="endnote">Uncertain inputs are sampled from triangular distributions over their published or allowed ranges, $n_draws times. The decision rule was written into the code before the first full run. One disclosure: after the first run, we added a flag that reports when the volume test falls too close to its threshold to call, rather than reporting whichever side random noise landed on. The thresholds themselves did not change.</p>
-
-<p class="endnote"><b>About this article.</b> Co-authored by ahdimel and Claude. ahdimel, an engineer, framed the question and made the calls on scope and method. Claude, an AI model made by Anthropic, did most of the research, built the model and drafted the text. Both of us checked the numbers. Reservoir data is current to Oct. 27, 2026.</p>
+<p class="endnote"><b>About this article.</b> Co-authored by ahdimel and Claude. ahdimel, an engineer, framed the question and made the calls on scope and method. Claude, an AI model made by Anthropic, did most of the research, built the model and drafted the text. Both checked the numbers. Reservoir data is current to Oct. 27, 2026.</p>
 
 <details class="data"><summary>All sources</summary>$sources</details>
 

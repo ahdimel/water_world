@@ -52,7 +52,7 @@ def test_headline_numbers_match_the_model(page):
 
     n = figures.numbers()
     assert f"{n['gap']['gap']:.1f} times" in page
-    assert f"{n['gate'].p_cheaper * 100:.1f} percent" in page
+    assert f"{n['gate'].p_cheaper * 100:.1f}%" in page
     assert stack.GATE_PROBABILITY == 0.9
 
 

@@ -67,43 +67,51 @@
   window.addEventListener("scroll", hideTip, { passive: true });
 
   // ---------------------------------------------------------------- 1. map
+  // Shaded relief (a JPEG rendered in exactly this frame by relief.py) under vector
+  // layers. Everything outside the Colorado basin sits under a veil, so the basin reads.
   function drawMap(node) {
     const m = DATA.basemap, W = m.width, H = m.height;
     node.querySelectorAll("svg").forEach((s) => s.remove());
-    const w = Math.max(280, node.clientWidth), k = w / W, h = H * k;
-    const svg = el("svg", { width: w, height: h, viewBox: `0 0 ${W} ${H}`, role: "img" }, node);
+    const w = Math.max(280, node.clientWidth), k = w / W, h = H * k, narrow = w < 520;
+    const svg = el("svg", { width: w, height: h, viewBox: `0 0 ${W} ${H}`, role: "img", class: "map" }, node);
     svg.setAttribute("aria-label", node.dataset.label);
     const fs = (px) => px / k; // font size in viewBox units that renders at `px`
-    el("rect", { x: 0, y: 0, width: W, height: H, class: "map-sea" }, svg);
-    for (const name in m.states) el("path", { d: m.states[name], class: "map-land" }, svg);
-    el("path", { d: m.coast, class: "map-coast" }, svg);
-    for (const name in m.rivers) el("path", { d: m.rivers[name], class: name === "Colorado" ? "map-river main" : "map-river" }, svg);
-    for (const name in m.lakes) {
-      const p = el("path", { d: m.lakes[name], class: "map-lake" }, svg);
-      hover(p, `<b>${name}</b>`);
+    el("image", { href: DATA.relief, x: 0, y: 0, width: W, height: H, preserveAspectRatio: "none", class: "map-relief" }, svg);
+    el("path", { d: `M0,0H${W}V${H}H0Z` + m.basins.upper + m.basins.lower, class: "map-veil", "fill-rule": "evenodd" }, svg);
+    el("path", { d: m.basins.upper, class: "map-upper" }, svg);
+    for (const name in m.states) el("path", { d: m.states[name], class: "map-state-line", "stroke-width": 1 / k }, svg);
+    for (const b of ["upper", "lower"]) el("path", { d: m.basins[b], class: "map-basin", "stroke-width": 1.6 / k }, svg);
+    for (const name in m.rivers) {
+      const r = el("path", { d: m.rivers[name], class: name === "Colorado" ? "map-river main" : "map-river", "stroke-width": (name === "Colorado" ? 2.6 : 1.4) / k }, svg);
+      hover(r, `<b>${name === "Colorado" ? "Colorado River" : name + " River"}</b>`);
     }
-    // Aqueducts: schematic routes through documented waypoints, drawn dashed.
+    for (const name in m.lakes) hover(el("path", { d: m.lakes[name], class: "map-lake" }, svg), `<b>${name}</b>`);
     for (const c of DATA.map.canals) {
       const d = "M" + c.pts.map((p) => DATA.proj(p).join(",")).join("L");
       const path = el("path", { d: d, class: "map-canal", "stroke-width": 2.5 / k, "stroke-dasharray": `${6 / k} ${4 / k}` }, svg);
       hover(path, `<b>${c.name}</b><br>${c.note}`);
     }
     const g = el("g", {}, svg);
-    for (const s of DATA.map.states) {
-      if (w < 520 && s.name === "Mexico") continue;
+    if (!narrow) for (const s of DATA.map.states) {
       const [x, y] = DATA.proj(s.at);
-      text(g, x, y, s.name.toUpperCase(), "map-state", "middle").setAttribute("font-size", fs(10.5));
+      text(g, x, y, s.name.toUpperCase(), "map-state", "middle").setAttribute("font-size", fs(10));
+    }
+    for (const b of DATA.map.basins) {
+      const [x, y] = DATA.proj(narrow && b.narrow ? b.narrow : b.at);
+      text(g, x, y, b.name.toUpperCase(), "map-basin-label", "middle").setAttribute("font-size", fs(narrow ? 11.5 : 14));
     }
     for (const p of DATA.map.places) {
-      if (p.minW && w < p.minW && !p.kind) continue; // a bare city dot with no label explains nothing
+      if (p.minW && w < p.minW) continue; // dot and label both
       const [x, y] = DATA.proj(p.at);
-      const dot = el("circle", { cx: x, cy: y, r: (p.big ? 5 : 4) / k, class: "map-dot " + (p.kind || "") }, g);
+      const dot = el("circle", { cx: x, cy: y, r: (p.big ? 5 : 4) / k, class: "map-dot " + (p.kind || ""), "stroke-width": 1.5 / k }, g);
       if (p.note) hover(dot, `<b>${p.name}</b><br>${p.note}`);
-      if (p.minW && w < p.minW) continue;
-      const name = w < 520 && p.short ? p.short : p.name;
-      const dx = p.dx === undefined ? 8 : p.dx, dy = p.dy === undefined ? 4 : p.dy;
-      const t = text(g, x + dx / k, y + dy / k, name, "map-label", p.anchor || "start");
+      if (p.labelMinW && w < p.labelMinW) continue; // dot only
+      const name = p.short && w < (p.shortBelow || 520) ? p.short : p.name;
+      const o = Object.assign({}, p, narrow ? p.narrow || {} : {});
+      const dx = o.dx === undefined ? 8 : o.dx, dy = o.dy === undefined ? 4 : o.dy;
+      const t = text(g, x + dx / k, y + dy / k, name, "map-label", o.anchor || "start");
       t.setAttribute("font-size", fs(p.big ? 12.5 : 11.5));
+      t.setAttribute("stroke-width", 3 / k);
     }
   }
 
@@ -171,7 +179,7 @@
     const rowH = 44, head = refs.length * 16 + (refs.length ? 6 : 0);
     const H = cfg.rows.length * rowH + 40 + head;
     const { svg, w, narrow } = svgFor(node, H);
-    const m = { l: 12, r: 16, t: 8 + head, b: 26 };
+    const m = { l: 12, r: 24, t: 8 + head, b: 26 };
     const xmax = cfg.xmax;
     const x = linear(0, xmax, m.l, w - m.r);
     for (const v of niceTicks(0, xmax, narrow ? 3 : 6)) {
@@ -182,9 +190,10 @@
       // Each reference line gets its own label row above the bars, so labels never collide.
       const ly = 12 + i * 16;
       el("line", { x1: x(ref.value), x2: x(ref.value), y1: ly + 4, y2: H - m.b, class: "ref" }, svg);
-      const str = ref.label + " " + usd10(ref.value);
-      const fits = x(ref.value) - 4 - tw(str, 12.5) > m.l;
-      text(svg, x(ref.value) + (fits ? -4 : 4), ly, str, "t-note", fits ? "end" : "start");
+      const str = ref.label + " " + usd10(ref.value), sw = tw(str, 12.5), rx = x(ref.value);
+      if (rx - 4 - sw > m.l) text(svg, rx - 4, ly, str, "t-note", "end");
+      else if (rx + 4 + sw < w - 2) text(svg, rx + 4, ly, str, "t-note");
+      else text(svg, w - 2, ly, str, "t-note", "end");
     });
     cfg.rows.forEach((r, i) => {
       const y0 = m.t + i * rowH;
@@ -304,7 +313,7 @@
   // y-axis formatters cannot travel in JSON.
   DATA.lines.reservoirs.yfmt = (v, tip) => (tip ? v.toFixed(2) + " million AF" : v + "M");
   DATA.lines.prices.yfmt = (v) => String(Math.round(v));
-  const k = Math.cos((36 * Math.PI) / 180), [W, E, S, N] = DATA.basemap.window;
+  const [W, E, S, N] = DATA.basemap.window;
   const Hm = DATA.basemap.height;
   DATA.proj = ([lon, lat]) => [((lon - W) / (E - W)) * 1000, ((N - lat) / (N - S)) * Hm];
 

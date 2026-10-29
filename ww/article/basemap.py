@@ -1,12 +1,17 @@
-"""Build the article's basin map geometry from Natural Earth (public domain).
+"""Build the article's basin map geometry (vector layers over the relief image).
 
-Run once, by hand, against downloaded Natural Earth GeoJSON; the projected, simplified
+Run once, by hand, against downloaded public-domain data; the projected, simplified
 result (`basemap.json`) is committed so the article build never touches the network:
 
-    python -m ww.article.basemap /path/to/natural-earth-geojson-dir
+    python -m ww.article.basemap <natural-earth-geojson-dir> <wbd-dir>
 
-Projection: equirectangular scaled by cos(36°N), adequate for a region this size and
-easy to reason about. Coordinates are SVG units in a 1000-wide frame.
+Sources: Natural Earth (states, countries, coast, rivers, lakes) and the USGS Watershed
+Boundary Dataset hydrologic regions 14 (Upper Colorado) and 15 (Lower Colorado), queried
+from hydro.nationalmap.gov as `huc14.geojson` / `huc15.geojson`.
+
+Projection: equirectangular scaled by cos(37°N), adequate for a region this size and
+easy to reason about. Coordinates are SVG units in a 1000-wide frame. `relief.py` renders
+the shaded-relief image in exactly this frame.
 """
 
 from __future__ import annotations
@@ -18,14 +23,16 @@ from pathlib import Path
 
 OUT = Path(__file__).with_name("basemap.json")
 
-#: lon/lat window: the lower basin and Southern California, Lake Powell to the border.
-WEST, EAST, SOUTH, NORTH = -120.0, -108.5, 31.3, 38.0
+#: lon/lat window: the whole basin, from Wyoming to the Gulf, plus the Southern
+#: California coast its water is carried to.
+WEST, EAST, SOUTH, NORTH = -120.0, -104.6, 31.0, 43.7
 WIDTH = 1000.0
-_K = math.cos(math.radians(36.0))
+_K = math.cos(math.radians(37.0))
 HEIGHT = WIDTH * (NORTH - SOUTH) / ((EAST - WEST) * _K)
 
 STATES = {"California", "Nevada", "Arizona", "Utah", "Colorado", "New Mexico", "Wyoming",
-          "Baja California", "Sonora", "Oregon", "Idaho"}
+          "Oregon", "Idaho"}
+COUNTRIES = {"United States of America", "Mexico"}
 RIVERS = {"Colorado", "Green", "San Juan", "Gila"}
 LAKES = {"Lake Powell", "Lake Mead", "Lake Havasu", "Lake Mohave",
          "Flaming Gorge Reservoir", "Salton Sea"}
@@ -83,48 +90,39 @@ def _path(rings: list[list], tol: float, closed: bool) -> str:
     return "".join(out)
 
 
-def build(src: Path) -> dict:
-    states = json.loads((src / "ne_50m_admin_1_states_provinces_lakes.geojson").read_text())
-    rivers = json.loads((src / "ne_10m_rivers_lake_centerlines.geojson").read_text())
-    lakes = json.loads((src / "ne_10m_lakes.geojson").read_text())
-    coast = json.loads((src / "ne_50m_coastline.geojson").read_text())
+def _inside(geom: dict) -> bool:
+    pts = [p for ring in _lines(geom) for p in ring]
+    return any(WEST - 2 < x < EAST + 2 and SOUTH - 2 < y < NORTH + 2 for x, y in pts)
 
-    def inside(geom: dict) -> bool:
-        pts = [p for ring in _lines(geom) for p in ring]
-        return any(WEST - 2 < x < EAST + 2 and SOUTH - 2 < y < NORTH + 2 for x, y in pts)
+
+def build(ne: Path, wbd: Path) -> dict:
+    load = lambda p: json.loads(p.read_text())  # noqa: E731
+    states = load(ne / "ne_50m_admin_1_states_provinces_lakes.geojson")
+    rivers = load(ne / "ne_10m_rivers_lake_centerlines.geojson")
+    lakes = load(ne / "ne_10m_lakes.geojson")
 
     out: dict = {"width": WIDTH, "height": round(HEIGHT, 1), "states": {}, "rivers": {},
-                 "lakes": {}, "coast": "", "window": [WEST, EAST, SOUTH, NORTH],
-                 "source": "Natural Earth (public domain), 1:50m states/coast, 1:10m rivers/lakes"}
+                 "lakes": {}, "basins": {}, "window": [WEST, EAST, SOUTH, NORTH], "k_lat": 37.0,
+                 "source": "Natural Earth (public domain); USGS Watershed Boundary Dataset"}
     for f in states["features"]:
         name = f["properties"].get("name")
-        if name in STATES and inside(f["geometry"]):
-            out["states"][name] = _path(_lines(f["geometry"]), 1.2, True)
+        if name in STATES and _inside(f["geometry"]):
+            out["states"][name] = _path(_lines(f["geometry"]), 1.0, True)
     for f in rivers["features"]:
         name = f["properties"].get("name")
-        if name in RIVERS and inside(f["geometry"]):
+        if name in RIVERS and _inside(f["geometry"]):
             out["rivers"][name] = out["rivers"].get(name, "") + _path(_lines(f["geometry"]), 0.8, False)
     for f in lakes["features"]:
         name = f["properties"].get("name")
         if name in LAKES:
             out["lakes"][name] = _path(_lines(f["geometry"]), 0.4, True)
-    def clip(ring: list) -> list[list]:
-        """Split a line into runs that stay within the window (plus a margin)."""
-        runs, cur = [], []
-        for x, y in ring:
-            if WEST - 0.5 < x < EAST + 0.5 and SOUTH - 0.5 < y < NORTH + 0.5:
-                cur.append((x, y))
-            elif cur:
-                runs.append(cur)
-                cur = []
-        return runs + ([cur] if cur else [])
-
-    out["coast"] = "".join(_path([run for ring in _lines(f["geometry"]) for run in clip(ring)],
-                                 1.5, False) for f in coast["features"])
+    for huc, name in (("14", "upper"), ("15", "lower")):
+        g = load(wbd / f"huc{huc}.geojson")
+        out["basins"][name] = "".join(_path(_lines(f["geometry"]), 0.8, True) for f in g["features"])
     return out
 
 
 if __name__ == "__main__":
-    data = build(Path(sys.argv[1]))
+    data = build(Path(sys.argv[1]), Path(sys.argv[2]))
     OUT.write_text(json.dumps(data, separators=(",", ":")))
-    print(f"wrote {OUT} ({OUT.stat().st_size:,} bytes)")
+    print(f"wrote {OUT} ({OUT.stat().st_size:,} bytes), {data['width']:g} x {data['height']:g}")
