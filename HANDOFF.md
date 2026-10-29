@@ -286,7 +286,7 @@ any desal: options cheaper than Israeli-cost desal total ~1.24 MAF median and co
    Public finance alone takes Carlsbad from ~$3,040 to ~$2,650.
 6. **Potable reuse is now the most expensive option.** Pure Water SoCal at Metropolitan's
    own published $5,200/AF (30-yr basis) costs more than Carlsbad. Its capex is ~$75M per
-   MGD against Carlsbad's ~$22M. **The Californian premium is not desal-specific** —
+   MGD against Carlsbad's ~$27M, both including conveyance (2025$). **The Californian premium is not desal-specific** —
    which supports the "combined institutional residual" reading in §4a.
 
 **Weakest inputs, in order:** `ag.conservation_capacity` (decides row 1 vs 2; an
@@ -334,10 +334,15 @@ Ranked by how much damage being wrong would do:
 
 ## 6. What is left
 
-**The article** — the project's only remaining deliverable. Source lives in this repo
-(`article/`), is built from the model so numbers cannot drift, and is imported into
-ahdimel.com by a tool in that repo (same pattern as the exoplanets paper). After it is
-live, the project is closed.
+**The article — "The Price of Water"** — the project's only deliverable. Source is
+`ww/article/` (`template.html` = the prose with `$placeholders`, `figures.py` = every
+number, computed from the model with a fixed seed, `charts.js` = 9 client-side charts,
+`basemap.py`/`basemap.json` = Natural Earth geometry, generated once and committed).
+`python -m ww article` writes `docs/article.html` (committed); the build fails if the
+prose asks for a number the model does not provide. ahdimel.com imports it with
+`tools/import_water_article.py` (reads HEAD, so commit first) to `/water/`. To change a
+sentence, edit the template; to change a number, fix the model or literature.yaml and
+rebuild — never hand-edit numbers in the HTML. A literal `$` in the prose is `$$`.
 
 Deliberately NOT done, named in the article as open questions: SWRO flexible operation,
 ship-mounted desal, an ENR-based construction deflator (CPI-U is used; it understates

@@ -241,6 +241,15 @@ def cmd_stack(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_article(args: argparse.Namespace) -> int:  # noqa: ARG001
+    """Build the ahdimel.com article from the model."""
+    from ww.article import build
+
+    out = build.build()
+    print(f"  wrote {out} ({out.stat().st_size:,} bytes)")
+    return 0
+
+
 def register(sub: argparse._SubParsersAction) -> None:
     """Attach the Phase 2 commands to the main parser."""
     p_lcow = sub.add_parser("lcow", help="levelised cost of water for reference plants")
@@ -276,3 +285,6 @@ def register(sub: argparse._SubParsersAction) -> None:
     p_stack.add_argument("-n", type=int, default=10_000)
     p_stack.add_argument("--seed", type=int, default=20261028)
     p_stack.set_defaults(func=cmd_stack)
+
+    p_art = sub.add_parser("article", help="build docs/article.html from the model")
+    p_art.set_defaults(func=cmd_article)

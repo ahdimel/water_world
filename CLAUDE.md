@@ -49,6 +49,8 @@ ww/model/              PHASE 2 cost engine
   deflate.py             PHASE 3: CPI-U restatement into 2025 dollars (table committed)
   salton.py              PHASE 3: Salton Sea externality, attributed + damage stress case
   stack.py               PHASE 3: supply stack, joint Monte Carlo, the framing gate
+ww/article/            the article: template.html (prose), figures.py (numbers), charts.js, basemap
+docs/article.html      BUILT article, committed; ahdimel.com imports it from HEAD
 ww/cli_model.py        Phase 2 CLI commands (kept out of __main__ so caveats are testable)
 ww/__main__.py         CLI
 data/parameters/       COMMITTED evidence: literature.yaml, cpi_u_annual.yaml (generated)
@@ -73,6 +75,7 @@ python -m ww montecarlo -n 10000  # LCOW as a distribution
 python -m ww deflator [--rebuild] # CPI-U table; --rebuild regenerates it from the cache
 python -m ww salton               # the Salton externality, one correction at a time
 python -m ww stack                # Phase 3 supply stack + framing gate
+python -m ww article              # build docs/article.html (the ahdimel.com article)
 ```
 
 ## Current state — Phase 3 complete (history of Phases 0-1 follows)
