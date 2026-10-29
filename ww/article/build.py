@@ -243,8 +243,8 @@ def tables(n: dict, data: dict) -> dict[str, str]:
     prow = [[d[:4], f"{pw[d]:.0f}", f"{v:.0f}"] for d, v in pr["all"] if d.endswith("-01-01")]
     st = n["st"]
     out = {
-        "reservoirs": _table(["January of", "Lake Mead (million AF)", "Lake Powell (million AF)"], rows),
-        "prices": _table(["January of", "Water, sewer & trash (2000 = 100)", "All items (2000 = 100)"], prow),
+        "reservoirs": _table(["Jan of", "Lake Mead (million AF)", "Lake Powell (million AF)"], rows),
+        "prices": _table(["Jan of", "Water, sewer & trash (2000 = 100)", "All items (2000 = 100)"], prow),
         "delivered": _table(["Step", "$/AF (2025 $)"],
                             [[html.escape(r["label"]), money(r["to"] - r.get("from", 0))] for r in data["bars"]["delivered"]["rows"]]),
         "salton": _table(["Basis", "$ per acre-foot (2025 $)"],

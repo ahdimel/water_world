@@ -77,6 +77,7 @@ details.data summary { cursor: pointer; color: var(--a-accent); }
 .table-wrap { overflow-x: auto; max-height: 320px; margin-top: 6px; border: 1px solid var(--a-line); border-radius: 6px; width: fit-content; max-width: 100%; }
 table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
 th, td { padding: 3px 8px; text-align: left; border-bottom: 1px solid var(--a-line); white-space: nowrap; }
+th { white-space: normal; vertical-align: bottom; max-width: 7.5em; line-height: 1.25; }
 th { position: sticky; top: 0; background: var(--a-panel); font-weight: 600; }
 td:not(:first-child), th:not(:first-child) { text-align: right; }
 .box { font-family: var(--sans); font-size: 16px; line-height: 1.55; background: var(--a-panel); border-radius: 12px; padding: 20px 22px; margin: 2em auto !important; }
@@ -87,6 +88,9 @@ td:not(:first-child), th:not(:first-child) { text-align: right; }
 .sources { font-family: var(--sans); font-size: 14px; line-height: 1.5; padding-left: 1.4em; }
 .sources li { margin: 4px 0; overflow-wrap: anywhere; }
 .endnote { font-family: var(--sans); font-size: 15px; color: var(--a-muted); }
+.article > .conclusion { max-width: 820px; margin: 3.2em auto 2.4em; padding: 34px 8px; border-top: 3px solid var(--a-accent); border-bottom: 1px solid var(--a-line); text-align: center; }
+.conclusion p { margin: 0; font-family: var(--serif); font-size: clamp(26px, 4.4vw, 38px); line-height: 1.25; letter-spacing: -0.01em; font-weight: 600; color: var(--a-ink); }
+.conclusion em { color: var(--a-accent); font-style: italic; }
 hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 /* chart marks */
 .t-axis { font: 12px var(--sans); fill: var(--a-muted); }
@@ -193,7 +197,7 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
   $table_prices
 </figure>
 
-<h2>Farm water, delivered</h2>
+<h2>Pay farmers not to use their water</h2>
 
 <p>The cheapest water in the West is the water farmers agree not to use. Federal and district programs pay them about <b>$ag_payment an acre-foot</b> to leave it in the river. In the Palo Verde Valley, the region's wholesaler pays farmers to idle about $pvid_acres acres.</p>
 
@@ -203,7 +207,6 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
   <figcaption><div class="t">What farm water costs by the time it reaches a city</div><div class="s">Dollars per acre-foot. Dashed lines: seawater desalination, for comparison.</div></figcaption>
   <div class="viz" data-chart="delivered" data-label="$alt_delivered"></div>
   <div class="source">Sources: Bureau of Reclamation; Metropolitan Water District 2026 rates; our Salton Sea estimate.</div>
-  $table_delivered
 </figure>
 
 <h2>The Salton Sea's bill</h2>
@@ -265,7 +268,7 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 <h2>The verdict</h2>
 
 <div class="facts">
-  <div class="fact"><div class="v">$ag_total</div><div class="l">Farm water, delivered: the cheapest new water in Southern California</div></div>
+  <div class="fact"><div class="v">$ag_total</div><div class="l">What paying farmers costs, delivered to a city: the cheapest new water in Southern California</div></div>
   <div class="fact"><div class="v">$salton_damage</div><div class="l">Hidden cost per Imperial acre-foot if the Salton Sea's dust is never controlled</div></div>
 </div>
 
@@ -275,11 +278,13 @@ hr.sep { border: 0; border-top: 1px solid var(--a-line); margin: 3em auto; }
 
 <p><b>When the expensive water comes, institutions set its price.</b> If cuts outrun the cheap options, the next acre-foot comes from the sea. It would cost about $ladder1 the way California builds today, or about $ladder3 if it could build like Israel.</p>
 
-<p>Price water properly, in other words, and <em>the first things a market buys are fallow fields and torn-out lawns, not desalination plants.</em></p>
-
 <h2>Caveats</h2>
 
 <p>The volumes are the model's weakest inputs. Farm sales rest on one program, in which California pledged 400,000 acre-feet a year for 2023 to 2026 (we allowed 250,000 to 700,000). The stormwater and conservation volumes are our estimates from statewide studies. The cost of moving water to the coast varies sixfold depending on how the aqueduct is counted. The model doesn't price fallowing's toll on farm towns, uses general inflation to adjust construction costs, and can't answer the political question of who should pay.</p>
+
+<aside class="conclusion wide">
+  <p>Price water properly, and the first things a market buys are <em>fallow fields and torn-out lawns</em>, not desalination plants.</p>
+</aside>
 
 <hr class="sep">
 
